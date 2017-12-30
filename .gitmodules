@@ -1,0 +1,3 @@
+[submodule "udp_reciever_test/googletest"]
+	path = udp_reciever_test/googletest
+	url = https://github.com/google/googletest.git
