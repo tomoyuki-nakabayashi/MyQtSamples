@@ -1,0 +1,6 @@
+.qmake.stash
+*.o
+Makefile
+udp_reciever/udp_reciever
+udp_reciever_test/moc_predefs.h
+udp_reciever_test/udp_reciever_test

@@ -2,7 +2,7 @@
 
 namespace udp_reciever {
 
-  UdpReciever::UdpReceiver(QObject *parent): QObject(parent)
+  UdpReciever::UdpReciever(QObject *parent): QObject(parent)
   {
     
   }
