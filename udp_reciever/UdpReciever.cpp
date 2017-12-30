@@ -11,8 +11,7 @@ namespace udp_reciever {
   bool UdpReciever::initSocket()
   {
     udpSocket = new QUdpSocket(this);
-    QHostAddress allIf = QHostAddress("0.0.0.0");
-    udpSocket->bind(allIf, 45454);
+    udpSocket->bind(QHostAddress("0.0.0.0"), 45454);
 
     connect(udpSocket, SIGNAL(readyRead()),
             this, SLOT(processPendingDatagrams()));
