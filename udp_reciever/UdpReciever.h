@@ -14,10 +14,11 @@ namespace udp_reciever {
 
   public:
     explicit UdpReciever(QObject *parent = 0);
-/* 
+    bool initSocket();
+
   private slots:
     void processPendingDatagrams();
- */
+
   private:
     QUdpSocket *udpSocket;
   };

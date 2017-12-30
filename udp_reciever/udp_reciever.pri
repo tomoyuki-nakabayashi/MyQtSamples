@@ -1,9 +1,6 @@
 QT -= gui
-Qt += network
-
-CONFIG += c++11 console
-CONFIG -= app_bundle
-DEFINES += QT_DEPRECATED_WARNINGS
+QT += network
+CONFIG += console c++11
 
 SRC_DIR = $$PWD
 HEAD_DIR = $$PWD
