@@ -11,31 +11,27 @@ namespace udp_reciever_test {
   protected:
     virtual void SetUp()
     {
-      udpReciever = new UdpReciever();
     }
 
     virtual void TearDown()
     {
-      delete udpReciever;
     }
     protected:
-      UdpReciever *udpReciever;
+      UdpReciever udpReciever;
   };
 
   TEST_F(UdpRecieverTest, InitScoketSuccess)
   {
-    EXPECT_TRUE(udpReciever->initSocket());
+    EXPECT_TRUE(udpReciever.initSocket());
   }
 
   TEST_F(UdpRecieverTest, SendDatagram)
   {
-    udpReciever->initSocket();
-    auto socket = new QUdpSocket();
+    udpReciever.initSocket();
+    QUdpSocket socket;
     QByteArray datagram = "message";
-    socket->writeDatagram(datagram.data(), datagram.size(),
-                          QHostAddress::LocalHost, 45454);
-
-    delete socket;
+    socket.writeDatagram(datagram.data(), datagram.size(),
+                         QHostAddress::LocalHost, 45454);
   }
 
   TEST_F(UdpRecieverTest, SocketReadReady)
