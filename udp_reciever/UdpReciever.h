@@ -2,10 +2,7 @@
 #define SRC_UDP_H
 
 #include <QObject>
-
-QT_BEGIN_NAMESPACE
-class QUdpSocket;
-QT_END_NAMESPACE
+#include <QtNetwork>
 
 namespace udp_reciever {
   class UdpReciever : public QObject
@@ -13,14 +10,14 @@ namespace udp_reciever {
     Q_OBJECT
 
   public:
-    explicit UdpReciever(QObject *parent = 0);
-    bool initSocket();
+    explicit UdpReciever(QObject *parent = 0): QObject(parent), udpSocket() {};
+    bool initSocket(const QHostAddress &address, quint16 port = 0);
 
   private slots:
     void processPendingDatagrams();
 
   private:
-    QUdpSocket *udpSocket;
+    QUdpSocket udpSocket;
   };
 }
 #endif //SRC_UDP_H

@@ -20,14 +20,15 @@ namespace udp_reciever_test {
       UdpReciever udpReciever;
   };
 
-  TEST_F(UdpRecieverTest, InitScoketSuccess)
+  TEST_F(UdpRecieverTest, InitScoket)
   {
-    EXPECT_TRUE(udpReciever.initSocket());
+    EXPECT_TRUE(udpReciever.initSocket(QHostAddress::LocalHost, 45454));
+    EXPECT_DEATH(udpReciever.initSocket(QHostAddress("1.1.1.1"), 0), "");
   }
 
   TEST_F(UdpRecieverTest, SendDatagram)
   {
-    udpReciever.initSocket();
+    udpReciever.initSocket(QHostAddress::LocalHost, 45454);
     QUdpSocket socket;
     QByteArray datagram = "message";
     socket.writeDatagram(datagram.data(), datagram.size(),
@@ -45,7 +46,7 @@ namespace udp_reciever_test {
     sender.writeDatagram(datagram.data(), datagram.size(),
                          QHostAddress::LocalHost, 45454);
 
-    EXPECT_TRUE(spy.wait(1000));
+    EXPECT_TRUE(spy.wait(33));
     EXPECT_EQ(1, spy.count());
   }
 }

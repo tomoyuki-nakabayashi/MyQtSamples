@@ -1,30 +1,26 @@
-#include <QtNetwork>
+#include <cassert>
 #include "UdpReciever.h"
 
 namespace udp_reciever {
-
-  UdpReciever::UdpReciever(QObject *parent): QObject(parent)
+  bool UdpReciever::initSocket(const QHostAddress &address, quint16 port)
   {
-    
-  }
+    bool portBinded = udpSocket.bind(address, port);
+    assert(portBinded);
 
-  bool UdpReciever::initSocket()
-  {
-    udpSocket = new QUdpSocket(this);
-    udpSocket->bind(QHostAddress("0.0.0.0"), 45454);
-
-    connect(udpSocket, SIGNAL(readyRead()),
+    connect(&udpSocket, SIGNAL(readyRead()),
             this, SLOT(processPendingDatagrams()));
-    return true;
+    return portBinded;
   }
 
   void UdpReciever::processPendingDatagrams()
   {
-    while (udpSocket->hasPendingDatagrams()) {
+    while (udpSocket.hasPendingDatagrams()) {
       QByteArray datagram;
-      datagram.resize(udpSocket->pendingDatagramSize());
-      udpSocket->readDatagram(datagram.data(), datagram.size());
+      datagram.resize(udpSocket.pendingDatagramSize());
+      udpSocket.readDatagram(datagram.data(), datagram.size());
+      // create UDP Packet
       qDebug() << QString(datagram.toHex());
+      // signal 
     }
   }
 }
