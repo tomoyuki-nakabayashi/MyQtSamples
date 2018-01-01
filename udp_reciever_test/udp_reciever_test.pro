@@ -9,4 +9,5 @@ CONFIG += thread
 HEADERS +=    
 
 SOURCES +=     main.cpp \
-   UdpRecieverTest.cpp 
+   UdpRecieverTest.cpp  \
+   ControlDataTest.cpp

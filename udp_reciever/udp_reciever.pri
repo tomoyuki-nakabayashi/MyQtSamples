@@ -10,7 +10,9 @@ INCLUDEPATH *= \
     $$HEAD_DIR
 
 SOURCES += \
-    $$SRC_DIR/UdpReciever.cpp
+    $$SRC_DIR/UdpReciever.cpp \
+    $$SRC_DIR/ControlData.cpp
 
 HEADERS += \
-    $$HEAD_DIR/UdpReciever.h
+    $$HEAD_DIR/UdpReciever.h \
+    $$HEAD_DIR/ControlData.h

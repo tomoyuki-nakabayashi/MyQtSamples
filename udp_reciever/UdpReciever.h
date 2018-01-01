@@ -1,5 +1,5 @@
-#ifndef SRC_UDP_H
-#define SRC_UDP_H
+#ifndef SRC_UDP_H_
+#define SRC_UDP_H_
 
 #include <QObject>
 #include <QtNetwork>
@@ -20,4 +20,4 @@ namespace udp_reciever {
     QUdpSocket udpSocket;
   };
 }
-#endif //SRC_UDP_H
+#endif //SRC_UDP_H_

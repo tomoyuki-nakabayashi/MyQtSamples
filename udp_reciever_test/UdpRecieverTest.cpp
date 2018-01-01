@@ -4,7 +4,6 @@
 #include "UdpReciever.h"
 
 namespace udp_reciever_test {
-  using namespace testing;
   using udp_reciever::UdpReciever;
 
   class UdpRecieverTest : public ::testing::Test {
