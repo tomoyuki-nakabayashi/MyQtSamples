@@ -1,15 +1,21 @@
 #include "ControlDataBuilder.h"
 
 namespace udp_reciever {
-  ControlDataBuilder::ControlDataBuilder(const QByteArray &datagram)
+  ControlData ControlDataBuilder::build(QDataStream &ds)
   {
-    QDataStream qDS(datagram);
-    qDS >> header;
-    qDS >> dataSize;
-    qDS >> payload;
+    quint32 header;
+    qint32 payloadSize;
+    QByteArray payload;
+    
+    ds >> header;
+    ds >> payloadSize;
+    payload.resize(payloadSize);
+    ds >> payload;
+
+    return ControlData(header, payloadSize, payload);
   }
 
-  bool ControlDataBuilder::canBuildControlData(QDataStream &ds, const qint32 size)
+  bool ControlDataBuilder::isReadyToBuild(QDataStream &ds, const qint32 size)
   {
     auto remainDataSize = size;
     quint32 h;
@@ -28,10 +34,5 @@ namespace udp_reciever {
     ds >> data;
 
     return true;
-  }
-
-  quint32 ControlDataBuilder::getHeader()
-  {
-    return header;
   }
 }

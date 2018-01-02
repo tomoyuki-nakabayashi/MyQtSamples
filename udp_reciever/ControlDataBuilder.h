@@ -9,12 +9,8 @@ namespace udp_reciever {
     quint32 header;
     qint32 payloadSize;
     QByteArray payload;
-    explicit ControlData(QDataStream &ds) {
-      ds >> header;
-      ds >> payloadSize;
-      payload.resize(payloadSize);
-      ds >> payload;
-    }
+    ControlData(quint32 h, qint32 s, QByteArray p)
+      : header{h}, payloadSize(s), payload(p) {}
   };
 
   class ControlDataBuilder : public QObject
@@ -22,14 +18,9 @@ namespace udp_reciever {
     Q_OBJECT
 
     public:
-      ControlDataBuilder();
-      explicit ControlDataBuilder(const QByteArray &datagram);
-      static bool canBuildControlData(QDataStream &ds, const qint32 size);
-      quint32 getHeader();
-    private:
-      quint32 header;
-      quint32 dataSize;
-      QByteArray payload;
+      ControlDataBuilder() {}
+      bool isReadyToBuild(QDataStream &ds, const qint32 size);
+      ControlData build(QDataStream &ds);
   };
 }
 #endif //SRC_UDP_PACKET_H_

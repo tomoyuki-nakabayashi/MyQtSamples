@@ -4,6 +4,7 @@
 
 namespace udp_packet_test {
   using udp_reciever::ControlDataBuilder;
+  using udp_reciever::ControlData;
 
   static const char mydata[12] = {
     0x01, 0x23, 0x45, 0x67, // header
@@ -19,6 +20,8 @@ namespace udp_packet_test {
     virtual void TearDown()
     {
     }
+    protected:
+      ControlDataBuilder builder;
   };
 
   TEST_F(ControlDataTest, TestQByteArray)
@@ -38,15 +41,15 @@ namespace udp_packet_test {
     QByteArray datagram = QByteArray::fromRawData(mydata, sizeof(mydata));
 
     QDataStream ds(datagram);
-    auto data = ControlDataBuilder::buildControlData(ds);
+    auto data = builder.build(ds);
     EXPECT_EQ(expectedHeader, data.header);
   }
 
-  TEST_F(ControlDataTest, CanBuildControlData)
+  TEST_F(ControlDataTest, isReadyToBuild)
   {
     QByteArray datagram = QByteArray::fromRawData(mydata, sizeof(mydata));
     QDataStream ds(datagram);
-    auto result = ControlDataBuilder::canBuildControlData(ds, datagram.size());
+    auto result = builder.isReadyToBuild(ds, datagram.size());
     EXPECT_TRUE(result);
   }
 
@@ -57,7 +60,7 @@ namespace udp_packet_test {
     };
     QByteArray datagram = QByteArray::fromRawData(lackdata, sizeof(lackdata));
     QDataStream ds(datagram);
-    auto result = ControlDataBuilder::canBuildControlData(ds, datagram.size());
+    auto result = builder.isReadyToBuild(ds, datagram.size());
     EXPECT_FALSE(result);
   }
 
@@ -69,7 +72,7 @@ namespace udp_packet_test {
     };
     QByteArray datagram = QByteArray::fromRawData(lackdata, sizeof(lackdata));
     QDataStream ds(datagram);
-    auto result = ControlDataBuilder::canBuildControlData(ds, datagram.size());
+    auto result = builder.isReadyToBuild(ds, datagram.size());
     EXPECT_FALSE(result);
   }
 }
