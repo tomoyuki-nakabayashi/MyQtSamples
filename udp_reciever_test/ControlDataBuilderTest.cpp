@@ -1,9 +1,9 @@
 #include <gtest/gtest.h>
 #include <QSignalSpy>
-#include "ControlData.h"
+#include "ControlDataBuilder.h"
 
 namespace udp_packet_test {
-  using udp_reciever::ControlData;
+  using udp_reciever::ControlDataBuilder;
 
   static const char mydata[12] = {
     0x01, 0x23, 0x45, 0x67, // header
@@ -37,26 +37,39 @@ namespace udp_packet_test {
     const quint32 expectedHeader = 0x01234567;
     QByteArray datagram = QByteArray::fromRawData(mydata, sizeof(mydata));
 
-    ControlData cData(datagram);
-    EXPECT_EQ(expectedHeader, cData.getHeader());
+    QDataStream ds(datagram);
+    auto data = ControlDataBuilder::buildControlData(ds);
+    EXPECT_EQ(expectedHeader, data.header);
   }
 
-  TEST_F(ControlDataTest, canBuildControlData)
+  TEST_F(ControlDataTest, CanBuildControlData)
   {
     QByteArray datagram = QByteArray::fromRawData(mydata, sizeof(mydata));
     QDataStream ds(datagram);
-    auto result = ControlData::canBuildControlData(ds, datagram.size());
+    auto result = ControlDataBuilder::canBuildControlData(ds, datagram.size());
     EXPECT_TRUE(result);
   }
 
-  TEST_F(ControlDataTest, cannotBuildControlData)
+  TEST_F(ControlDataTest, CannotBuildDueToLackingHeader)
   {
     const char lackdata[2] = {
       0x01, 0x23 // header
     };
     QByteArray datagram = QByteArray::fromRawData(lackdata, sizeof(lackdata));
     QDataStream ds(datagram);
-    auto result = ControlData::canBuildControlData(ds, datagram.size());
+    auto result = ControlDataBuilder::canBuildControlData(ds, datagram.size());
+    EXPECT_FALSE(result);
+  }
+
+  TEST_F(ControlDataTest, CannotBuildDueToLackingDataSize)
+  {
+    const char lackdata[5] = {
+      0x01, 0x23, 0x45, 0x67, // header
+      0x00                    // data length
+    };
+    QByteArray datagram = QByteArray::fromRawData(lackdata, sizeof(lackdata));
+    QDataStream ds(datagram);
+    auto result = ControlDataBuilder::canBuildControlData(ds, datagram.size());
     EXPECT_FALSE(result);
   }
 }
