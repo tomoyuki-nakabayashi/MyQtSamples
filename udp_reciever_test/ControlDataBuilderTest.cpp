@@ -6,13 +6,13 @@ namespace udp_packet_test {
   using udp_reciever::ControlDataBuilder;
   using udp_reciever::ControlData;
 
-  static const char mydata[12] = {
-    0x01, 0x23, 0x45, 0x67, // header
-    0x00, 0x00, 0x00, 0x04, // data length
-    0x01, 0x02, 0x03, 0x04  // payload
-  };
   class ControlDataTest : public ::testing::Test {
   protected:
+    ControlDataTest()
+      : os(&buffer, QIODevice::WriteOnly), is(&buffer, QIODevice::ReadOnly)
+    {
+    }
+
     virtual void SetUp()
     {
     }
@@ -22,57 +22,44 @@ namespace udp_packet_test {
     }
     protected:
       ControlDataBuilder builder;
+      QByteArray buffer;
+      QDataStream os;
+      QDataStream is;
   };
 
-  TEST_F(ControlDataTest, TestQByteArray)
-  {
-    const quint32 expect = 0x01234567;
-    const char mydata[4] = {0x01, 0x23, 0x45, 0x67};
-    QByteArray datagram = QByteArray::fromRawData(mydata, sizeof(mydata));
-    QDataStream qDS(datagram);
-    quint32 actual; qDS >> actual;
-    
-    EXPECT_EQ(expect, actual);
-  }
-
-  TEST_F(ControlDataTest, GetInstanceByQByteArray)
+  TEST_F(ControlDataTest, GetInstanceByQDataStream)
   {
     const quint32 expectedHeader = 0x01234567;
-    QByteArray datagram = QByteArray::fromRawData(mydata, sizeof(mydata));
-
-    QDataStream ds(datagram);
-    auto data = builder.build(ds);
+    os << expectedHeader << 0x4 << 0x01020304;
+    auto data = builder.build(is);
     EXPECT_EQ(expectedHeader, data.header);
   }
 
   TEST_F(ControlDataTest, isReadyToBuild)
   {
-    QByteArray datagram = QByteArray::fromRawData(mydata, sizeof(mydata));
-    QDataStream ds(datagram);
-    auto result = builder.isReadyToBuild(ds, datagram.size());
+    os << (quint32)0x0 << (qint32)0 << (quint32)0;
+    auto result = builder.isReadyToBuild(is, buffer.size());
     EXPECT_TRUE(result);
   }
 
-  TEST_F(ControlDataTest, CannotBuildDueToLackingHeader)
+  TEST_F(ControlDataTest, HeaderIsStillImcomplete)
   {
-    const char lackdata[2] = {
-      0x01, 0x23 // header
-    };
-    QByteArray datagram = QByteArray::fromRawData(lackdata, sizeof(lackdata));
-    QDataStream ds(datagram);
-    auto result = builder.isReadyToBuild(ds, datagram.size());
+    os << (quint16)0x0123; // imcomplete header
+    auto result = builder.isReadyToBuild(is, buffer.size());
     EXPECT_FALSE(result);
   }
 
-  TEST_F(ControlDataTest, CannotBuildDueToLackingDataSize)
+  TEST_F(ControlDataTest, PayloadSizeIsStillImcomplete)
   {
-    const char lackdata[5] = {
-      0x01, 0x23, 0x45, 0x67, // header
-      0x00                    // data length
-    };
-    QByteArray datagram = QByteArray::fromRawData(lackdata, sizeof(lackdata));
-    QDataStream ds(datagram);
-    auto result = builder.isReadyToBuild(ds, datagram.size());
+    os << (quint32)0x01234567 << (qint16)0; // imcomplete payloadSize
+    auto result = builder.isReadyToBuild(is, buffer.size());
+    EXPECT_FALSE(result);
+  }
+
+  TEST_F(ControlDataTest, PayloadIsStillImcomplete)
+  {
+    os << (quint32)0x01234567 << (qint32)4 << (quint16)0x0102; // imcomplete payload
+    auto result = builder.isReadyToBuild(is, buffer.size());
     EXPECT_FALSE(result);
   }
 }
