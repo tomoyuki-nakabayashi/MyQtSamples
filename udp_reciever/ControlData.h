@@ -12,6 +12,7 @@ namespace udp_reciever {
     public:
       ControlData();
       explicit ControlData(const QByteArray &datagram);
+      static bool canBuildControlData(QDataStream &ds, const qint32 size);
       quint32 getHeader();
     private:
       quint32 header;
