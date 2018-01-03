@@ -1,5 +1,4 @@
 #include <gtest/gtest.h>
-#include <QSignalSpy>
 #include "ControlDataBuilder.h"
 
 namespace udp_packet_test {

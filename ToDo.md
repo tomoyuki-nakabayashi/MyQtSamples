@@ -9,8 +9,10 @@
 - [] Verify isReadyToBuild (false case)
 - [ ] AbstractDataStreamSequencer
   - [ ] Have pending data size & QDataStream
+- [ ] Deal with another data type
 - [ ] PeriodicDataStreamSequencer
 - [ ] AbstractDataBuilder
+- [ ] AbstractData
 
 # UDP Reciever
 

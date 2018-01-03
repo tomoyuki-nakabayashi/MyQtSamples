@@ -1,5 +1,5 @@
-#ifndef SRC_UDP_PACKET_H_
-#define SRC_UDP_PACKET_H_
+#ifndef SRC_CONTROL_DATA_BUILDER_H_
+#define SRC_CONTROL_DATA_BUILDER_H_
 
 #include <QObject>
 #include <QDataStream>
@@ -23,4 +23,4 @@ namespace udp_reciever {
       ControlData build(QDataStream &ds);
   };
 }
-#endif //SRC_UDP_PACKET_H_
+#endif //SRC_CONTROL_DATA_BUILDER_H_

@@ -10,4 +10,5 @@ HEADERS +=
 
 SOURCES +=     main.cpp \
    UdpRecieverTest.cpp  \
-   ControlDataBuilderTest.cpp
+   ControlDataBuilderTest.cpp \
+   SubDataBuilderTest.cpp
