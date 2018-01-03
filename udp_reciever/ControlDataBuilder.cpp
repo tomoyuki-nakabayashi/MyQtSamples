@@ -18,21 +18,22 @@ namespace udp_reciever {
     return ControlData(header, payloadSize, payload);
   }
 
-  bool ControlDataBuilder::isReadyToBuild(QDataStream &ds, const qint32 size)
+  DataBuilderStatus ControlDataBuilder::isReadyToBuild(QDataStream &ds, const qint32 size)
   {
     auto remainDataSize = size;
-    if(remainDataSize < sizeofquint32()) return false;
+    if(remainDataSize < sizeofquint32()) return DataBuilderStatus::RETRY;
     quint32 h;
     ds >> h;
+    if(h != ControlData::kHeaderMagic) return DataBuilderStatus::INVALID;
     remainDataSize -= sizeofquint32();
 
-    if(remainDataSize < sizeofqint32()) return false;
+    if(remainDataSize < sizeofqint32()) return DataBuilderStatus::RETRY;
     qint32 len;
     ds >> len;
     remainDataSize -= sizeofqint32();
 
-    if(remainDataSize < len) return false;
+    if(remainDataSize < len) return DataBuilderStatus::RETRY;
 
-    return true;
+    return DataBuilderStatus::READY;
   }
 }

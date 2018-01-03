@@ -1,6 +1,8 @@
+.vscode/
 .qmake.stash
 *.o
 Makefile
+moc*
 udp_reciever/udp_reciever
 udp_reciever_test/udp_reciever_test
 udp_reciever/moc_UdpReciever.cpp

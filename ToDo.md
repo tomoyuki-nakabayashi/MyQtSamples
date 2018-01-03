@@ -16,7 +16,11 @@
 
 # UDP Reciever
 
+- [x] Use builder and emit DataCreated
+- [ ] Retreave signal argument
+- [ ] Update datagram
 - [ ] Create two packets from QByteArray
 - [ ] Update QByteArray
 - [ ] Handle error
 - [ ] Recieve datagram multiple times
+- [ ] Switch builder

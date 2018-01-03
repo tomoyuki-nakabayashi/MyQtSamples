@@ -18,9 +18,12 @@ namespace udp_reciever {
       QByteArray datagram;
       datagram.resize(udpSocket.pendingDatagramSize());
       udpSocket.readDatagram(datagram.data(), datagram.size());
-      // create UDP Packet
-      qDebug() << QString(datagram.toHex());
-      // signal 
+
+      QDataStream ds(datagram);
+      builder.isReadyToBuild(ds, datagram.size());
+      auto data = builder.build(ds);
+
+      emit DataRecieved(&data);
     }
   }
 }
