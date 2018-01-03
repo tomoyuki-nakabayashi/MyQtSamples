@@ -18,7 +18,7 @@ namespace udp_reciever {
     void processPendingDatagrams();
 
   signals:
-    void DataRecieved(ControlData *data);
+    void dataRecieved(const ControlData &data);
 
   private:
     QUdpSocket udpSocket;

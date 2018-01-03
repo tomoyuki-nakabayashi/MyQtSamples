@@ -1,5 +1,7 @@
 #include <gtest/gtest.h>
+#include <QObject>
 #include <QtNetwork>
+#include <QTest>
 #include <QSignalSpy>
 #include "UdpReciever.h"
 #include "ControlDataBuilder.h"
@@ -48,7 +50,6 @@ namespace udp_reciever_test {
 
     virtual void SetUp()
     {
-      qRegisterMetaType<ControlData*>();
       udpReciever.initSocket(QHostAddress::LocalHost, 45454);
     }
 
@@ -64,29 +65,37 @@ namespace udp_reciever_test {
 
   TEST_F(UdpRecieverTest, ControlDataRecieved)
   {
-    QSignalSpy spy(&udpReciever, SIGNAL(DataRecieved(ControlData*)));
+    ControlData *p = nullptr;
+    QObject::connect(&udpReciever, &UdpReciever::dataRecieved,
+      [&](const ControlData &data){p = new ControlData(data);});
     ds << ControlData::kHeaderMagic << 0x4 << 0x01020304;
     socket.writeDatagram(datagram.data(), datagram.size(),
                          QHostAddress::LocalHost, 45454);
 
-    EXPECT_TRUE(spy.wait(33));
-    EXPECT_EQ(1, spy.count());
+    QTest::qWait(10);
+    ASSERT_TRUE(p != nullptr);
+    auto expect = ControlData::kHeaderMagic;
+    EXPECT_EQ(expect, p->getHeader());
+    EXPECT_EQ(4, p->getPayloadSize());
 
-    EXPECT_TRUE(spy.at(0).at(0).canConvert<ControlData*>());
-    //ControlData result = qvariant_cast<ControlData>(spy.at(0).at(0));
-    //auto expect = ControlData::kHeaderMagic;
-    //EXPECT_EQ(expect, result.GetHeader());
+    delete p;
   }
 
-  TEST_F(UdpRecieverTest, DISABLED_TwoControlDataRecieved)
+  TEST_F(UdpRecieverTest, TwoControlDataRecieved)
   {
-    QSignalSpy spy(&udpReciever, SIGNAL(DataRecieved(ControlData&)));
+    ControlData *p = nullptr;
+    qint32 count = 0;
+    QObject::connect(&udpReciever, &UdpReciever::dataRecieved,
+      [&](const ControlData &data){p = new ControlData(data); count++;});
     ds << ControlData::kHeaderMagic << 0x4 << 0x01020304
        << ControlData::kHeaderMagic << 0x4 << 0x01020304;
+    EXPECT_EQ(24, datagram.size());
     socket.writeDatagram(datagram.data(), datagram.size(),
                          QHostAddress::LocalHost, 45454);
 
-    EXPECT_TRUE(spy.wait(33));
-    EXPECT_EQ(2, spy.count());
+    QTest::qWait(20);
+    EXPECT_EQ(2, count);
+    EXPECT_EQ(4, p->getPayload().size());
+    delete p;
   }
 }

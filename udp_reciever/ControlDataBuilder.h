@@ -18,9 +18,12 @@ namespace udp_reciever {
       ControlData(): header(), payloadSize(), payload() {}
       ControlData(quint32 h, qint32 s, QByteArray p)
         : header{h}, payloadSize{s}, payload{p} {}
-      quint32 GetHeader() const {return header;}
-      qint32 GetPayloadSize() const {return payloadSize;}
-      QByteArray GetPayload() const {return payload;}
+      ControlData(const ControlData &other)
+        : header{other.header}, payloadSize{other.payloadSize}, payload{other.payload} {}
+
+      quint32 getHeader() const {return header;}
+      qint32 getPayloadSize() const {return payloadSize;}
+      QByteArray getPayload() const {return payload;}
   };
 
   enum class DataBuilderStatus {READY = 0, INVALID = -1, RETRY = -2};
@@ -35,6 +38,4 @@ namespace udp_reciever {
       ControlData build(QDataStream &ds);
   };
 }
-
-Q_DECLARE_METATYPE(udp_reciever::ControlData*)
 #endif //SRC_CONTROL_DATA_BUILDER_H_

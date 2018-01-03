@@ -14,16 +14,19 @@ namespace udp_reciever {
 
   void UdpReciever::processPendingDatagrams()
   {
-    while (udpSocket.hasPendingDatagrams()) {
-      QByteArray datagram;
-      datagram.resize(udpSocket.pendingDatagramSize());
-      udpSocket.readDatagram(datagram.data(), datagram.size());
+    if(udpSocket.hasPendingDatagrams()) {
+      auto netDatagram = udpSocket.receiveDatagram(udpSocket.pendingDatagramSize());
+      auto datagram = netDatagram.data();
 
-      QDataStream ds(datagram);
-      builder.isReadyToBuild(ds, datagram.size());
-      auto data = builder.build(ds);
-
-      emit DataRecieved(&data);
+      QDataStream checkStream(datagram);
+      QDataStream buildStream(datagram);
+      qint32 size = datagram.size();
+      while(builder.isReadyToBuild(checkStream, size) == DataBuilderStatus::READY)
+      {
+        auto data = builder.build(buildStream);
+        emit dataRecieved(data);
+        size -= 12;
+      }
     }
   }
 }

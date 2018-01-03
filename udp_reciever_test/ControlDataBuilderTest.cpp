@@ -27,12 +27,40 @@ namespace udp_packet_test {
       QDataStream is;
   };
 
+  TEST_F(ControlDataTest, TestQByteStream)
+  {
+    QByteArray moreData = QByteArray::fromHex("01020304");
+    os << ControlData::kHeaderMagic << 0x4;
+    os.writeRawData(moreData.data(), moreData.size());
+
+    quint32 header;
+    qint32 payloadSize;
+    QByteArray payload;
+
+    is >> header;
+    is >> payloadSize;
+    payload.resize(payloadSize);
+    EXPECT_EQ(4, payload.size());
+    //is >> payload;
+    char buf[4] = {};
+    auto res = is.readRawData(buf, 4);
+    EXPECT_EQ(4, res);
+    EXPECT_EQ(0x01, buf[0]);
+    EXPECT_EQ(0x02, buf[1]);
+
+    auto expect = ControlData::kHeaderMagic;
+    EXPECT_EQ(expect, header);
+    EXPECT_EQ(4, payloadSize);
+  }
+
   TEST_F(ControlDataTest, GetInstanceByQDataStream)
   {
     os << ControlData::kHeaderMagic << 0x4 << 0x01020304;
     auto data = builder.build(is);
     auto expect = ControlData::kHeaderMagic;
-    EXPECT_EQ(expect, data.GetHeader());
+    EXPECT_EQ(expect, data.getHeader());
+    EXPECT_EQ(4, data.getPayloadSize());
+    EXPECT_EQ(4, data.getPayload().size());
   }
 
   TEST_F(ControlDataTest, isReadyToBuild)
