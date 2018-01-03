@@ -20,7 +20,7 @@
 - [ ] Handle error
 - [x] Retreave signal argument
 - [ ] Update datagram
-- [ ] Create two packets from QByteArray
+- [x] Create two packets from QByteArray
 - [ ] Update QByteArray
 - [ ] Recieve datagram multiple times
 - [ ] Switch builder

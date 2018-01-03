@@ -83,10 +83,9 @@ namespace udp_reciever_test {
 
   TEST_F(UdpRecieverTest, TwoControlDataRecieved)
   {
-    ControlData *p = nullptr;
     qint32 count = 0;
     QObject::connect(&udpReciever, &UdpReciever::dataRecieved,
-      [&](const ControlData &data){p = new ControlData(data); count++;});
+      [&](const ControlData &data){count++;});
     ds << ControlData::kHeaderMagic << 0x4 << 0x01020304
        << ControlData::kHeaderMagic << 0x4 << 0x01020304;
     EXPECT_EQ(24, datagram.size());
@@ -95,7 +94,5 @@ namespace udp_reciever_test {
 
     QTest::qWait(20);
     EXPECT_EQ(2, count);
-    EXPECT_EQ(4, p->getPayload().size());
-    delete p;
   }
 }

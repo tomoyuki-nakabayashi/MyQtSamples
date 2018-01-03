@@ -8,12 +8,13 @@ namespace udp_reciever {
   {
     quint32 header;
     qint32 payloadSize;
-    QByteArray payload;
 
     ds >> header;
     ds >> payloadSize;
-    payload.resize(payloadSize);
-    ds >> payload;
+    auto buf = new char[payloadSize];
+    ds.readRawData(buf, payloadSize);
+    QByteArray payload(buf, payloadSize);
+    delete[] buf;
 
     return ControlData(header, payloadSize, payload);
   }
@@ -33,6 +34,10 @@ namespace udp_reciever {
     remainDataSize -= sizeofqint32();
 
     if(remainDataSize < len) return DataBuilderStatus::RETRY;
+    // proceed QDataStream index
+    auto buf = new char[len];
+    ds.readRawData(buf, len);
+    delete[] buf;
 
     return DataBuilderStatus::READY;
   }
