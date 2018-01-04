@@ -1,3 +1,8 @@
+/**
+ * Copyright <2017> <Tomoyuki Nakabayashi>
+ * This software is released under the MIT License, see LICENSE.
+ */
+
 #ifndef UDP_RECIEVER_SUBFRAMEBUILDER_H_
 #define UDP_RECIEVER_SUBFRAMEBUILDER_H_
 
@@ -6,11 +11,12 @@
 
 namespace udp_reciever {
   struct SubFrame {
-    quint32 id;
-    qint32 payloadSize;
-    QByteArray payload;
+    const quint32 header;
+    const qint32 payloadSize;
+    const QByteArray payload;
+    SubFrame(): header(), payloadSize(), payload() {}
     SubFrame(quint32 i, qint32 s, QByteArray p)
-      : id{i}, payloadSize(s), payload(p) {}
+      : header{i}, payloadSize(s), payload(p) {}
   };
 
   class SubFrameBuilder : public QObject

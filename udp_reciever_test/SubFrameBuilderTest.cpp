@@ -1,13 +1,13 @@
 #include <gtest/gtest.h>
-#include "SubDataBuilder.h"
+#include "SubFrameBuilder.h"
 
 namespace sub_data_builder_test {
-  using udp_reciever::SubDataBuilder;
-  using udp_reciever::SubData;
+  using udp_reciever::SubFrameBuilder;
+  using udp_reciever::SubFrame;
 
-  class SubDataBuilderTest : public ::testing::Test {
+  class SubFrameBuilderTest : public ::testing::Test {
   protected:
-    SubDataBuilderTest()
+    SubFrameBuilderTest()
       : os(&buffer, QIODevice::WriteOnly), is(&buffer, QIODevice::ReadOnly)
     {
     }
@@ -20,13 +20,13 @@ namespace sub_data_builder_test {
     {
     }
     protected:
-      SubDataBuilder builder;
+      SubFrameBuilder builder;
       QByteArray buffer;
       QDataStream os;
       QDataStream is;
   };
 
-  TEST_F(SubDataBuilderTest, FirstTest)
+  TEST_F(SubFrameBuilderTest, FirstTest)
   {
     EXPECT_TRUE(true);
   }
