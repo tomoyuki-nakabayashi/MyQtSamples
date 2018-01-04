@@ -1,10 +1,14 @@
+/**
+ * Copyright <2017> <Tomoyuki Nakabayashi>
+ * This software is released under the MIT License, see LICENSE.
+ */
+
 #include <QCoreApplication>
 #include "UdpReciever.h"
 
-using namespace udp_reciever;
+using udp_reciever::UdpReciever;
 
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]) {
   QCoreApplication a(argc, argv);
   udp_reciever::UdpReciever udpReciever;
   udpReciever.initSocket(QHostAddress("0.0.0.0"), 45454);
