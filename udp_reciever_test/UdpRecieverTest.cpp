@@ -4,13 +4,13 @@
 #include <QTest>
 #include <QSignalSpy>
 #include "UdpReciever.h"
-#include "ControlDataBuilder.h"
+#include "FrameBuilder.h"
 
 udp_reciever::TestClass* udp_reciever::TestClass::self;
 
 namespace udp_reciever_test {
   using udp_reciever::UdpReciever;
-  using udp_reciever::ControlData;
+  using udp_reciever::Frame;
 
   class UdpRecieverInitTest : public ::testing::Test {
   protected:
@@ -65,31 +65,31 @@ namespace udp_reciever_test {
       QUdpSocket socket;
   };
 
-  TEST_F(UdpRecieverTest, ControlDataRecieved)
+  TEST_F(UdpRecieverTest, FrameRecieved)
   {
-    ControlData *p = nullptr;
+    Frame *p = nullptr;
     QObject::connect(&udpReciever, &UdpReciever::dataRecieved,
-      [&](const ControlData &data){p = new ControlData(data);});
-    ds << ControlData::kHeaderMagic << 0x4 << 0x01020304;
+      [&](const Frame &data){p = new Frame(data);});
+    ds << Frame::kHeaderMagic << 0x4 << 0x01020304;
     socket.writeDatagram(datagram.data(), datagram.size(),
                          QHostAddress::LocalHost, 45454);
 
     QTest::qWait(10);
     ASSERT_TRUE(p != nullptr);
-    auto expect = ControlData::kHeaderMagic;
+    auto expect = Frame::kHeaderMagic;
     EXPECT_EQ(expect, p->getHeader());
     EXPECT_EQ(4, p->getPayloadSize());
 
     delete p;
   }
 
-  TEST_F(UdpRecieverTest, TwoControlDataRecieved)
+  TEST_F(UdpRecieverTest, TwoFrameRecieved)
   {
     qint32 count = 0;
     QObject::connect(&udpReciever, &UdpReciever::dataRecieved,
-      [&](const ControlData &data){count++;});
-    ds << ControlData::kHeaderMagic << 0x4 << 0x01020304
-       << ControlData::kHeaderMagic << 0x4 << 0x01020304;
+      [&](const Frame &data){count++;});
+    ds << Frame::kHeaderMagic << 0x4 << 0x01020304
+       << Frame::kHeaderMagic << 0x4 << 0x01020304;
     EXPECT_EQ(24, datagram.size());
     socket.writeDatagram(datagram.data(), datagram.size(),
                          QHostAddress::LocalHost, 45454);

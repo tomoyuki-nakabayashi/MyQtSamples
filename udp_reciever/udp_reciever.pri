@@ -11,10 +11,10 @@ INCLUDEPATH *= \
 
 SOURCES += \
     $$SRC_DIR/UdpReciever.cpp \
-    $$SRC_DIR/ControlDataBuilder.cpp \
-    $$SRC_DIR/SubDataBuilder.cpp
+    $$SRC_DIR/FrameBuilder.cpp \
+    $$SRC_DIR/SubFrameBuilder.cpp
 
 HEADERS += \
     $$HEAD_DIR/UdpReciever.h \
-    $$HEAD_DIR/ControlDataBuilder.h \
-    $$HEAD_DIR/SubDataBuilder.h
+    $$HEAD_DIR/FrameBuilder.h \
+    $$HEAD_DIR/SubFrameBuilder.h

@@ -8,7 +8,7 @@
 
 #include <QObject>
 #include <QtNetwork>
-#include "ControlDataBuilder.h"
+#include "FrameBuilder.h"
 
 namespace udp_reciever {
 class TestClass : public QObject {
@@ -36,11 +36,11 @@ class UdpReciever : public QObject {
     void processPendingDatagrams();
 
  signals:
-    void dataRecieved(const ControlData &data);
+    void dataRecieved(const Frame &data);
 
  private:
     QUdpSocket udpSocket;
-    ControlDataBuilder builder;
+    FrameBuilder builder;
 };
 }  // namespace udp_reciever
 #endif  // UDP_RECIEVER_UDPRECIEVER_H_

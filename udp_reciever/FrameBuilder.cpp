@@ -1,10 +1,10 @@
-#include "ControlDataBuilder.h"
+#include "FrameBuilder.h"
 
 namespace udp_reciever {
   constexpr qint32 sizeofquint32() {return static_cast<int>(sizeof(quint32));}
   constexpr qint32 sizeofqint32() {return static_cast<int>(sizeof(qint32));}
 
-  ControlData ControlDataBuilder::build(QDataStream &ds)
+  Frame FrameBuilder::build(QDataStream &ds)
   {
     quint32 header;
     qint32 payloadSize;
@@ -16,29 +16,29 @@ namespace udp_reciever {
     QByteArray payload(buf, payloadSize);
     delete[] buf;
 
-    return ControlData(header, payloadSize, payload);
+    return Frame(header, payloadSize, payload);
   }
 
-  DataBuilderStatus ControlDataBuilder::isReadyToBuild(QDataStream &ds, const qint32 size)
+  FrameBuilderStatus FrameBuilder::isReadyToBuild(QDataStream &ds, const qint32 size)
   {
     auto remainDataSize = size;
-    if(remainDataSize < sizeofquint32()) return DataBuilderStatus::RETRY;
+    if(remainDataSize < sizeofquint32()) return FrameBuilderStatus::RETRY;
     quint32 h;
     ds >> h;
-    if(h != ControlData::kHeaderMagic) return DataBuilderStatus::INVALID;
+    if(h != Frame::kHeaderMagic) return FrameBuilderStatus::INVALID;
     remainDataSize -= sizeofquint32();
 
-    if(remainDataSize < sizeofqint32()) return DataBuilderStatus::RETRY;
+    if(remainDataSize < sizeofqint32()) return FrameBuilderStatus::RETRY;
     qint32 len;
     ds >> len;
     remainDataSize -= sizeofqint32();
 
-    if(remainDataSize < len) return DataBuilderStatus::RETRY;
+    if(remainDataSize < len) return FrameBuilderStatus::RETRY;
     // proceed QDataStream index
     auto buf = new char[len];
     ds.readRawData(buf, len);
     delete[] buf;
 
-    return DataBuilderStatus::READY;
+    return FrameBuilderStatus::READY;
   }
 }
