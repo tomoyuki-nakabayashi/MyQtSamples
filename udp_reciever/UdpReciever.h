@@ -11,6 +11,19 @@
 #include "ControlDataBuilder.h"
 
 namespace udp_reciever {
+class TestClass : public QObject {
+  Q_OBJECT
+
+ public:
+    qint32 test;
+
+ public:
+    static TestClass* self;
+    explicit TestClass(qint32 t, QObject *parent = 0): QObject(parent), test{t} {}
+    static TestClass* GetInstance() {return self;}
+
+};
+
 class UdpReciever : public QObject {
   Q_OBJECT
 

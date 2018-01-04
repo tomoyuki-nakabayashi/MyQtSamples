@@ -4,7 +4,7 @@
  */
 
 #include <cassert>
-#include "udp_reciever/UdpReciever.h"
+#include "UdpReciever.h"
 
 namespace udp_reciever {
   bool UdpReciever::initSocket(const QHostAddress &address, quint16 port) {

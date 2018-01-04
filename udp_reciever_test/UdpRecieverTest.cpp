@@ -6,6 +6,8 @@
 #include "UdpReciever.h"
 #include "ControlDataBuilder.h"
 
+udp_reciever::TestClass* udp_reciever::TestClass::self;
+
 namespace udp_reciever_test {
   using udp_reciever::UdpReciever;
   using udp_reciever::ControlData;
@@ -94,5 +96,23 @@ namespace udp_reciever_test {
 
     QTest::qWait(20);
     EXPECT_EQ(2, count);
+  }
+
+  using udp_reciever::TestClass;
+  class TestClassTest : public ::testing::Test {
+    virtual void SetUp()
+    {
+    }
+
+    virtual void TearDown()
+    {
+    }
+  };
+
+  TEST_F(TestClassTest, GetInstance)
+  {
+    TestClass::self = new TestClass(4);
+    auto instance = TestClass::GetInstance();
+    EXPECT_EQ(4, instance->test);
   }
 }
