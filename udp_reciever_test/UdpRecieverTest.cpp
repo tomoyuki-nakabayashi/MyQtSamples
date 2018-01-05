@@ -27,8 +27,8 @@ namespace udp_reciever_test {
 
   TEST_F(UdpRecieverInitTest, InitScoket)
   {
-    EXPECT_TRUE(udpReciever.initSocket(QHostAddress::LocalHost, 45454));
-    EXPECT_DEATH(udpReciever.initSocket(QHostAddress("1.1.1.1"), 0), "");
+    EXPECT_TRUE(udpReciever.InitSocket(QHostAddress::LocalHost, 45454));
+    EXPECT_DEATH(udpReciever.InitSocket(QHostAddress("1.1.1.1"), 0), "");
   }
 
   TEST_F(UdpRecieverInitTest, SocketReadReady)
@@ -52,7 +52,7 @@ namespace udp_reciever_test {
 
     virtual void SetUp()
     {
-      udpReciever.initSocket(QHostAddress::LocalHost, 45454);
+      udpReciever.InitSocket(QHostAddress::LocalHost, 45454);
     }
 
     virtual void TearDown()
@@ -68,7 +68,7 @@ namespace udp_reciever_test {
   TEST_F(UdpRecieverTest, FrameRecieved)
   {
     Frame *p = nullptr;
-    QObject::connect(&udpReciever, &UdpReciever::dataRecieved,
+    QObject::connect(&udpReciever, &UdpReciever::DataRecieved,
       [&](const Frame &data){p = new Frame(data);});
     ds << Frame::kHeaderMagic << 0x4 << 0x01020304;
     socket.writeDatagram(datagram.data(), datagram.size(),
@@ -77,8 +77,8 @@ namespace udp_reciever_test {
     QTest::qWait(10);
     ASSERT_TRUE(p != nullptr);
     auto expect = Frame::kHeaderMagic;
-    EXPECT_EQ(expect, p->getHeader());
-    EXPECT_EQ(4, p->getPayloadSize());
+    EXPECT_EQ(expect, p->GetHeader());
+    EXPECT_EQ(4, p->GetPayloadSize());
 
     delete p;
   }
@@ -86,7 +86,7 @@ namespace udp_reciever_test {
   TEST_F(UdpRecieverTest, TwoFrameRecieved)
   {
     qint32 count = 0;
-    QObject::connect(&udpReciever, &UdpReciever::dataRecieved,
+    QObject::connect(&udpReciever, &UdpReciever::DataRecieved,
       [&](const Frame &data){count++;});
     ds << Frame::kHeaderMagic << 0x4 << 0x01020304
        << Frame::kHeaderMagic << 0x4 << 0x01020304;

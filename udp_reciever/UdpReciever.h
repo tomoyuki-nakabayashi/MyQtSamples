@@ -29,18 +29,18 @@ class UdpReciever : public QObject {
 
  public:
     explicit UdpReciever(QObject *parent = 0)
-      : QObject(parent), udpSocket(), builder() {}
-    bool initSocket(const QHostAddress &address, quint16 port = 0);
+      : QObject(parent), udp_socket_(), builder_() {}
+    bool InitSocket(const QHostAddress &address, quint16 port = 0);
 
  private slots:
-    void processPendingDatagrams();
+    void ProcessPendingDatagrams();
 
  signals:
-    void dataRecieved(const Frame &data);
+    void DataRecieved(const Frame &data);
 
  private:
-    QUdpSocket udpSocket;
-    FrameBuilder builder;
+    QUdpSocket udp_socket_;
+    FrameBuilder builder_;
 };
 }  // namespace udp_reciever
 #endif  // UDP_RECIEVER_UDPRECIEVER_H_

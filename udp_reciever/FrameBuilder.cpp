@@ -5,7 +5,7 @@ namespace udp_reciever {
   constexpr qint32 sizeofquint32() {return static_cast<int>(sizeof(quint32));}
   constexpr qint32 sizeofqint32() {return static_cast<int>(sizeof(qint32));}
 
-  Frame FrameBuilder::build(QDataStream &ds)
+  Frame FrameBuilder::Build(QDataStream &ds)
   {
     quint32 header;
     qint32 payloadSize;
@@ -19,7 +19,7 @@ namespace udp_reciever {
     return Frame(header, payloadSize, payload);
   }
 
-  FrameBuilderStatus FrameBuilder::isReadyToBuild(QDataStream &ds, const qint32 size)
+  FrameBuilderStatus FrameBuilder::IsReadyToBuild(QDataStream &ds, const qint32 size)
   {
     auto remainDataSize = size;
     if(remainDataSize < sizeofquint32()) return FrameBuilderStatus::RETRY;

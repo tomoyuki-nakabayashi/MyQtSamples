@@ -28,9 +28,9 @@ class Frame {
         payloadSize{other.payloadSize},
         payload{other.payload} {}
 
-    quint32 getHeader() const {return header;}
-    qint32 getPayloadSize() const {return payloadSize;}
-    QByteArray getPayload() const {return payload;}
+    quint32 GetHeader() const {return header;}
+    qint32 GetPayloadSize() const {return payloadSize;}
+    QByteArray GetPayload() const {return payload;}
 };
 
 enum class FrameBuilderStatus {READY = 0, INVALID = -1, RETRY = -2};
@@ -40,8 +40,8 @@ class FrameBuilder : public QObject {
 
  public:
     FrameBuilder() {}
-    FrameBuilderStatus isReadyToBuild(QDataStream &ds, const qint32 size);
-    Frame build(QDataStream &ds);
+    FrameBuilderStatus IsReadyToBuild(QDataStream &ds, const qint32 size);
+    Frame Build(QDataStream &ds);
 };
 }  // namespace udp_reciever
 #endif  // UDP_RECIEVER_FRAMEBUILDER_H_

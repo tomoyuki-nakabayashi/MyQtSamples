@@ -5,12 +5,19 @@
 - [x] Create ControlData as struct
 - [x] Create instance from QByteArray
 - [ ] Have whole data size
-- [x] Verify isReadyToBuild (true case)
-- [] Verify isReadyToBuild (false case)
+
+# Sequencer
+
 - [ ] AbstractDataStreamSequencer
   - [ ] Have pending data size & QDataStream
 - [ ] Deal with another data type
 - [ ] PeriodicDataStreamSequencer
+
+# FrameBuilder
+
+- [x] Verify isReadyToBuild (true case)
+- [ ] CreateNewFrame
+- [ ] GetFrame
 - [ ] AbstractDataBuilder
 - [ ] AbstractData
 

@@ -7,27 +7,27 @@
 #include "UdpReciever.h"
 
 namespace udp_reciever {
-  bool UdpReciever::initSocket(const QHostAddress &address, quint16 port) {
-    bool portBinded = udpSocket.bind(address, port);
-    assert(portBinded);
+  bool UdpReciever::InitSocket(const QHostAddress &address, quint16 port) {
+    bool binded = udp_socket_.bind(address, port);
+    assert(binded);
 
-    connect(&udpSocket, SIGNAL(readyRead()),
-            this, SLOT(processPendingDatagrams()));
-    return portBinded;
+    connect(&udp_socket_, SIGNAL(readyRead()),
+            this, SLOT(ProcessPendingDatagrams()));
+    return binded;
   }
 
-  void UdpReciever::processPendingDatagrams() {
-    if (udpSocket.hasPendingDatagrams()) {
-      auto netDatagram = udpSocket.receiveDatagram(
-                                      udpSocket.pendingDatagramSize());
-      auto datagram = netDatagram.data();
+  void UdpReciever::ProcessPendingDatagrams() {
+    if (udp_socket_.hasPendingDatagrams()) {
+      auto net_datagram = udp_socket_.receiveDatagram(
+                                      udp_socket_.pendingDatagramSize());
+      auto datagram = net_datagram.data();
 
       QDataStream checkStream(datagram);
       QDataStream buildStream(datagram);
       qint32 size = datagram.size();
-      while (builder.isReadyToBuild(checkStream, size) == FrameBuilderStatus::READY) {
-        auto frame = builder.build(buildStream);
-        emit dataRecieved(frame);
+      while (builder_.IsReadyToBuild(checkStream, size) == FrameBuilderStatus::READY) {
+        auto frame = builder_.Build(buildStream);
+        emit DataRecieved(frame);
         size -= 12;
       }
     }

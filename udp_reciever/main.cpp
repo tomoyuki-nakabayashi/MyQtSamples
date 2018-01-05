@@ -10,8 +10,8 @@ using udp_reciever::UdpReciever;
 
 int main(int argc, char *argv[]) {
   QCoreApplication a(argc, argv);
-  udp_reciever::UdpReciever udpReciever;
-  udpReciever.initSocket(QHostAddress("0.0.0.0"), 45454);
+  udp_reciever::UdpReciever reciever;
+  reciever.InitSocket(QHostAddress("0.0.0.0"), 45454);
 
   return a.exec();
 }
