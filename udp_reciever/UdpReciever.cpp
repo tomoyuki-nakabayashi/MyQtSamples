@@ -26,8 +26,8 @@ namespace udp_reciever {
       QDataStream buildStream(datagram);
       qint32 size = datagram.size();
       while (builder.isReadyToBuild(checkStream, size) == FrameBuilderStatus::READY) {
-        auto data = builder.build(buildStream);
-        emit dataRecieved(data);
+        auto frame = builder.build(buildStream);
+        emit dataRecieved(frame);
         size -= 12;
       }
     }

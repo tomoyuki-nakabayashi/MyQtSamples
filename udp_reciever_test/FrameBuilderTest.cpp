@@ -1,3 +1,4 @@
+#include <memory>
 #include <gtest/gtest.h>
 #include "FrameBuilder.h"
 
@@ -36,10 +37,9 @@ namespace udp_packet_test {
 
     is >> header;
     is >> payloadSize;
-    auto buf = new char[payloadSize];
-    is.readRawData(buf, payloadSize);
-    EXPECT_EQ(0x01, buf[0]);
-    delete[] buf;
+    std::unique_ptr<char> buff(new char[payloadSize]);
+    is.readRawData(buff.get(), payloadSize);
+    EXPECT_EQ(0x01, buff.get()[0]);
 
     auto expect = Frame::kHeaderMagic;
     EXPECT_EQ(expect, header);

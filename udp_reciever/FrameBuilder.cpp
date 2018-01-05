@@ -1,3 +1,4 @@
+#include <memory>
 #include "FrameBuilder.h"
 
 namespace udp_reciever {
@@ -11,10 +12,9 @@ namespace udp_reciever {
 
     ds >> header;
     ds >> payloadSize;
-    auto buf = new char[payloadSize];
-    ds.readRawData(buf, payloadSize);
-    QByteArray payload(buf, payloadSize);
-    delete[] buf;
+    std::unique_ptr<char> buff(new char[payloadSize]);
+    ds.readRawData(buff.get(), payloadSize);
+    QByteArray payload(buff.get(), payloadSize);
 
     return Frame(header, payloadSize, payload);
   }
