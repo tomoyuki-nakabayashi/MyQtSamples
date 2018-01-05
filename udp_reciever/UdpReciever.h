@@ -6,6 +6,7 @@
 #ifndef UDP_RECIEVER_UDPRECIEVER_H_
 #define UDP_RECIEVER_UDPRECIEVER_H_
 
+#include <memory>
 #include <QObject>
 #include <QtNetwork>
 #include "FrameBuilder.h"
@@ -36,7 +37,7 @@ class UdpReciever : public QObject {
     void ProcessPendingDatagrams();
 
  signals:
-    void DataRecieved(const Frame &data);
+    void DataRecieved(std::shared_ptr<Frame> frame);
 
  private:
     QUdpSocket udp_socket_;

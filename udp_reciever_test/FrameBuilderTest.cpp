@@ -28,6 +28,10 @@ protected:
     QDataStream is_;
 };
 
+Frame* CreateExpectFrame(quint32 header, qint32 size, QByteArray payload) {
+  return new Frame(header, size, payload);
+}
+
 TEST_F(FrameBuilderTest, TestQByteStream) {
   os_ << Frame::kHeaderMagic << 0x4 << 0x01020304;
 
@@ -45,19 +49,20 @@ TEST_F(FrameBuilderTest, TestQByteStream) {
   EXPECT_EQ(4, payload_size);
 }
 
-TEST_F(FrameBuilderTest, CreateAndGet) {
-  builder_.CreateNewFrame();
-  builder_.Build(is_);
-  auto = builder_.GetFrame();
-}
-
 TEST_F(FrameBuilderTest, GetInstanceByQDataStream) {
   os_ << Frame::kHeaderMagic << 0x4 << 0x01020304;
-  auto data = builder_.Build(is_);
-  auto expect = Frame::kHeaderMagic;
-  EXPECT_EQ(expect, data.GetHeader());
-  EXPECT_EQ(4, data.GetPayloadSize());
-  EXPECT_EQ(4, data.GetPayload().size());
+  auto actual = builder_.Build(is_);
+  EXPECT_EQ(FrameBuilderStatus::READY, actual);
+}
+
+TEST_F(FrameBuilderTest, CreateBuildAndGet) {
+  os_ << Frame::kHeaderMagic << 0x4 << 0x01020304;
+  builder_.CreateNewFrame();
+  builder_.Build(is_);
+  auto frame = builder_.GetFrame();
+
+  auto expect = CreateExpectFrame(0x01234567, 4, QByteArray::fromHex("01020304"));
+  EXPECT_EQ(*expect, *frame);
 }
 
 TEST_F(FrameBuilderTest, IsReadyToBuild) {

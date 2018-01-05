@@ -67,9 +67,9 @@ namespace udp_reciever_test {
 
   TEST_F(UdpRecieverTest, FrameRecieved)
   {
-    Frame *p = nullptr;
+    std::shared_ptr<Frame> p = nullptr;
     QObject::connect(&udpReciever, &UdpReciever::DataRecieved,
-      [&](const Frame &data){p = new Frame(data);});
+      [&](std::shared_ptr<Frame> frame){p = frame;});
     ds << Frame::kHeaderMagic << 0x4 << 0x01020304;
     socket.writeDatagram(datagram.data(), datagram.size(),
                          QHostAddress::LocalHost, 45454);
@@ -79,15 +79,13 @@ namespace udp_reciever_test {
     auto expect = Frame::kHeaderMagic;
     EXPECT_EQ(expect, p->GetHeader());
     EXPECT_EQ(4, p->GetPayloadSize());
-
-    delete p;
   }
 
   TEST_F(UdpRecieverTest, TwoFrameRecieved)
   {
     qint32 count = 0;
     QObject::connect(&udpReciever, &UdpReciever::DataRecieved,
-      [&](const Frame &data){count++;});
+      [&](std::shared_ptr<Frame> frame){count++;});
     ds << Frame::kHeaderMagic << 0x4 << 0x01020304
        << Frame::kHeaderMagic << 0x4 << 0x01020304;
     EXPECT_EQ(24, datagram.size());

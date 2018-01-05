@@ -5,18 +5,20 @@ namespace udp_reciever {
   constexpr qint32 sizeofquint32() {return static_cast<int>(sizeof(quint32));}
   constexpr qint32 sizeofqint32() {return static_cast<int>(sizeof(qint32));}
 
-  Frame FrameBuilder::Build(QDataStream &ds)
+  FrameBuilderStatus FrameBuilder::Build(QDataStream &ds)
   {
     quint32 header;
-    qint32 payloadSize;
+    qint32 size;
 
     ds >> header;
-    ds >> payloadSize;
-    std::unique_ptr<char> buff(new char[payloadSize]);
-    ds.readRawData(buff.get(), payloadSize);
-    QByteArray payload(buff.get(), payloadSize);
+    ds >> size;
+    std::unique_ptr<char> buff(new char[size]);
+    ds.readRawData(buff.get(), size);
+    QByteArray payload(buff.get(), size);
 
-    return Frame(header, payloadSize, payload);
+    frame_ = std::shared_ptr<Frame>(new Frame(header, size, payload));
+
+    return FrameBuilderStatus::READY;
   }
 
   FrameBuilderStatus FrameBuilder::IsReadyToBuild(QDataStream &ds, const qint32 size)
@@ -40,5 +42,13 @@ namespace udp_reciever {
     delete[] buf;
 
     return FrameBuilderStatus::READY;
+  }
+
+  void FrameBuilder::CreateNewFrame() {
+    //frame_ = std::shared_ptr<Frame>(new Frame());
+  }
+
+  std::shared_ptr<Frame> FrameBuilder::GetFrame() {
+    return frame_;
   }
 }
