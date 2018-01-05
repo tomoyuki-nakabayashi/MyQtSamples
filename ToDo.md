@@ -5,6 +5,7 @@
 - [x] Create ControlData as struct
 - [x] Create instance from QByteArray
 - [ ] Have whole data size
+- [ ] Template packet
 
 # Sequencer
 
@@ -16,8 +17,8 @@
 # FrameBuilder
 
 - [x] Verify isReadyToBuild (true case)
-- [ ] CreateNewFrame
-- [ ] GetFrame
+- [x] GetFrame
+- [ ] Refactoring FrameBuilder::Build()
 - [ ] AbstractDataBuilder
 - [ ] AbstractData
 

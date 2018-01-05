@@ -11,10 +11,10 @@
 #include <QDataStream>
 
 namespace udp_reciever {
-struct Frame {
-    quint32 header_;
-    qint32 payload_size_;
-    QByteArray payload_;
+class Frame {
+    const quint32 header_;
+    const qint32 payload_size_;
+    const QByteArray payload_;
 
  public:
     static const quint32 kHeaderMagic = 0x01234567;
@@ -35,6 +35,7 @@ struct Frame {
     quint32 GetHeader() const {return header_;}
     qint32 GetPayloadSize() const {return payload_size_;}
     QByteArray GetPayload() const {return payload_;}
+    qint32 GetFrameSize() const {return sizeof(header_) + sizeof(payload_size_) + payload_size_;}
 };
 
 enum class FrameBuilderStatus {READY = 0, INVALID = -1, RETRY = -2};
@@ -44,9 +45,7 @@ class FrameBuilder : public QObject {
 
  public:
     FrameBuilder() {}
-    FrameBuilderStatus IsReadyToBuild(QDataStream &ds, const qint32 size);
-    FrameBuilderStatus Build(QDataStream &ds);
-    void CreateNewFrame();
+    FrameBuilderStatus Build(QDataStream &ds, qint32 remaining_data);
     std::shared_ptr<Frame> GetFrame();
   
  private:

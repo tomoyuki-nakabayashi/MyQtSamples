@@ -18,18 +18,17 @@ namespace udp_reciever {
 
   void UdpReciever::ProcessPendingDatagrams() {
     if (udp_socket_.hasPendingDatagrams()) {
-      auto net_datagram = udp_socket_.receiveDatagram(
+      auto datagram = udp_socket_.receiveDatagram(
                                       udp_socket_.pendingDatagramSize());
-      auto datagram = net_datagram.data();
+      auto bytearray = datagram.data();
 
-      QDataStream checkStream(datagram);
-      QDataStream buildStream(datagram);
-      qint32 size = datagram.size();
-      while (builder_.IsReadyToBuild(checkStream, size) == FrameBuilderStatus::READY) {
-        builder_.Build(buildStream);
+      QDataStream checkStream(bytearray);
+      QDataStream buildStream(bytearray);
+      qint32 size = bytearray.size();
+      while (builder_.Build(checkStream, size) == FrameBuilderStatus::READY) {
         auto frame = builder_.GetFrame();
+        size -= frame->GetFrameSize();
         emit DataRecieved(frame);
-        size -= 12;
       }
     }
   }

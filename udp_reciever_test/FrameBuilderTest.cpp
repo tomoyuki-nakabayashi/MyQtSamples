@@ -51,57 +51,57 @@ TEST_F(FrameBuilderTest, TestQByteStream) {
 
 TEST_F(FrameBuilderTest, GetInstanceByQDataStream) {
   os_ << Frame::kHeaderMagic << 0x4 << 0x01020304;
-  auto actual = builder_.Build(is_);
+  auto actual = builder_.Build(is_, 12);
   EXPECT_EQ(FrameBuilderStatus::READY, actual);
 }
 
 TEST_F(FrameBuilderTest, CreateBuildAndGet) {
   os_ << Frame::kHeaderMagic << 0x4 << 0x01020304;
-  builder_.CreateNewFrame();
-  builder_.Build(is_);
+  builder_.Build(is_, 12);
   auto frame = builder_.GetFrame();
 
   auto expect = CreateExpectFrame(0x01234567, 4, QByteArray::fromHex("01020304"));
   EXPECT_EQ(*expect, *frame);
+  EXPECT_EQ(12, frame->GetFrameSize());
 }
 
 TEST_F(FrameBuilderTest, IsReadyToBuild) {
   os_ << Frame::kHeaderMagic << (qint32)0 << (quint32)0;
-  auto result = builder_.IsReadyToBuild(is_, buffer_.size());
+  auto result = builder_.Build(is_, buffer_.size());
   EXPECT_EQ(FrameBuilderStatus::READY, result);
 }
 
 TEST_F(FrameBuilderTest, HeaderIsStillImcomplete) {
   os_ << (quint16)0x0123; // imcomplete header
-  auto result = builder_.IsReadyToBuild(is_, buffer_.size());
+  auto result = builder_.Build(is_, buffer_.size());
   EXPECT_EQ(FrameBuilderStatus::RETRY, result);
 }
 
 TEST_F(FrameBuilderTest, PayloadSizeIsStillImcomplete) {
   os_ << Frame::kHeaderMagic << (qint16)0; // imcomplete payloadSize
-  auto result = builder_.IsReadyToBuild(is_, buffer_.size());
+  auto result = builder_.Build(is_, buffer_.size());
   EXPECT_EQ(FrameBuilderStatus::RETRY, result);
 }
 
 TEST_F(FrameBuilderTest, PayloadIsStillImcomplete) {
   os_ << Frame::kHeaderMagic << (qint32)4 << (quint16)0x0102; // imcomplete payload
-  auto result = builder_.IsReadyToBuild(is_, buffer_.size());
+  auto result = builder_.Build(is_, buffer_.size());
   EXPECT_EQ(FrameBuilderStatus::RETRY, result);
 }
 
 TEST_F(FrameBuilderTest, InvalidHeader) {
   os_ << (quint32)0x76543210 << (qint32)4 << (quint32)0x01020304;
-  auto result = builder_.IsReadyToBuild(is_, buffer_.size());
+  auto result = builder_.Build(is_, buffer_.size());
   EXPECT_EQ(FrameBuilderStatus::INVALID, result);
 }
 
 TEST_F(FrameBuilderTest, CanCreateTwoFrame) {
   os_ << Frame::kHeaderMagic << (qint32)4 << (quint32)0x01020304
       << Frame::kHeaderMagic << (qint32)4 << (quint32)0x01020304;
-  auto result = builder_.IsReadyToBuild(is_, buffer_.size());
+  auto result = builder_.Build(is_, buffer_.size());
   EXPECT_EQ(FrameBuilderStatus::READY, result);
 
-  result = builder_.IsReadyToBuild(is_, buffer_.size()-12);
+  result = builder_.Build(is_, buffer_.size()-12);
   EXPECT_EQ(FrameBuilderStatus::READY, result);
 }
 }  // udp_packet_test
