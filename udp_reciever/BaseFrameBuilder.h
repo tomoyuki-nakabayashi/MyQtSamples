@@ -12,9 +12,11 @@
 #include "Frame.h"
 
 namespace udp_reciever {
-class BaseFrameBuilder {
+class BaseFrameBuilder: public QObject {
+  Q_OBJECT
  public:
-    BaseFrameBuilder(): status_{FrameBuilderStatus::NO_ERROR} {}
+    explicit BaseFrameBuilder(QObject *parent = Q_NULLPTR)
+      : QObject(parent), status_{FrameBuilderStatus::NO_ERROR} {}
     virtual ~BaseFrameBuilder() {}
     FrameBuilderStatus Build(QDataStream &ds, qint32 remaining_data);
     virtual std::shared_ptr<Frame> GetFrame() = 0;

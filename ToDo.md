@@ -6,7 +6,7 @@
 - [x] Create instance from QByteArray
 - [x] Have whole data size
 - [ ] Template packet
-- [ ] Separate file
+- [x] Separate file
 
 # Sequencer
 
@@ -22,9 +22,8 @@
 - [x] Refactoring FrameBuilder::Build()
 - [x] Builder has builder status
 - [ ] Refactoring FrameBuilder::BuildHeader()
-- [ ] BaseFrameBuilder
+- [x] BaseFrameBuilder
 - [x] SubFrameBuilder
-- [ ] AbstractData
 
 # UDP Reciever
 
@@ -33,6 +32,5 @@
 - [x] Retreave signal argument
 - [ ] Update datagram
 - [x] Create two packets from QByteArray
-- [ ] Update QByteArray
-- [ ] Recieve datagram multiple times
+- [x] Recieve datagram multiple times
 - [ ] Switch builder

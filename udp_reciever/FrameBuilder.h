@@ -14,19 +14,21 @@
 
 namespace udp_reciever {
 class FrameBuilder : public BaseFrameBuilder {
+  Q_OBJECT
  public:
-    FrameBuilder(): BaseFrameBuilder(), frame_{nullptr} {}
-    virtual ~FrameBuilder() {}
-    virtual std::shared_ptr<Frame> GetFrame() override;
+    explicit FrameBuilder(QObject *parent = Q_NULLPTR)
+      : BaseFrameBuilder(parent), frame_{nullptr} {}
+    ~FrameBuilder() {}
+    std::shared_ptr<Frame> GetFrame() override;
   
  private:
     std::shared_ptr<Frame> frame_;
   
  private:
-    virtual void CreateNewFrame() override;
-    virtual void BuildHeader(QDataStream &ds, qint32 &remaining_data) override;
-    virtual void BuildPayload(QDataStream &ds, qint32 &remaining_data) override;
-    virtual void BuildFooter(QDataStream &ds, qint32 &remaining_data) override;
+    void CreateNewFrame() override;
+    void BuildHeader(QDataStream &ds, qint32 &remaining_data) override;
+    void BuildPayload(QDataStream &ds, qint32 &remaining_data) override;
+    void BuildFooter(QDataStream &ds, qint32 &remaining_data) override;
 };
 }  // namespace udp_reciever
 #endif  // UDP_RECIEVER_FRAMEBUILDER_H_

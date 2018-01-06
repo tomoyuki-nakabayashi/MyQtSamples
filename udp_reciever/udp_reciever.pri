@@ -19,4 +19,5 @@ HEADERS += \
     $$HEAD_DIR/UdpReciever.h \
     $$SRC_DIR/BaseFrameBuilder.h \
     $$HEAD_DIR/FrameBuilder.h \
-    $$HEAD_DIR/SubFrameBuilder.h
+    $$HEAD_DIR/SubFrameBuilder.h \
+    $$HEAD_DIR/Frame.h

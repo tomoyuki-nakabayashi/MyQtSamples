@@ -48,20 +48,6 @@ void SubFrameBuilder::BuildFooter(QDataStream &ds, qint32 &remaining_data) {
   return;
 }
 
-FrameBuilderStatus SubFrameBuilder::Build(QDataStream &ds, qint32 remaining_data) {
-  status_ = FrameBuilderStatus::NO_ERROR;
-
-  CreateNewFrame();
-  BuildHeader(ds, remaining_data);
-  BuildPayload(ds, remaining_data);
-  BuildFooter(ds, remaining_data);
-
-  if (status_ == FrameBuilderStatus::NO_ERROR)
-    status_ = FrameBuilderStatus::READY;
-
-  return status_;
-}
-
 std::shared_ptr<Frame> SubFrameBuilder::GetFrame() {
   return frame_;
 }
