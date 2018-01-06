@@ -2,6 +2,10 @@
 #include "FrameBuilder.h"
 
 namespace udp_reciever {
+  void FrameBuilder::CreateNewFrame() {
+    frame_ = std::shared_ptr<Frame>(new Frame());
+  }
+
   void FrameBuilder::BuildHeader(QDataStream &ds, qint32 &remaining_data) {
     if (status_ != FrameBuilderStatus::NO_ERROR) return;
     if(remaining_data < sizeofquint32()) {
@@ -57,10 +61,6 @@ namespace udp_reciever {
       status_ = FrameBuilderStatus::READY;
 
     return status_;
-  }
-
-  void FrameBuilder::CreateNewFrame() {
-    frame_ = std::shared_ptr<Frame>(new Frame());
   }
 
   std::shared_ptr<Frame> FrameBuilder::GetFrame() {
