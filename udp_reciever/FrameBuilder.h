@@ -9,27 +9,24 @@
 #include <memory>
 #include <QObject>
 #include <QDataStream>
+#include "BaseFrameBuilder.h"
 #include "Frame.h"
 
 namespace udp_reciever {
-class FrameBuilder : public QObject {
-  Q_OBJECT
-
+class FrameBuilder : public BaseFrameBuilder {
  public:
-    FrameBuilder(): status_{FrameBuilderStatus::NO_ERROR}, frame_{nullptr} {}
-    FrameBuilderStatus Build(QDataStream &ds, qint32 remaining_data);
-    std::shared_ptr<Frame> GetFrame();
+    FrameBuilder(): BaseFrameBuilder(), frame_{nullptr} {}
+    virtual ~FrameBuilder() {}
+    virtual std::shared_ptr<Frame> GetFrame() override;
   
  private:
-    FrameBuilderStatus status_;
     std::shared_ptr<Frame> frame_;
   
  private:
-    void CreateNewFrame();
-    void BuildHeader(QDataStream &ds, qint32 &remaining_data);
-    void BuildPayload(QDataStream &ds, qint32 &remaining_data);
-    void BuildFooter(QDataStream &ds, qint32 &remaining_data);
-    FrameBuilderStatus GetBuilderStatus() const;
+    virtual void CreateNewFrame() override;
+    virtual void BuildHeader(QDataStream &ds, qint32 &remaining_data) override;
+    virtual void BuildPayload(QDataStream &ds, qint32 &remaining_data) override;
+    virtual void BuildFooter(QDataStream &ds, qint32 &remaining_data) override;
 };
 }  // namespace udp_reciever
 #endif  // UDP_RECIEVER_FRAMEBUILDER_H_

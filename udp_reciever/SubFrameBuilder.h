@@ -30,7 +30,6 @@ class SubFrameBuilder : public QObject
     void BuildHeader(QDataStream &ds, qint32 &remaining_data);
     void BuildPayload(QDataStream &ds, qint32 &remaining_data);
     void BuildFooter(QDataStream &ds, qint32 &remaining_data);
-    FrameBuilderStatus GetBuilderStatus() const;
 };
 }  // udp_reciever
 #endif  // UDP_RECIEVER_SUBFRAMEBUILDER_H_
