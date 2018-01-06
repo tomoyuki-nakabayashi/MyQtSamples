@@ -2,31 +2,65 @@
 #include "FrameBuilder.h"
 
 namespace udp_reciever {
-  constexpr qint32 sizeofquint32() {return static_cast<int>(sizeof(quint32));}
-  constexpr qint32 sizeofqint32() {return static_cast<int>(sizeof(qint32));}
-
-  FrameBuilderStatus FrameBuilder::Build(QDataStream &ds, qint32 remaining_data)
-  {
-    if(remaining_data < sizeofquint32()) return FrameBuilderStatus::RETRY;
+  void FrameBuilder::BuildHeader(QDataStream &ds, qint32 &remaining_data) {
+    if (status_ != FrameBuilderStatus::NO_ERROR) return;
+    if(remaining_data < sizeofquint32()) {
+      status_ = FrameBuilderStatus::RETRY;
+      return;
+    }
     remaining_data -= sizeofquint32();
     quint32 header;
     ds >> header;
-    if(header != Frame::kHeaderMagic) return FrameBuilderStatus::INVALID;
+    if(header != Frame::kHeaderMagic) {
+      status_ = FrameBuilderStatus::INVALID;
+      return;
+    }
+    frame_->SetHeader(header);
 
-    if(remaining_data < sizeofqint32()) return FrameBuilderStatus::RETRY;
+    if(remaining_data < sizeofqint32()) {
+      status_ = FrameBuilderStatus::RETRY;
+      return;
+    }
     remaining_data -= sizeofqint32();
     qint32 size;
     ds >> size;
+    frame_->SetPayloadSize(size);
+  }
 
-    if(remaining_data < size) return FrameBuilderStatus::RETRY;
+  void FrameBuilder::BuildPayload(QDataStream &ds, qint32 &remaining_data) {
+    if (status_ != FrameBuilderStatus::NO_ERROR) return;
+    auto size = frame_->GetPayloadSize();
+    if(remaining_data < size) {
+      status_ = FrameBuilderStatus::RETRY;
+      return;
+    }
     std::unique_ptr<char> buff(new char[size]);
     ds.readRawData(buff.get(), size);
     QByteArray payload(buff.get(), size);
 
-    frame_ = std::shared_ptr<Frame>(new Frame(header, size, payload));
-    remaining_data -= sizeofquint32() + sizeofqint32() + size;
+    frame_->SetPayload(payload);
+  }
 
-    return FrameBuilderStatus::READY;
+  void FrameBuilder::BuildFooter(QDataStream &ds, qint32 &remaining_data) {
+    return;
+  }
+
+  FrameBuilderStatus FrameBuilder::Build(QDataStream &ds, qint32 remaining_data) {
+    status_ = FrameBuilderStatus::NO_ERROR;
+
+    CreateNewFrame();
+    BuildHeader(ds, remaining_data);
+    BuildPayload(ds, remaining_data);
+    BuildFooter(ds, remaining_data);
+
+    if (status_ == FrameBuilderStatus::NO_ERROR)
+      status_ = FrameBuilderStatus::READY;
+
+    return status_;
+  }
+
+  void FrameBuilder::CreateNewFrame() {
+    frame_ = std::shared_ptr<Frame>(new Frame());
   }
 
   std::shared_ptr<Frame> FrameBuilder::GetFrame() {
