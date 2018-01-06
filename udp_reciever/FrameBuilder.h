@@ -12,10 +12,6 @@
 #include "Frame.h"
 
 namespace udp_reciever {
-using udp_reciever::Frame;
-
-enum class FrameBuilderStatus {NO_ERROR = 0, READY = 1, INVALID = -1, RETRY = -2};
-
 class FrameBuilder : public QObject {
   Q_OBJECT
 

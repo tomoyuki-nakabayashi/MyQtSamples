@@ -23,6 +23,7 @@
 - [x] Builder has builder status
 - [ ] Refactoring FrameBuilder::BuildHeader()
 - [ ] BaseFrameBuilder
+- [x] SubFrameBuilder
 - [ ] AbstractData
 
 # UDP Reciever
