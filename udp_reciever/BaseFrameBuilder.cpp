@@ -7,16 +7,17 @@
 
 namespace udp_reciever {
 FrameBuilderStatus BaseFrameBuilder::Build(QDataStream &ds, qint32 remaining_data) {
-  status_ = FrameBuilderStatus::NO_ERROR;
-
   CreateNewFrame();
-  BuildHeader(ds, remaining_data);
-  BuildPayload(ds, remaining_data);
+  
+  auto status = BuildHeader(ds, remaining_data);
+  if (status != FrameBuilderStatus::NO_ERROR) return status;
+
+  status = BuildPayload(ds, remaining_data);
+  if (status != FrameBuilderStatus::NO_ERROR) return status;
+
   BuildFooter(ds, remaining_data);
+  if (status != FrameBuilderStatus::NO_ERROR) return status;
 
-  if (status_ == FrameBuilderStatus::NO_ERROR)
-    status_ = FrameBuilderStatus::READY;
-
-  return status_;
+  return FrameBuilderStatus::READY;
 }
 }  // namespace udp_reciever

@@ -10,7 +10,6 @@
 #include <QByteArray>
 
 namespace udp_reciever {
-enum class FrameBuilderStatus {NO_ERROR = 0, READY = 1, INVALID = -1, RETRY = -2};
 constexpr qint32 sizeofquint32() {return static_cast<int>(sizeof(quint32));}
 constexpr qint32 sizeofqint32() {return static_cast<int>(sizeof(qint32));}
 

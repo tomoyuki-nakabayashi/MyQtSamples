@@ -49,6 +49,17 @@ TEST_F(FrameBuilderTest, TestQByteStream) {
   EXPECT_EQ(4, payload_size);
 }
 
+TEST_F(FrameBuilderTest, TestQByteStreamDoesNotHaveEnoughData) {
+  os_ << 0x0123;
+
+  quint32 header;
+  is_ >> header;
+  //is_ >> header >> test; // This makes stream error
+
+  EXPECT_EQ(QDataStream::Ok, is_.status());
+  EXPECT_EQ(0x0123, header);
+}
+
 TEST_F(FrameBuilderTest, GetInstanceByQDataStream) {
   os_ << Frame::kHeaderMagic << 0x4 << 0x01020304;
   auto actual = builder_.Build(is_, 12);
