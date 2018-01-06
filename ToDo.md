@@ -1,4 +1,4 @@
-# UDP Packet
+# UDP Frame
 
 - [x] Create UDP Packet
 - [x] Change ControlData to ControlDataBuilder
@@ -6,6 +6,7 @@
 - [x] Create instance from QByteArray
 - [x] Have whole data size
 - [ ] Template packet
+- [ ] Separate file
 
 # Sequencer
 

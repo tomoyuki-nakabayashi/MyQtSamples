@@ -12,3 +12,7 @@ SOURCES +=     main.cpp \
    UdpRecieverTest.cpp  \
    FrameBuilderTest.cpp \
    SubFrameBuilderTest.cpp
+
+DESTDIR = release
+OBJECTS_DIR = release/.obj
+MOC_DIR = release/.moc
