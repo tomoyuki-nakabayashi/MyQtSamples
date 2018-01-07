@@ -7,6 +7,7 @@
 #define UDP_RECIEVER_FRAME_H_
 
 #include <QByteArray>
+#include <QDataStream>
 #include <QMetaType>
 #include <QSharedPointer>
 
@@ -25,11 +26,11 @@ class Frame {
  public:
     Frame(): header_(), payload_size_(), payload_() {}
     Frame(quint32 h, qint32 s, QByteArray p)
-      : header_{h}, payload_size_{s}, payload_{p} {}
+      : header_{h}, payload_size_{s}, payload_(p) {}
     Frame(const Frame &other)
       : header_{other.header_},
         payload_size_{other.payload_size_},
-        payload_{other.payload_} {}
+        payload_(other.payload_) {}
     bool operator==(const Frame &rhs) const { 
       return (header_ == rhs.header_) && (payload_size_ == rhs.payload_size_) && (payload_ == rhs.payload_); 
     }
@@ -40,9 +41,16 @@ class Frame {
     QByteArray GetPayload() const {return payload_;}
     void SetHeader(quint32 h) {header_ = h;}
     void SetPayloadSize(quint32 s) {payload_size_ = s;}
-    void SetPayload(QByteArray p) {payload_ = p;}
+    void SetPayload(const QByteArray& p) {payload_ = p;}
     qint32 GetFrameSize() const {return sizeof(header_) + sizeof(payload_size_) + payload_size_;}
 };
+
+inline QDataStream& operator <<(QDataStream& os, const Frame& f) {
+  os << f.GetHeader() << f.GetPayloadSize();
+  for (auto b : f.GetPayload())
+    os << (quint8)b;
+  return os;
+}
 }  // namespace udp_reciever
 
 Q_DECLARE_METATYPE(QSharedPointer<udp_reciever::Frame>)

@@ -8,7 +8,8 @@
 - [ ] Template packet
 - [ ] Define as a struct
 - [x] Separate file
-- [ ] Define operator >> and <<
+- [x] Overload operator <<
+- [ ] Overload operator >>
 
 # Sequencer
 
@@ -38,4 +39,10 @@
 - [x] Create two packets from QByteArray
 - [x] Recieve datagram multiple times
 - [x] Switch builder
-- [x] Recieve SubFrame after a Frame.
+- [x] Recieve SubFrame after a Frame
+- [ ] Recieve SubFrames after a Frame
+- [ ] Recieve Frame after successive SubFrames
+
+# TEST
+
+- [ ] Refactoring Frame usage
