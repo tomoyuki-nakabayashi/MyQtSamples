@@ -28,10 +28,6 @@ protected:
     QDataStream is_;
 };
 
-Frame CreateExpectFrame(quint32 header, qint32 size, QByteArray payload) {
-  return Frame(header, size, payload);
-}
-
 TEST_F(SubFrameBuilderTest, GetInstanceByQDataStream) {
   os_ << 1 << 0x4 << 0x01020304;
   EXPECT_EQ(12, buffer_.size());
@@ -40,12 +36,12 @@ TEST_F(SubFrameBuilderTest, GetInstanceByQDataStream) {
 }
 
 TEST_F(SubFrameBuilderTest, CreateBuildAndGet) {
-  auto expect = CreateExpectFrame(1, 2, QByteArray::fromHex("0102"));
+  Frame expect(1, 2, QByteArray::fromHex("0102"));
   os_ << expect;
   builder_.Build(is_, buffer_.size());
-  auto frame = builder_.GetFrame();
+  auto actual = builder_.GetFrame();
 
-  EXPECT_EQ(10, frame->GetFrameSize());
-  EXPECT_EQ(expect, *frame);
+  EXPECT_EQ(expect.GetFrameSize(), actual->GetFrameSize());
+  EXPECT_EQ(expect, *actual);
 }
 }  // sub_data_builder_test

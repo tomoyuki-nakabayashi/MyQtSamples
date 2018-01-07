@@ -28,58 +28,38 @@ protected:
     QDataStream is_;
 };
 
-Frame* CreateExpectFrame(quint32 header, qint32 size, QByteArray payload) {
-  return new Frame(header, size, payload);
-}
-
 TEST_F(FrameBuilderTest, TestQByteStream) {
-  os_ << Frame::kHeaderMagic << 0x4 << 0x01020304;
+  Frame expect(Frame::kHeaderMagic, 4, QByteArray::fromHex("01020304"));
+  os_ << expect;
 
-  quint32 header;
-  qint32 payload_size;
+  quint32 actual_header;
+  is_ >> actual_header;
+  qint32 actual_payload_size;
+  is_ >> actual_payload_size;
+  
+  QScopedPointer<char> buff(new char[actual_payload_size]);
+  is_.readRawData(buff.data(), actual_payload_size);
 
-  is_ >> header;
-  is_ >> payload_size;
-  QScopedPointer<char> buff(new char[payload_size]);
-  is_.readRawData(buff.data(), payload_size);
-  EXPECT_EQ(0x01, buff.data()[0]);
-
-  auto expect = Frame::kHeaderMagic;
-  EXPECT_EQ(expect, header);
-  EXPECT_EQ(4, payload_size);
+  EXPECT_EQ(expect.GetHeader(), actual_header);
+  EXPECT_EQ(expect.GetPayloadSize(), actual_payload_size);
+  EXPECT_STREQ(expect.GetPayload().data(), buff.data());
 }
 
-TEST_F(FrameBuilderTest, TestQByteStreamDoesNotHaveEnoughData) {
-  os_ << 0x0123;
-
-  quint32 header;
-  is_ >> header;
-  //is_ >> header >> test; // This makes stream error
-
-  EXPECT_EQ(QDataStream::Ok, is_.status());
-  EXPECT_EQ(0x0123, header);
-}
-
-TEST_F(FrameBuilderTest, GetInstanceByQDataStream) {
-  os_ << Frame::kHeaderMagic << 0x4 << 0x01020304;
-  auto actual = builder_.Build(is_, 12);
+TEST_F(FrameBuilderTest, FrameIsReady) {
+  Frame expect(Frame::kHeaderMagic, 4, QByteArray::fromHex("01020304"));
+  os_ << expect;
+  auto actual = builder_.Build(is_, buffer_.size());
   EXPECT_EQ(FrameBuilderStatus::READY, actual);
 }
 
 TEST_F(FrameBuilderTest, CreateBuildAndGet) {
-  os_ << Frame::kHeaderMagic << 0x4 << 0x01020304;
-  builder_.Build(is_, 12);
-  auto frame = builder_.GetFrame();
+  Frame expect(Frame::kHeaderMagic, 4, QByteArray::fromHex("01020304"));
+  os_ << expect;
+  builder_.Build(is_, buffer_.size());
+  auto actual = builder_.GetFrame();
 
-  auto expect = CreateExpectFrame(0x01234567, 4, QByteArray::fromHex("01020304"));
-  EXPECT_EQ(*expect, *frame);
-  EXPECT_EQ(12, frame->GetFrameSize());
-}
-
-TEST_F(FrameBuilderTest, IsReadyToBuild) {
-  os_ << Frame::kHeaderMagic << (qint32)0 << (quint32)0;
-  auto result = builder_.Build(is_, buffer_.size());
-  EXPECT_EQ(FrameBuilderStatus::READY, result);
+  EXPECT_EQ(expect, *actual);
+  EXPECT_EQ(expect.GetFrameSize(), actual->GetFrameSize());
 }
 
 TEST_F(FrameBuilderTest, HeaderIsStillImcomplete) {
@@ -107,12 +87,17 @@ TEST_F(FrameBuilderTest, InvalidHeader) {
 }
 
 TEST_F(FrameBuilderTest, CanCreateTwoFrame) {
-  os_ << Frame::kHeaderMagic << (qint32)4 << (quint32)0x01020304
-      << Frame::kHeaderMagic << (qint32)4 << (quint32)0x01020304;
-  auto result = builder_.Build(is_, buffer_.size());
-  EXPECT_EQ(FrameBuilderStatus::READY, result);
+  Frame expect(Frame::kHeaderMagic, 4, QByteArray::fromHex("01020304"));
+  os_ << expect << expect;
 
-  result = builder_.Build(is_, buffer_.size()-12);
-  EXPECT_EQ(FrameBuilderStatus::READY, result);
+  auto remaining_data = buffer_.size();
+  EXPECT_EQ(FrameBuilderStatus::READY, builder_.Build(is_, remaining_data));
+  auto actual = builder_.GetFrame();
+  EXPECT_EQ(expect, *actual);
+
+  remaining_data -= actual->GetFrameSize();
+  EXPECT_EQ(FrameBuilderStatus::READY, builder_.Build(is_, remaining_data));
+  actual = builder_.GetFrame();
+  EXPECT_EQ(expect, *actual);
 }
 }  // udp_packet_test
