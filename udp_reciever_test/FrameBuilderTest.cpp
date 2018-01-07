@@ -1,4 +1,3 @@
-#include <memory>
 #include <gtest/gtest.h>
 #include "FrameBuilder.h"
 
@@ -16,6 +15,7 @@ protected:
 
   virtual void SetUp()
   {
+    qRegisterMetaType<QSharedPointer<Frame>>();
   }
 
   virtual void TearDown()
@@ -40,9 +40,9 @@ TEST_F(FrameBuilderTest, TestQByteStream) {
 
   is_ >> header;
   is_ >> payload_size;
-  std::unique_ptr<char> buff(new char[payload_size]);
-  is_.readRawData(buff.get(), payload_size);
-  EXPECT_EQ(0x01, buff.get()[0]);
+  QScopedPointer<char> buff(new char[payload_size]);
+  is_.readRawData(buff.data(), payload_size);
+  EXPECT_EQ(0x01, buff.data()[0]);
 
   auto expect = Frame::kHeaderMagic;
   EXPECT_EQ(expect, header);

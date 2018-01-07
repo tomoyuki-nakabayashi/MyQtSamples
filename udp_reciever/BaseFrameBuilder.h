@@ -6,9 +6,9 @@
 #ifndef UDP_RECIEVER_BASEFRAMEBUILDER_H_
 #define UDP_RECIEVER_BASEFRAMEBUILDER_H_
 
-#include <memory>
 #include <QObject>
 #include <QDataStream>
+#include <QSharedPointer>
 #include "Frame.h"
 
 namespace udp_reciever {
@@ -20,7 +20,7 @@ class BaseFrameBuilder: public QObject {
     explicit BaseFrameBuilder(QObject *parent = Q_NULLPTR): QObject(parent) {}
     virtual ~BaseFrameBuilder() {}
     FrameBuilderStatus Build(QDataStream &ds, qint32 remaining_data);
-    virtual std::shared_ptr<Frame> GetFrame() = 0;
+    virtual QSharedPointer<Frame> GetFrame() = 0;
   
  private:
     virtual void CreateNewFrame() = 0;

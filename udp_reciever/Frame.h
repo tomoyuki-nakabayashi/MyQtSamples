@@ -6,8 +6,9 @@
 #ifndef UDP_RECIEVER_FRAME_H_
 #define UDP_RECIEVER_FRAME_H_
 
-#include <memory>
 #include <QByteArray>
+#include <QMetaType>
+#include <QSharedPointer>
 
 namespace udp_reciever {
 constexpr qint32 sizeofquint32() {return static_cast<int>(sizeof(quint32));}
@@ -44,4 +45,5 @@ class Frame {
 };
 }  // namespace udp_reciever
 
+Q_DECLARE_METATYPE(QSharedPointer<udp_reciever::Frame>)
 #endif  // UDP_RECIEVER_FRAME_H_

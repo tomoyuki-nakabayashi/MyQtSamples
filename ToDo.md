@@ -6,6 +6,7 @@
 - [x] Create instance from QByteArray
 - [x] Have whole data size
 - [ ] Template packet
+- [ ] Define as a struct
 - [x] Separate file
 
 # Sequencer
@@ -17,6 +18,8 @@
 
 # FrameBuilder
 
+- [ ] Test BaseFrameBuilder interface
+- [x] Use QSharedPointer
 - [x] Verify isReadyToBuild (true case)
 - [x] GetFrame
 - [x] Refactoring FrameBuilder::Build()

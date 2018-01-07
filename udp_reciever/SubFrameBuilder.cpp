@@ -2,7 +2,7 @@
 
 namespace udp_reciever {
 void SubFrameBuilder::CreateNewFrame() {
-  frame_ = std::shared_ptr<Frame>(new Frame());
+  frame_ = QSharedPointer<Frame>(new Frame());
 }
 
 FrameBuilderStatus SubFrameBuilder::BuildHeader(QDataStream &ds, qint32 &remaining_data) {
@@ -25,9 +25,9 @@ FrameBuilderStatus SubFrameBuilder::BuildHeader(QDataStream &ds, qint32 &remaini
 FrameBuilderStatus SubFrameBuilder::BuildPayload(QDataStream &ds, qint32 &remaining_data) {
   auto size = frame_->GetPayloadSize();
   if(remaining_data < size) return FrameBuilderStatus::RETRY;
-  std::unique_ptr<char> buff(new char[size]);
-  ds.readRawData(buff.get(), size);
-  QByteArray payload(buff.get(), size);
+  QScopedPointer<char> buff(new char[size]);
+  ds.readRawData(buff.data(), size);
+  QByteArray payload(buff.data(), size);
 
   frame_->SetPayload(payload);
 
@@ -38,7 +38,7 @@ FrameBuilderStatus SubFrameBuilder::BuildFooter(QDataStream &ds, qint32 &remaini
   return FrameBuilderStatus::NO_ERROR;
 }
 
-std::shared_ptr<Frame> SubFrameBuilder::GetFrame() {
+QSharedPointer<Frame> SubFrameBuilder::GetFrame() {
   return frame_;
 }
 }  // namespace udp_reciever

@@ -15,6 +15,7 @@ protected:
 
   virtual void SetUp()
   {
+    qRegisterMetaType<QSharedPointer<Frame>>();
   }
 
   virtual void TearDown()
@@ -29,11 +30,6 @@ protected:
 
 Frame* CreateExpectFrame(quint32 header, qint32 size, QByteArray payload) {
   return new Frame(header, size, payload);
-}
-
-TEST_F(SubFrameBuilderTest, FirstTest)
-{
-  EXPECT_TRUE(true);
 }
 
 TEST_F(SubFrameBuilderTest, GetInstanceByQDataStream) {

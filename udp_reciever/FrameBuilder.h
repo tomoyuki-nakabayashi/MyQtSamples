@@ -6,9 +6,9 @@
 #ifndef UDP_RECIEVER_FRAMEBUILDER_H_
 #define UDP_RECIEVER_FRAMEBUILDER_H_
 
-#include <memory>
 #include <QObject>
 #include <QDataStream>
+#include <QSharedPointer>
 #include "BaseFrameBuilder.h"
 #include "Frame.h"
 
@@ -17,12 +17,12 @@ class FrameBuilder : public BaseFrameBuilder {
   Q_OBJECT
  public:
     explicit FrameBuilder(QObject *parent = Q_NULLPTR)
-      : BaseFrameBuilder(parent), frame_{nullptr} {}
+      : BaseFrameBuilder(parent), frame_{Q_NULLPTR} {}
     ~FrameBuilder() {}
-    std::shared_ptr<Frame> GetFrame() override;
+    QSharedPointer<Frame> GetFrame() override;
   
  private:
-    std::shared_ptr<Frame> frame_;
+    QSharedPointer<Frame> frame_;
   
  private:
     void CreateNewFrame() override;
