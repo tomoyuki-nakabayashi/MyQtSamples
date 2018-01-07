@@ -45,4 +45,4 @@
 
 # TEST
 
-- [ ] Refactoring Frame usage
+- [x] Refactoring Frame usage

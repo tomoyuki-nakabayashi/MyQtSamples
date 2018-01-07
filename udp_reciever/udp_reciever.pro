@@ -4,5 +4,5 @@ TEMPLATE = app
 SOURCES += main.cpp
 
 DESTDIR = release
-OBJECTS_DIR = release/.obj
-MOC_DIR = release/.moc
+OBJECTS_DIR = ../../tmp/.obj
+MOC_DIR = ../../tmp/.moc
