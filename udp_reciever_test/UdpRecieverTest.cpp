@@ -3,10 +3,9 @@
 #include <QtNetwork>
 #include <QTest>
 #include <QSignalSpy>
+#include <QVector>
 #include "UdpReciever.h"
 #include "FrameBuilder.h"
-
-udp_reciever::TestClass* udp_reciever::TestClass::self;
 
 namespace udp_reciever_test {
   using udp_reciever::UdpReciever;
@@ -22,13 +21,13 @@ namespace udp_reciever_test {
     {
     }
     protected:
-      UdpReciever udpReciever;
+      UdpReciever udp_reciever_;
   };
 
   TEST_F(UdpRecieverInitTest, InitScoket)
   {
-    EXPECT_TRUE(udpReciever.InitSocket(QHostAddress::LocalHost, 45454));
-    EXPECT_DEATH(udpReciever.InitSocket(QHostAddress("1.1.1.1"), 0), "");
+    EXPECT_TRUE(udp_reciever_.InitSocket(QHostAddress::LocalHost, 45454));
+    EXPECT_DEATH(udp_reciever_.InitSocket(QHostAddress("1.1.1.1"), 0), "");
   }
 
   TEST_F(UdpRecieverInitTest, SocketReadReady)
@@ -38,8 +37,8 @@ namespace udp_reciever_test {
     QSignalSpy spy(&reciever, SIGNAL(readyRead()));
 
     QUdpSocket sender;
-    QByteArray datagram = "message";
-    sender.writeDatagram(datagram.data(), datagram.size(),
+    QByteArray datagram_ = "message";
+    sender.writeDatagram(datagram_.data(), datagram_.size(),
                          QHostAddress::LocalHost, 45454);
 
     EXPECT_TRUE(spy.wait(33));
@@ -48,30 +47,31 @@ namespace udp_reciever_test {
 
   class UdpRecieverTest : public ::testing::Test {
   protected:
-    UdpRecieverTest(): ds(&datagram, QIODevice::WriteOnly) {}
+    UdpRecieverTest(): ds_(&datagram_, QIODevice::WriteOnly) {}
 
     virtual void SetUp()
     {
-      udpReciever.InitSocket(QHostAddress::LocalHost, 45454);
+      qRegisterMetaType<QSharedPointer<Frame>>();
+      udp_reciever_.InitSocket(QHostAddress::LocalHost, 45454);
     }
 
     virtual void TearDown()
     {
     }
     protected:
-      UdpReciever udpReciever;
-      QByteArray datagram;
-      QDataStream ds;
-      QUdpSocket socket;
+      UdpReciever udp_reciever_;
+      QByteArray datagram_;
+      QDataStream ds_;
+      QUdpSocket socket_;
   };
 
   TEST_F(UdpRecieverTest, FrameRecieved)
   {
     QSharedPointer<Frame> p = nullptr;
-    QObject::connect(&udpReciever, &UdpReciever::DataRecieved,
+    QObject::connect(&udp_reciever_, &UdpReciever::DataRecieved,
       [&](QSharedPointer<Frame> frame){p = frame;});
-    ds << Frame::kHeaderMagic << 0x4 << 0x01020304;
-    socket.writeDatagram(datagram.data(), datagram.size(),
+    ds_ << Frame::kHeaderMagic << 0x4 << 0x01020304;
+    socket_.writeDatagram(datagram_.data(), datagram_.size(),
                          QHostAddress::LocalHost, 45454);
 
     QTest::qWait(10);
@@ -81,36 +81,17 @@ namespace udp_reciever_test {
     EXPECT_EQ(4, p->GetPayloadSize());
   }
 
-  TEST_F(UdpRecieverTest, TwoFrameRecieved)
+  TEST_F(UdpRecieverTest, RecieveSubFrameAfterOneFrame)
   {
-    qint32 count = 0;
-    QObject::connect(&udpReciever, &UdpReciever::DataRecieved,
-      [&](QSharedPointer<Frame> frame){count++;});
-    ds << Frame::kHeaderMagic << 0x4 << 0x01020304
-       << Frame::kHeaderMagic << 0x4 << 0x01020304;
-    EXPECT_EQ(24, datagram.size());
-    socket.writeDatagram(datagram.data(), datagram.size(),
+    QVector<QSharedPointer<Frame>> pframe;
+    QObject::connect(&udp_reciever_, &UdpReciever::DataRecieved,
+      [&](QSharedPointer<Frame> frame){pframe.append(frame);});
+    ds_ << Frame::kHeaderMagic << 0x4 << 0x01020304
+        << 1 << 0x4 << 0x04030201;
+    socket_.writeDatagram(datagram_.data(), datagram_.size(),
                          QHostAddress::LocalHost, 45454);
 
     QTest::qWait(20);
-    EXPECT_EQ(2, count);
-  }
-
-  using udp_reciever::TestClass;
-  class TestClassTest : public ::testing::Test {
-    virtual void SetUp()
-    {
-    }
-
-    virtual void TearDown()
-    {
-    }
-  };
-
-  TEST_F(TestClassTest, GetInstance)
-  {
-    TestClass::self = new TestClass(4);
-    auto instance = TestClass::GetInstance();
-    EXPECT_EQ(4, instance->test);
+    EXPECT_EQ(2, pframe.size());
   }
 }

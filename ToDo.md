@@ -8,6 +8,7 @@
 - [ ] Template packet
 - [ ] Define as a struct
 - [x] Separate file
+- [ ] Define operator >> and <<
 
 # Sequencer
 
@@ -18,13 +19,13 @@
 
 # FrameBuilder
 
-- [ ] Test BaseFrameBuilder interface
+- [x] Test BaseFrameBuilder interface
 - [x] Use QSharedPointer
 - [x] Verify isReadyToBuild (true case)
 - [x] GetFrame
 - [x] Refactoring FrameBuilder::Build()
 - [x] Builder has builder status
-- [ ] Refactoring FrameBuilder::BuildHeader()
+- [x] Refactoring FrameBuilder::BuildHeader()
 - [x] BaseFrameBuilder
 - [x] SubFrameBuilder
 
@@ -36,4 +37,5 @@
 - [ ] Update datagram
 - [x] Create two packets from QByteArray
 - [x] Recieve datagram multiple times
-- [ ] Switch builder
+- [x] Switch builder
+- [x] Recieve SubFrame after a Frame.

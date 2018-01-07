@@ -4,7 +4,11 @@
  */
 
 #include <cassert>
+#include <QScopedPointer>
+#include <QSharedPointer>
 #include "UdpReciever.h"
+#include "FrameBuilder.h"
+#include "SubFrameBuilder.h"
 
 namespace udp_reciever {
   bool UdpReciever::InitSocket(const QHostAddress &address, quint16 port) {
@@ -22,13 +26,14 @@ namespace udp_reciever {
                                       udp_socket_.pendingDatagramSize());
       auto bytearray = datagram.data();
 
-      QDataStream checkStream(bytearray);
-      QDataStream buildStream(bytearray);
+      QScopedPointer<BaseFrameBuilder> builder(new FrameBuilder());
+      QDataStream build_stream(bytearray);
       qint32 size = bytearray.size();
-      while (builder_.Build(checkStream, size) == FrameBuilderStatus::READY) {
-        auto frame = builder_.GetFrame();
+      while (builder->Build(build_stream, size) == FrameBuilderStatus::READY) {
+        auto frame = builder->GetFrame();
         size -= frame->GetFrameSize();
         emit DataRecieved(frame);
+        builder.reset(new SubFrameBuilder());
       }
     }
   }
