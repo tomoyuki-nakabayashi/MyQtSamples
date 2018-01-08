@@ -49,4 +49,15 @@ TEST_F(SubFrameBuilderTest, CreateBuildAndGet) {
   EXPECT_EQ(expect.GetFrameSize(), actual->GetFrameSize());
   EXPECT_EQ(expect, *actual);
 }
+
+TEST_F(SubFrameBuilderTest, FinishedWhenTwoFrameBuilt) {
+  Frame expect(1, 2, QByteArray::fromHex("0102"));
+  os_ << expect << expect;
+  EXPECT_FALSE(builder_.Finished());
+  builder_.Build(is_, buffer_.size());
+  EXPECT_FALSE(builder_.Finished());
+  builder_.Build(is_, buffer_.size() - expect.GetFrameSize());
+
+  EXPECT_TRUE(builder_.Finished());
+}
 }  // sub_data_builder_test

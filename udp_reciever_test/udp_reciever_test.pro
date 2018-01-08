@@ -15,5 +15,5 @@ SOURCES +=     main.cpp \
    SubFrameBuilderTest.cpp
 
 DESTDIR = release
-OBJECTS_DIR = ../../tmp/.obj
-MOC_DIR = ../../tmp/.moc
+OBJECTS_DIR = ../../tmp/test/.obj
+MOC_DIR = ../../tmp/test/.moc

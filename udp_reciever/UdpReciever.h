@@ -8,6 +8,8 @@
 
 #include <QObject>
 #include <QtNetwork>
+#include <QSharedPointer>
+#include "BaseFrameBuilder.h"
 #include "Frame.h"
 
 namespace udp_reciever {
@@ -15,17 +17,24 @@ class UdpReciever : public QObject {
   Q_OBJECT
 
  public:
-    explicit UdpReciever(QObject *parent = 0): QObject(parent), udp_socket_() {}
+    explicit UdpReciever(QObject *parent = 0);
     bool InitSocket(const QHostAddress &address, quint16 port = 0);
-
- private slots:
-    void ProcessPendingDatagrams();
 
  signals:
     void DataRecieved(QSharedPointer<Frame> frame);
 
+ private slots:
+    void ProcessPendingDatagrams();
+
  private:
+    enum class Sequence {RECOVERING = -1, FRAME = 0, SUB_FRAME = 1, UNCHANGED};
+    Sequence state_;
     QUdpSocket udp_socket_;
+    QSharedPointer<BaseFrameBuilder> builder_;
+
+ private:
+    void ChangeSequence(Sequence next);
+    Sequence GetNextState();
 };
 }  // namespace udp_reciever
 #endif  // UDP_RECIEVER_UDPRECIEVER_H_

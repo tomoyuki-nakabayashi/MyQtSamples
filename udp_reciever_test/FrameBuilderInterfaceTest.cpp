@@ -63,4 +63,6 @@ TEST_F(FrameBuilderInterfaceTest, SwitchBuilder) {
   auto actual2 = builder_->Build(is_, 12);
   EXPECT_EQ(FrameBuilderStatus::READY, actual2);
 }
+
+
 }  // namespace frame_builder_interface_test

@@ -4,13 +4,15 @@
  */
 
 #include <cassert>
-#include <QScopedPointer>
-#include <QSharedPointer>
 #include "UdpReciever.h"
 #include "FrameBuilder.h"
 #include "SubFrameBuilder.h"
 
 namespace udp_reciever {
+  UdpReciever::UdpReciever(QObject *parent)
+    :QObject(parent), state_{Sequence::FRAME}, udp_socket_(),
+     builder_(QSharedPointer<BaseFrameBuilder> (new FrameBuilder())) {}
+
   bool UdpReciever::InitSocket(const QHostAddress &address, quint16 port) {
     bool binded = udp_socket_.bind(address, port);
     assert(binded);
@@ -26,15 +28,52 @@ namespace udp_reciever {
                                       udp_socket_.pendingDatagramSize());
       auto bytearray = datagram.data();
 
-      QScopedPointer<BaseFrameBuilder> builder(new FrameBuilder());
       QDataStream build_stream(bytearray);
       qint32 size = bytearray.size();
-      while (builder->Build(build_stream, size) == FrameBuilderStatus::READY) {
-        auto frame = builder->GetFrame();
+      while (builder_->Build(build_stream, size) == FrameBuilderStatus::READY) {
+        auto frame = builder_->GetFrame();
         size -= frame->GetFrameSize();
         emit DataRecieved(frame);
-        builder.reset(new SubFrameBuilder());
+        auto state = GetNextState();
+        ChangeSequence(Sequence::SUB_FRAME);
       }
+    }
+  }
+
+  UdpReciever::Sequence UdpReciever::GetNextState() {
+    switch (state_) {
+      case Sequence::FRAME:
+        if (builder_->Finished()) { return Sequence::SUB_FRAME;}
+        break;
+      case Sequence::SUB_FRAME:
+        if (builder_->Finished()) { return Sequence::FRAME;}
+        break;
+      case Sequence::RECOVERING:
+        // TODO
+        break;
+      case Sequence::UNCHANGED:
+        // Anything wrong. state_ never fall in this state.
+        break;
+    }
+    return Sequence::UNCHANGED;
+  }
+
+  void UdpReciever::ChangeSequence(UdpReciever::Sequence next) {
+    switch (next) {
+      case Sequence::FRAME:
+        state_ = Sequence::FRAME;
+        builder_.reset(new FrameBuilder());
+        break;
+      case Sequence::SUB_FRAME:
+        state_ = Sequence::SUB_FRAME;
+        builder_.reset(new SubFrameBuilder());
+        break;
+      case Sequence::RECOVERING:
+        // TODO
+        break;
+      case Sequence::UNCHANGED:
+        // Nothing to do
+        break;
     }
   }
 }  // namespace udp_reciever

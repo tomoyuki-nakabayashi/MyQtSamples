@@ -70,24 +70,21 @@ namespace udp_reciever_test {
       QUdpSocket socket_;
   };
 
-  TEST_F(UdpRecieverTest, FrameRecieved)
-  {
+  TEST_F(UdpRecieverTest, FrameRecieved) {
     QSharedPointer<Frame> p = nullptr;
     QObject::connect(&udp_reciever_, &UdpReciever::DataRecieved,
       [&](QSharedPointer<Frame> frame){p = frame;});
-    ds_ << Frame::kHeaderMagic << 0x4 << 0x01020304;
+    Frame expect(Frame::kHeaderMagic, 4, QByteArray::fromHex("01020304"));
+    ds_ << expect;
     socket_.writeDatagram(datagram_.data(), datagram_.size(),
                          QHostAddress::LocalHost, 45454);
 
     QTest::qWait(10);
     ASSERT_TRUE(p != nullptr);
-    auto expect = Frame::kHeaderMagic;
-    EXPECT_EQ(expect, p->GetHeader());
-    EXPECT_EQ(4, p->GetPayloadSize());
+    EXPECT_EQ(expect, *p);
   }
 
-  TEST_F(UdpRecieverTest, RecieveSubFrameAfterOneFrame)
-  {
+  TEST_F(UdpRecieverTest, RecieveSubFrameAfterOneFrame) {
     QVector<QSharedPointer<Frame>> pframe;
     QObject::connect(&udp_reciever_, &UdpReciever::DataRecieved,
       [&](QSharedPointer<Frame> frame){pframe.append(frame);});
@@ -98,5 +95,20 @@ namespace udp_reciever_test {
 
     QTest::qWait(20);
     EXPECT_EQ(2, pframe.size());
+    // must check the data
+  }
+
+  TEST_F(UdpRecieverTest, RecieveFrameAfterSubFrames) {
+    QVector<QSharedPointer<Frame>> pframe;
+    QObject::connect(&udp_reciever_, &UdpReciever::DataRecieved,
+      [&](QSharedPointer<Frame> frame){pframe.append(frame);});
+    Frame frame(Frame::kHeaderMagic, 4, QByteArray::fromHex("01020304"));
+    Frame subframe(1, 4, QByteArray::fromHex("01020304"));
+    ds_ << frame << subframe << subframe << frame;
+    socket_.writeDatagram(datagram_.data(), datagram_.size(),
+                         QHostAddress::LocalHost, 45454);
+
+    QTest::qWait(20);
+    EXPECT_EQ(3, pframe.size());
   }
 }

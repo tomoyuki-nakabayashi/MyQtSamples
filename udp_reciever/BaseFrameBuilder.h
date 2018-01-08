@@ -21,12 +21,14 @@ class BaseFrameBuilder: public QObject {
     virtual ~BaseFrameBuilder() {}
     FrameBuilderStatus Build(QDataStream &ds, qint32 remaining_data);
     virtual QSharedPointer<Frame> GetFrame() = 0;
+    virtual bool Finished() = 0;
   
  private:
     virtual void CreateNewFrame() = 0;
     virtual FrameBuilderStatus BuildHeader(QDataStream &ds, qint32 &remaining_data) = 0;
     virtual FrameBuilderStatus BuildPayload(QDataStream &ds, qint32 &remaining_data) = 0;
     virtual FrameBuilderStatus BuildFooter(QDataStream &ds, qint32 &remaining_data) = 0;
+    virtual void UpdateFinished() = 0;
 };
 }  // namespace udp_reciever
 #endif  // UDP_RECIEVER_BASEFRAMEBUILDER_H_

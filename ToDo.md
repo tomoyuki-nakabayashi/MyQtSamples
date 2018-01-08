@@ -28,7 +28,14 @@
 - [x] Builder has builder status
 - [x] Refactoring FrameBuilder::BuildHeader()
 - [x] BaseFrameBuilder
+- [ ] BaseFrameBuilder Finished
+- [ ] FrameBuilder Finished
+- [ ] SubFrameBuilder Finished
+
+# SubFrameBuilder
+
 - [x] SubFrameBuilder
+- [ ] Set expect id
 
 # UDP Reciever
 
@@ -42,6 +49,7 @@
 - [x] Recieve SubFrame after a Frame
 - [ ] Recieve SubFrames after a Frame
 - [ ] Recieve Frame after successive SubFrames
+- [x] Adopt State pattern
 
 # TEST
 
