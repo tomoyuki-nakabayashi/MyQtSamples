@@ -42,8 +42,8 @@ namespace udp_reciever_test {
     QSignalSpy spy(&reciever, SIGNAL(readyRead()));
 
     QUdpSocket sender;
-    QByteArray datagram_ = "message";
-    sender.writeDatagram(datagram_.data(), datagram_.size(),
+    QByteArray datagram = "message";
+    sender.writeDatagram(datagram.data(), datagram.size(),
                          QHostAddress::LocalHost, 45454);
 
     EXPECT_TRUE(spy.wait(33));

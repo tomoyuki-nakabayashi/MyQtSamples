@@ -48,7 +48,7 @@ class Frame {
 inline QDataStream& operator <<(QDataStream& os, const Frame& f) {
   os << f.GetHeader() << f.GetPayloadSize();
   for (auto b : f.GetPayload())
-    os << (quint8)b;
+    os << static_cast<quint8>(b);
   return os;
 }
 }  // namespace udp_reciever
