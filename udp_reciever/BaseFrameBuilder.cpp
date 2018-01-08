@@ -18,8 +18,6 @@ FrameBuilderStatus BaseFrameBuilder::Build(QDataStream &ds, qint32 remaining_dat
   BuildFooter(ds, remaining_data);
   if (status != FrameBuilderStatus::NO_ERROR) return status;
 
-  UpdateFinished();
-
   return FrameBuilderStatus::READY;
 }
 }  // namespace udp_reciever

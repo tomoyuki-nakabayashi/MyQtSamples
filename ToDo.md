@@ -1,36 +1,18 @@
 # UDP Frame
 
-- [x] Create UDP Packet
-- [x] Change ControlData to ControlDataBuilder
-- [x] Create ControlData as struct
-- [x] Create instance from QByteArray
-- [x] Have whole data size
 - [ ] Template packet
 - [ ] Define as a struct
-- [x] Separate file
-- [x] Overload operator <<
-- [ ] Overload operator >>
+- [ ] Move HeaderMagic to FrameBuilder
 
 # Sequencer
 
-- [ ] AbstractDataStreamSequencer
-  - [ ] Have pending data size & QDataStream
-- [ ] Deal with another data type
-- [ ] PeriodicDataStreamSequencer
+- [ ] Have builder finish condition
+- [x] Have a concrete builder
+- [x] Add datagram
+- [x] Parse datagram
+- [x] Remove constructed pending data
 
 # FrameBuilder
-
-- [x] Test BaseFrameBuilder interface
-- [x] Use QSharedPointer
-- [x] Verify isReadyToBuild (true case)
-- [x] GetFrame
-- [x] Refactoring FrameBuilder::Build()
-- [x] Builder has builder status
-- [x] Refactoring FrameBuilder::BuildHeader()
-- [x] BaseFrameBuilder
-- [ ] BaseFrameBuilder Finished
-- [ ] FrameBuilder Finished
-- [ ] SubFrameBuilder Finished
 
 # SubFrameBuilder
 
@@ -39,16 +21,12 @@
 
 # UDP Reciever
 
-- [x] Use builder and emit DataCreated
 - [ ] Handle error
-- [x] Retreave signal argument
-- [ ] Update datagram
+- [x] Update datagram
 - [x] Create two packets from QByteArray
 - [x] Recieve datagram multiple times
 - [x] Switch builder
 - [x] Recieve SubFrame after a Frame
-- [ ] Recieve SubFrames after a Frame
-- [ ] Recieve Frame after successive SubFrames
 - [x] Adopt State pattern
 
 # TEST

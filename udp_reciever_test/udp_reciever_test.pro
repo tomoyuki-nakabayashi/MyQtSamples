@@ -10,6 +10,7 @@ HEADERS +=
 
 SOURCES +=     main.cpp \
    UdpRecieverTest.cpp  \
+   SequencerTest.cpp \
    FrameBuilderInterfaceTest.cpp \
    FrameBuilderTest.cpp \
    SubFrameBuilderTest.cpp

@@ -43,16 +43,7 @@ FrameBuilderStatus SubFrameBuilder::BuildFooter(QDataStream &ds, qint32 &remaini
   return FrameBuilderStatus::NO_ERROR;
 }
 
-void SubFrameBuilder::UpdateFinished() {
-  count_++;
-  if (count_ == 2) finished_ = true;
-}
-
 QSharedPointer<Frame> SubFrameBuilder::GetFrame() {
   return frame_;
-}
-
-bool SubFrameBuilder::Finished() {
-  return finished_;
 }
 }  // namespace udp_reciever

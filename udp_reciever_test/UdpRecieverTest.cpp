@@ -104,7 +104,7 @@ namespace udp_reciever_test {
       [&](QSharedPointer<Frame> frame){pframe.append(frame);});
     Frame frame(Frame::kHeaderMagic, 4, QByteArray::fromHex("01020304"));
     Frame subframe(1, 4, QByteArray::fromHex("01020304"));
-    ds_ << frame << subframe << subframe << frame;
+    ds_ << frame << subframe << frame;
     socket_.writeDatagram(datagram_.data(), datagram_.size(),
                          QHostAddress::LocalHost, 45454);
 

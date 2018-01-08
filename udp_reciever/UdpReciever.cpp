@@ -35,7 +35,7 @@ namespace udp_reciever {
         size -= frame->GetFrameSize();
         emit DataRecieved(frame);
         auto state = GetNextState();
-        ChangeSequence(Sequence::SUB_FRAME);
+        ChangeSequence(state);
       }
     }
   }
@@ -43,10 +43,10 @@ namespace udp_reciever {
   UdpReciever::Sequence UdpReciever::GetNextState() {
     switch (state_) {
       case Sequence::FRAME:
-        if (builder_->Finished()) { return Sequence::SUB_FRAME;}
+        return Sequence::SUB_FRAME;
         break;
       case Sequence::SUB_FRAME:
-        if (builder_->Finished()) { return Sequence::FRAME;}
+        return Sequence::FRAME;
         break;
       case Sequence::RECOVERING:
         // TODO

@@ -105,13 +105,4 @@ TEST_F(FrameBuilderTest, CanCreateTwoFrame) {
   actual = builder_.GetFrame();
   EXPECT_EQ(expect, *actual);
 }
-
-TEST_F(FrameBuilderTest, FinishedWhenOneFrameBuilt) {
-  Frame expect(Frame::kHeaderMagic, 4, QByteArray::fromHex("01020304"));
-  os_ << expect << expect;
-
-  EXPECT_FALSE(builder_.Finished());
-  FrameBuilderStatus::READY, builder_.Build(is_, buffer_.size());
-  EXPECT_TRUE(builder_.Finished());
-}
 }  // udp_packet_test
