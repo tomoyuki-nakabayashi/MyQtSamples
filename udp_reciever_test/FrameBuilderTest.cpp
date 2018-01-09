@@ -4,6 +4,7 @@
  */
 
 #include <gtest/gtest.h>
+#include <QVector>
 #include "FrameBuilder.h"
 
 namespace udp_packet_test {
@@ -104,5 +105,23 @@ TEST_F(FrameBuilderTest, CanCreateTwoFrame) {
   EXPECT_EQ(FrameBuilderStatus::READY, builder_.Build(is_, remaining_data));
   actual = builder_.GetFrame();
   EXPECT_EQ(expect, *actual);
+}
+
+typedef QSharedPointer<QVector<int>> QVIP;
+typedef QSharedPointer<QVector<double>> QVDP;
+TEST_F(FrameBuilderTest, TestTemplatePointerSignal) {
+/*   QVIP ip = nullptr;
+  QObject::connect(&builder_, &FrameBuilder::TestSignal,
+    [&](QVIP vec){ip = vec;});
+
+  builder_.EmitTestSignal();
+  EXPECT_NE(nullptr, ip);
+ */
+  QVDP dp = nullptr;
+  QObject::connect(&builder_, &FrameBuilder::TestSignal,
+    [&](QVDP vec){dp = vec;});
+
+  builder_.EmitTestSignal();
+  EXPECT_NE(nullptr, dp);
 }
 }  // udp_packet_test

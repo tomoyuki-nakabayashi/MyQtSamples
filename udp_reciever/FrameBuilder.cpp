@@ -47,4 +47,11 @@ QSharedPointer<Frame> FrameBuilder::GetFrame() {
   return frame_;
 }
 
+void FrameBuilder::EmitTestSignal() {
+  auto iptr = QSharedPointer<QVector<int>> (new QVector<int>);
+  emit TestSignal(iptr);
+  
+  auto dptr = QSharedPointer<QVector<double>> (new QVector<double>);
+  emit TestSignal(dptr);
+}
 }  // namespace udp_reciever
