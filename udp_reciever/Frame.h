@@ -10,39 +10,44 @@
 #include <QDataStream>
 #include <QMetaType>
 #include <QSharedPointer>
+#include <QScopedPointer>
 
 namespace udp_reciever {
 constexpr qint32 sizeofquint32() {return static_cast<int>(sizeof(quint32));}
 constexpr qint32 sizeofqint32() {return static_cast<int>(sizeof(qint32));}
+enum class FrameStatus {NO_ERROR = 0, READY = 1, INVALID = -1, RETRY = -2};
+enum class FrameBuilderStatus {NO_ERROR = 0, READY = 1, INVALID = -1, RETRY = -2};
 
-class Frame {
-    quint32 header_;
-    qint32 payload_size_;
-    QByteArray payload_;
+struct Frame {
+    quint32 header;
+    qint32 payload_size;
+    QByteArray payload;
+    FrameBuilderStatus status;
+    qint32 frame_size;
 
  public:
     static const quint32 kHeaderMagic = 0x01234567;
 
  public:
-    Frame(): header_(), payload_size_(), payload_() {}
+    Frame(): header(), payload_size(), payload() {}
     Frame(quint32 h, qint32 s, QByteArray p)
-      : header_{h}, payload_size_{s}, payload_(p) {}
+      : header{h}, payload_size{s}, payload(p) {}
     Frame(const Frame &other)
-      : header_{other.header_},
-        payload_size_{other.payload_size_},
-        payload_(other.payload_) {}
+      : header{other.header},
+        payload_size{other.payload_size},
+        payload(other.payload) {}
     bool operator==(const Frame &rhs) const { 
-      return (header_ == rhs.header_) && (payload_size_ == rhs.payload_size_) && (payload_ == rhs.payload_); 
+      return (header == rhs.header) && (payload_size == rhs.payload_size) && (payload == rhs.payload); 
     }
     bool operator!=(const Frame &rhs) const { return !(*this == rhs); }
 
-    quint32 GetHeader() const {return header_;}
-    qint32 GetPayloadSize() const {return payload_size_;}
-    QByteArray GetPayload() const {return payload_;}
-    void SetHeader(quint32 h) {header_ = h;}
-    void SetPayloadSize(quint32 s) {payload_size_ = s;}
-    void SetPayload(const QByteArray& p) {payload_ = p;}
-    qint32 GetFrameSize() const {return sizeof(header_) + sizeof(payload_size_) + payload_size_;}
+    quint32 GetHeader() const {return header;}
+    qint32 GetPayloadSize() const {return payload_size;}
+    QByteArray GetPayload() const {return payload;}
+    void SetHeader(quint32 h) {header = h;}
+    void SetPayloadSize(quint32 s) {payload_size = s;}
+    void SetPayload(const QByteArray& p) {payload = p;}
+    qint32 GetFrameSize() const {return sizeof(header) + sizeof(payload_size) + payload_size;}
 };
 
 inline QDataStream& operator <<(QDataStream& os, const Frame& f) {
@@ -50,6 +55,45 @@ inline QDataStream& operator <<(QDataStream& os, const Frame& f) {
   for (auto b : f.GetPayload())
     os << static_cast<quint8>(b);
   return os;
+}
+
+inline quint32 ParseUInt32(const char (&buf)[4]) {
+  // This prevents buf[i] from being promoted to a signed int.
+  quint32 u0 = buf[0], u1 = buf[1], u2 = buf[2], u3 = buf[3];
+  quint32 uval = u3 | (u2 << 8) | (u1 << 16) | (u0 << 24);
+  return uval;
+}
+
+inline QDataStream& operator >>(QDataStream& is, Frame& f) {
+  f.status = FrameBuilderStatus::NO_ERROR;
+  char buff[4];
+  auto res = is.readRawData(buff, 4);
+  if (res < 4) {
+    f.status = FrameBuilderStatus::RETRY;
+    return is;
+  }
+  f.header = (ParseUInt32(buff));
+  if (f.header != Frame::kHeaderMagic) {
+    f.status = FrameBuilderStatus::INVALID;
+    return is;
+  }
+
+  res = is.readRawData(buff, 4);
+  if (res < 4) {
+    f.status = FrameBuilderStatus::RETRY;
+    return is;
+  }
+  f.payload_size = (static_cast<quint32>(ParseUInt32(buff)));
+  
+  QScopedPointer<char> payload_buff(new char[f.payload_size]);
+  res = is.readRawData(payload_buff.data(), f.payload_size);
+  if (res < f.payload_size) {
+    f.status = FrameBuilderStatus::RETRY;
+    return is;
+  }
+  f.payload = QByteArray(payload_buff.data(), f.payload_size);
+  f.frame_size = sizeof(f.header) + sizeof(f.payload_size) + f.payload_size;
+  return is;
 }
 }  // namespace udp_reciever
 

@@ -23,10 +23,6 @@ class FrameBuilder : public BaseFrameBuilder {
     QSharedPointer<Frame> GetFrame() override;
     void EmitTestSignal();
 
- signals:
-    void TestSignal(QSharedPointer<QVector<int>>);
-    void TestSignal(QSharedPointer<QVector<double>>);
-
  private:
     QSharedPointer<Frame> frame_;
   

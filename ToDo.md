@@ -1,8 +1,10 @@
 # UDP Frame
 
-- [ ] Template packet
-- [ ] Define as a struct
+- [ ] Translate to QByteArray
+- [x] Define as a struct
 - [ ] Move HeaderMagic to FrameBuilder
+- [x] Overload >> operator
+- [ ] Refactor >> operator
 
 # Sequencer
 
@@ -13,6 +15,8 @@
 - [x] Remove constructed pending data
 
 # FrameBuilder
+
+- [ ] Emit signal not Frame but QByteArray
 
 # SubFrameBuilder
 

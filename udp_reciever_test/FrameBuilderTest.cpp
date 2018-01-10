@@ -51,6 +51,26 @@ TEST_F(FrameBuilderTest, TestQByteStream) {
   EXPECT_STREQ(expect.GetPayload().data(), buff.data());
 }
 
+
+TEST_F(FrameBuilderTest, TestReadRawData) {
+  Frame expect(Frame::kHeaderMagic, 4, QByteArray::fromHex("01020304"));
+  os_ << expect;
+
+  QScopedPointer<char> buff(new char[14]);
+  auto res = is_.readRawData(buff.data(), 14);
+  EXPECT_EQ(12, res);
+}
+
+TEST_F(FrameBuilderTest, TestOperatorRead) {
+  Frame expect(Frame::kHeaderMagic, 4, QByteArray::fromHex("01020304"));
+  os_ << expect;
+
+  Frame actual;
+  is_ >> actual;
+
+  EXPECT_EQ(expect, actual);
+}
+
 TEST_F(FrameBuilderTest, FrameIsReady) {
   Frame expect(Frame::kHeaderMagic, 4, QByteArray::fromHex("01020304"));
   os_ << expect;
@@ -107,21 +127,4 @@ TEST_F(FrameBuilderTest, CanCreateTwoFrame) {
   EXPECT_EQ(expect, *actual);
 }
 
-typedef QSharedPointer<QVector<int>> QVIP;
-typedef QSharedPointer<QVector<double>> QVDP;
-TEST_F(FrameBuilderTest, TestTemplatePointerSignal) {
-/*   QVIP ip = nullptr;
-  QObject::connect(&builder_, &FrameBuilder::TestSignal,
-    [&](QVIP vec){ip = vec;});
-
-  builder_.EmitTestSignal();
-  EXPECT_NE(nullptr, ip);
- */
-  QVDP dp = nullptr;
-  QObject::connect(&builder_, &FrameBuilder::TestSignal,
-    [&](QVDP vec){dp = vec;});
-
-  builder_.EmitTestSignal();
-  EXPECT_NE(nullptr, dp);
-}
 }  // udp_packet_test
