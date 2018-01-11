@@ -8,11 +8,11 @@
 #include "SubFrameBuilder.h"
 
 namespace frame_builder_interface_test {
-using udp_reciever::BaseFrameBuilder;
-using udp_reciever::FrameBuilder;
-using udp_reciever::SubFrameBuilder;
-using udp_reciever::Frame;
-using udp_reciever::FrameBuilderStatus;
+using udp_receiver::BaseFrameBuilder;
+using udp_receiver::FrameBuilder;
+using udp_receiver::SubFrameBuilder;
+using udp_receiver::Frame;
+using udp_receiver::FrameBuilderStatus;
 
 class FrameBuilderInterfaceTest : public ::testing::Test {
 protected:

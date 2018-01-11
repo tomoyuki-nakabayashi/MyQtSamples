@@ -11,11 +11,11 @@
 #include "SubFrameBuilder.h"
 
 namespace sequencer_test {
-using udp_reciever::Sequencer;
-using udp_reciever::BaseFrameBuilder;
-using udp_reciever::FrameBuilder;
-using udp_reciever::SubFrameBuilder;
-using udp_reciever::Frame;
+using udp_receiver::Sequencer;
+using udp_receiver::BaseFrameBuilder;
+using udp_receiver::FrameBuilder;
+using udp_receiver::SubFrameBuilder;
+using udp_receiver::Frame;
 
 class SequencerTest : public ::testing::Test {
 protected:

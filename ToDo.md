@@ -23,7 +23,7 @@
 - [x] SubFrameBuilder
 - [ ] Set expect id
 
-# UDP Reciever
+# UDP Receiver
 
 - [ ] Handle error
 - [x] Update datagram

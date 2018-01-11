@@ -3,20 +3,20 @@
  * This software is released under the MIT License, see LICENSE.
  */
 
-#ifndef UDP_RECIEVER_UDPRECIEVER_H_
-#define UDP_RECIEVER_UDPRECIEVER_H_
+#ifndef UDP_RECEIVER_UDPRECEIVER_H_
+#define UDP_RECEIVER_UDPRECEIVER_H_
 
 #include <QObject>
 #include <QtNetwork>
 #include <QSharedPointer>
 #include "Sequencer.h"
 
-namespace udp_reciever {
-class UdpReciever : public QObject {
+namespace udp_receiver {
+class UdpReceiver : public QObject {
   Q_OBJECT
 
  public:
-    explicit UdpReciever(QObject *parent = 0);
+    explicit UdpReceiver(QObject *parent = 0);
     bool InitSocket(const QHostAddress &address, quint16 port = 0);
 
 signals:
@@ -31,5 +31,5 @@ signals:
     Sequencer sequencer_;
 
 };
-}  // namespace udp_reciever
-#endif  // UDP_RECIEVER_UDPRECIEVER_H_
+}  // namespace udp_receiver
+#endif  // UDP_RECEIVER_UDPRECEIVER_H_

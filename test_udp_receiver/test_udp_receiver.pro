@@ -1,4 +1,4 @@
-include(../udp_reciever/udp_reciever.pri)
+include(../udp_receiver/udp_receiver.pri)
 include(gtest_dependency.pri)
 
 TEMPLATE = app
@@ -9,7 +9,7 @@ CONFIG += thread
 HEADERS +=    
 
 SOURCES +=     main.cpp \
-   UdpRecieverTest.cpp  \
+   UdpReceiverTest.cpp  \
    SequencerTest.cpp \
    FrameBuilderInterfaceTest.cpp \
    FrameBuilderTest.cpp \

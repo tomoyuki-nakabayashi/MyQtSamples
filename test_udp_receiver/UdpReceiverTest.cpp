@@ -9,14 +9,14 @@
 #include <QTest>
 #include <QSignalSpy>
 #include <QVector>
-#include "UdpReciever.h"
+#include "UdpReceiver.h"
 #include "FrameBuilder.h"
 
-namespace udp_reciever_test {
-  using udp_reciever::UdpReciever;
-  using udp_reciever::Frame;
+namespace udp_receiver_test {
+  using udp_receiver::UdpReceiver;
+  using udp_receiver::Frame;
 
-  class UdpRecieverInitTest : public ::testing::Test {
+  class UdpReceiverInitTest : public ::testing::Test {
   protected:
     virtual void SetUp()
     {
@@ -26,20 +26,20 @@ namespace udp_reciever_test {
     {
     }
     protected:
-      UdpReciever udp_reciever_;
+      UdpReceiver udp_receiver_;
   };
 
-  TEST_F(UdpRecieverInitTest, InitScoket)
+  TEST_F(UdpReceiverInitTest, InitScoket)
   {
-    EXPECT_TRUE(udp_reciever_.InitSocket(QHostAddress::LocalHost, 45454));
-    EXPECT_DEATH(udp_reciever_.InitSocket(QHostAddress("1.1.1.1"), 0), "");
+    EXPECT_TRUE(udp_receiver_.InitSocket(QHostAddress::LocalHost, 45454));
+    EXPECT_DEATH(udp_receiver_.InitSocket(QHostAddress("1.1.1.1"), 0), "");
   }
 
-  TEST_F(UdpRecieverInitTest, SocketReadReady)
+  TEST_F(UdpReceiverInitTest, SocketReadReady)
   {
-    QUdpSocket reciever;
-    reciever.bind(QHostAddress::LocalHost, 45454);
-    QSignalSpy spy(&reciever, SIGNAL(readyRead()));
+    QUdpSocket receiver;
+    receiver.bind(QHostAddress::LocalHost, 45454);
+    QSignalSpy spy(&receiver, SIGNAL(readyRead()));
 
     QUdpSocket sender;
     QByteArray datagram = "message";
@@ -50,29 +50,29 @@ namespace udp_reciever_test {
     EXPECT_EQ(1, spy.count());
   }
 
-  class UdpRecieverTest : public ::testing::Test {
+  class UdpReceiverTest : public ::testing::Test {
   protected:
-    UdpRecieverTest(): ds_(&datagram_, QIODevice::WriteOnly) {}
+    UdpReceiverTest(): ds_(&datagram_, QIODevice::WriteOnly) {}
 
     virtual void SetUp()
     {
       qRegisterMetaType<QSharedPointer<Frame>>();
-      udp_reciever_.InitSocket(QHostAddress::LocalHost, 45454);
+      udp_receiver_.InitSocket(QHostAddress::LocalHost, 45454);
     }
 
     virtual void TearDown()
     {
     }
     protected:
-      UdpReciever udp_reciever_;
+      UdpReceiver udp_receiver_;
       QByteArray datagram_;
       QDataStream ds_;
       QUdpSocket socket_;
   };
 
-  TEST_F(UdpRecieverTest, FrameRecieved) {
+  TEST_F(UdpReceiverTest, FrameRecieved) {
     QSharedPointer<Frame> p = nullptr;
-    QObject::connect(&udp_reciever_, &UdpReciever::DataRecieved,
+    QObject::connect(&udp_receiver_, &UdpReceiver::DataRecieved,
       [&](QSharedPointer<Frame> frame){p = frame;});
     Frame expect(Frame::kHeaderMagic, 4, QByteArray::fromHex("01020304"));
     ds_ << expect;
@@ -84,9 +84,9 @@ namespace udp_reciever_test {
     EXPECT_EQ(expect, *p);
   }
 
-  TEST_F(UdpRecieverTest, RecieveSubFrameAfterOneFrame) {
+  TEST_F(UdpReceiverTest, RecieveSubFrameAfterOneFrame) {
     QVector<QSharedPointer<Frame>> pframe;
-    QObject::connect(&udp_reciever_, &UdpReciever::DataRecieved,
+    QObject::connect(&udp_receiver_, &UdpReceiver::DataRecieved,
       [&](QSharedPointer<Frame> frame){pframe.append(frame);});
     ds_ << Frame::kHeaderMagic << 0x4 << 0x01020304
         << 1 << 0x4 << 0x04030201;
@@ -98,9 +98,9 @@ namespace udp_reciever_test {
     // must check the data
   }
 
-  TEST_F(UdpRecieverTest, RecieveFrameAfterSubFrames) {
+  TEST_F(UdpReceiverTest, RecieveFrameAfterSubFrames) {
     QVector<QSharedPointer<Frame>> pframe;
-    QObject::connect(&udp_reciever_, &UdpReciever::DataRecieved,
+    QObject::connect(&udp_receiver_, &UdpReceiver::DataRecieved,
       [&](QSharedPointer<Frame> frame){pframe.append(frame);});
     Frame frame(Frame::kHeaderMagic, 4, QByteArray::fromHex("01020304"));
     Frame subframe(1, 4, QByteArray::fromHex("01020304"));

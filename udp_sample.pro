@@ -1,5 +1,5 @@
 TEMPLATE = subdirs
 
 SUBDIRS += \
-    udp_reciever \
-    udp_reciever_test
+    udp_receiver \
+    test_udp_receiver

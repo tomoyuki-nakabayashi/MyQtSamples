@@ -3,8 +3,8 @@
  * This software is released under the MIT License, see LICENSE.
  */
 
-#ifndef UDP_RECIEVER_SEQUENCER_H_
-#define UDP_RECIEVER_SEQUENCER_H_
+#ifndef UDP_RECEIVER_SEQUENCER_H_
+#define UDP_RECEIVER_SEQUENCER_H_
 
 #include <QObject>
 #include <QByteArray>
@@ -12,7 +12,7 @@
 #include "BaseFrameBuilder.h"
 #include "Frame.h"
 
-namespace udp_reciever {
+namespace udp_receiver {
 class Sequencer : public QObject {
   Q_OBJECT
 
@@ -34,5 +34,5 @@ class Sequencer : public QObject {
     void ChangeSequence(Sequence next);
     Sequence GetNextState();
 };
-}  // namespace udp_reciever
-#endif  // UDP_RECIEVER_SEQUENCER_H_
+}  // namespace udp_receiver
+#endif  // UDP_RECEIVER_SEQUENCER_H_

@@ -7,7 +7,7 @@
 #include "FrameBuilder.h"
 #include "SubFrameBuilder.h"
 
-namespace udp_reciever {
+namespace udp_receiver {
 Sequencer::Sequencer(QObject *parent)
   :QObject(parent), state_(Sequence::FRAME), pending_data_(),
    builder_(QSharedPointer<BaseFrameBuilder> (new FrameBuilder())) {}
@@ -63,4 +63,4 @@ void Sequencer::ChangeSequence(Sequencer::Sequence next) {
       break;
   }
 }
-}  // namespace udp_reciever
+}  // namespace udp_receiver

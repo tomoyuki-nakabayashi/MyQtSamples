@@ -3,8 +3,8 @@
  * This software is released under the MIT License, see LICENSE.
  */
 
-#ifndef UDP_RECIEVER_FRAME_H_
-#define UDP_RECIEVER_FRAME_H_
+#ifndef UDP_RECEIVER_FRAME_H_
+#define UDP_RECEIVER_FRAME_H_
 
 #include <QByteArray>
 #include <QDataStream>
@@ -12,7 +12,7 @@
 #include <QSharedPointer>
 #include <QScopedPointer>
 
-namespace udp_reciever {
+namespace udp_receiver {
 constexpr qint32 sizeofquint32() {return static_cast<int>(sizeof(quint32));}
 constexpr qint32 sizeofqint32() {return static_cast<int>(sizeof(qint32));}
 enum class FrameStatus {NO_ERROR = 0, READY = 1, INVALID = -1, RETRY = -2};
@@ -95,7 +95,7 @@ inline QDataStream& operator >>(QDataStream& is, Frame& f) {
   f.frame_size = sizeof(f.header) + sizeof(f.payload_size) + f.payload_size;
   return is;
 }
-}  // namespace udp_reciever
+}  // namespace udp_receiver
 
-Q_DECLARE_METATYPE(QSharedPointer<udp_reciever::Frame>)
-#endif  // UDP_RECIEVER_FRAME_H_
+Q_DECLARE_METATYPE(QSharedPointer<udp_receiver::Frame>)
+#endif  // UDP_RECEIVER_FRAME_H_

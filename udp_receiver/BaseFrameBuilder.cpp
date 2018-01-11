@@ -5,7 +5,7 @@
 
 #include "BaseFrameBuilder.h"
 
-namespace udp_reciever {
+namespace udp_receiver {
 FrameBuilderStatus BaseFrameBuilder::Build(QDataStream &ds, qint32 remaining_data) {
   CreateNewFrame();
   
@@ -20,4 +20,4 @@ FrameBuilderStatus BaseFrameBuilder::Build(QDataStream &ds, qint32 remaining_dat
 
   return FrameBuilderStatus::READY;
 }
-}  // namespace udp_reciever
+}  // namespace udp_receiver

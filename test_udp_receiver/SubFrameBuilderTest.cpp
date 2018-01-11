@@ -7,9 +7,9 @@
 #include "SubFrameBuilder.h"
 
 namespace sub_data_builder_test {
-using udp_reciever::SubFrameBuilder;
-using udp_reciever::Frame;
-using udp_reciever::FrameBuilderStatus;
+using udp_receiver::SubFrameBuilder;
+using udp_receiver::Frame;
+using udp_receiver::FrameBuilderStatus;
 
 class SubFrameBuilderTest : public ::testing::Test {
 protected:

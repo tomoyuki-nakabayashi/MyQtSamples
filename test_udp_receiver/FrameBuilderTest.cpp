@@ -8,9 +8,9 @@
 #include "FrameBuilder.h"
 
 namespace udp_packet_test {
-using udp_reciever::FrameBuilder;
-using udp_reciever::Frame;
-using udp_reciever::FrameBuilderStatus;
+using udp_receiver::FrameBuilder;
+using udp_receiver::Frame;
+using udp_receiver::FrameBuilderStatus;
 
 class FrameBuilderTest : public ::testing::Test {
 protected:

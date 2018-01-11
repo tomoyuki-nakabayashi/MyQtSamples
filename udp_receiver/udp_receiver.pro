@@ -1,4 +1,4 @@
-include(udp_reciever.pri)
+include(udp_receiver.pri)
 
 TEMPLATE = app
 SOURCES += main.cpp

@@ -3,8 +3,8 @@
  * This software is released under the MIT License, see LICENSE.
  */
 
-#ifndef UDP_RECIEVER_FRAMEBUILDER_H_
-#define UDP_RECIEVER_FRAMEBUILDER_H_
+#ifndef UDP_RECEIVER_FRAMEBUILDER_H_
+#define UDP_RECEIVER_FRAMEBUILDER_H_
 
 #include <QObject>
 #include <QDataStream>
@@ -13,7 +13,7 @@
 #include "BaseFrameBuilder.h"
 #include "Frame.h"
 
-namespace udp_reciever {
+namespace udp_receiver {
 class FrameBuilder : public BaseFrameBuilder {
   Q_OBJECT
  public:
@@ -32,5 +32,5 @@ class FrameBuilder : public BaseFrameBuilder {
     FrameBuilderStatus BuildPayload(QDataStream &ds, qint32 &remaining_data) override;
     FrameBuilderStatus BuildFooter(QDataStream &ds, qint32 &remaining_data) override;
 };
-}  // namespace udp_reciever
-#endif  // UDP_RECIEVER_FRAMEBUILDER_H_
+}  // namespace udp_receiver
+#endif  // UDP_RECEIVER_FRAMEBUILDER_H_

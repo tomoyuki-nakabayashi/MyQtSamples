@@ -3,15 +3,15 @@
  * This software is released under the MIT License, see LICENSE.
  */
 
-#ifndef UDP_RECIEVER_BASEFRAMEBUILDER_H_
-#define UDP_RECIEVER_BASEFRAMEBUILDER_H_
+#ifndef UDP_RECEIVER_BASEFRAMEBUILDER_H_
+#define UDP_RECEIVER_BASEFRAMEBUILDER_H_
 
 #include <QObject>
 #include <QDataStream>
 #include <QSharedPointer>
 #include "Frame.h"
 
-namespace udp_reciever {
+namespace udp_receiver {
 //enum class FrameBuilderStatus {NO_ERROR = 0, READY = 1, INVALID = -1, RETRY = -2};
 
 class BaseFrameBuilder: public QObject {
@@ -28,5 +28,5 @@ class BaseFrameBuilder: public QObject {
     virtual FrameBuilderStatus BuildPayload(QDataStream &ds, qint32 &remaining_data) = 0;
     virtual FrameBuilderStatus BuildFooter(QDataStream &ds, qint32 &remaining_data) = 0;
 };
-}  // namespace udp_reciever
-#endif  // UDP_RECIEVER_BASEFRAMEBUILDER_H_
+}  // namespace udp_receiver
+#endif  // UDP_RECEIVER_BASEFRAMEBUILDER_H_

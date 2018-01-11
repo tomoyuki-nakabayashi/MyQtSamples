@@ -4,17 +4,17 @@
  */
 
 #include <QCoreApplication>
-#include "UdpReciever.h"
+#include "UdpReceiver.h"
 #include "Frame.h"
 
-using udp_reciever::UdpReciever;
-using udp_reciever::Frame;
+using udp_receiver::UdpReceiver;
+using udp_receiver::Frame;
 
 int main(int argc, char *argv[]) {
   QCoreApplication a(argc, argv);
   qRegisterMetaType<QSharedPointer<Frame>>();
-  udp_reciever::UdpReciever reciever;
-  reciever.InitSocket(QHostAddress("0.0.0.0"), 45454);
+  udp_receiver::UdpReceiver receiver;
+  receiver.InitSocket(QHostAddress("0.0.0.0"), 45454);
 
   return a.exec();
 }
