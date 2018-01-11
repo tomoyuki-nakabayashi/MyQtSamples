@@ -13,7 +13,8 @@ SOURCES +=     main.cpp \
    SequencerTest.cpp \
    FrameBuilderInterfaceTest.cpp \
    FrameBuilderTest.cpp \
-   SubFrameBuilderTest.cpp
+   SubFrameBuilderTest.cpp \
+   PlayGround.cpp
 
 DESTDIR = release
 OBJECTS_DIR = ../../tmp/test/.obj

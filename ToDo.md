@@ -36,3 +36,4 @@
 # TEST
 
 - [x] Refactoring Frame usage
+- [ ] Test QMap(int, QVariant)
