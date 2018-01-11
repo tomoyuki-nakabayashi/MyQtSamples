@@ -52,5 +52,9 @@ TEST_F(PlayGround, FunctionMap) {
 
   auto variant = map["int"]("15");
   EXPECT_EQ(15, variant.toInt());
+
+  map.insert("lambda", [](QString str){return QVariant(str.toInt());});
+  auto lambda_res = map["lambda"]("10");
+  EXPECT_EQ(10, lambda_res.toInt());
 }
 }  // namespace playground
