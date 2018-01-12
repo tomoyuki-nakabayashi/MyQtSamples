@@ -12,7 +12,7 @@ QSharedPointer<Frame> SubFrameBuilder::CreateNewFrame() {
 
 FrameBuilderStatus SubFrameBuilder::BuildImpl(QDataStream &ds, QSharedPointer<Frame> frame) {
   ds >> *(frame.data());
-  return frame_->status;
+  return frame->status;
 }
 
 QSharedPointer<Frame> SubFrameBuilder::GetFrame() {

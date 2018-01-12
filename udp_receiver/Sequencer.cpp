@@ -10,7 +10,9 @@
 namespace udp_receiver {
 Sequencer::Sequencer(QObject *parent)
   :QObject(parent), state_(Sequence::FRAME), pending_data_(),
-   builder_(QSharedPointer<BaseFrameBuilder> (new FrameBuilder())) {}
+   builder_(QSharedPointer<BaseFrameBuilder> (new FrameBuilder())) {
+     connect(builder_.data(), &FrameBuilder::FrameConstructed, this, &Sequencer::onFrameConstructed);
+   }
 
 const QByteArray& Sequencer::AppendPendingData(const QByteArray &ba) {
   return pending_data_.append(ba);
@@ -19,9 +21,10 @@ const QByteArray& Sequencer::AppendPendingData(const QByteArray &ba) {
 void Sequencer::ConstructFrame() {
   QDataStream build_stream(pending_data_);
   while (builder_->Build(build_stream, pending_data_.size()) == FrameBuilderStatus::READY) {
+/* 
     auto frame = builder_->GetFrame();
     pending_data_.remove(0, frame->GetFrameSize());
-    emit FrameConstructed(frame);
+ */
     auto state = GetNextState();
     ChangeSequence(state);
   }
@@ -62,5 +65,9 @@ void Sequencer::ChangeSequence(Sequencer::Sequence next) {
       // Nothing to do
       break;
   }
+}
+
+void Sequencer::onFrameConstructed(QVariant frame) {
+  emit FrameConstructed(frame.value<QSharedPointer<Frame>>());
 }
 }  // namespace udp_receiver

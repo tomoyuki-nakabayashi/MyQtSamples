@@ -7,15 +7,20 @@
 # Sequencer
 
 - [ ] Reduce data copy
+- [x] Receive frame by signal
+- [x] Connect FrameBuilder signal
+- [ ] NEXT!!! remove pending data
 
 # FrameBuilder
 
-- [ ] Return result as QVariant
+- [x] Return result as QVariant
+- [ ] Return LastResult
 
 # SubFrameBuilder
 
 - [x] SubFrameBuilder
-- [ ] Return result as QVariant
+- [x] Return result as QVariant
+- [ ] Return LastResult
 
 # UDP Receiver
 

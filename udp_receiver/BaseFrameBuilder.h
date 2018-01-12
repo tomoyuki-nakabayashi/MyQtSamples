@@ -24,7 +24,7 @@ class BaseFrameBuilder: public QObject {
     virtual QSharedPointer<Frame> GetFrame() = 0;
 
  signals:
-    void NotifyFrameConstructed(QVariant frame);
+    void FrameConstructed(QVariant frame);
 
  private:
     virtual QSharedPointer<Frame> CreateNewFrame() = 0;

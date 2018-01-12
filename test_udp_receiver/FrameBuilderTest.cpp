@@ -80,9 +80,12 @@ TEST_F(FrameBuilderTest, FrameIsReady) {
 
 TEST_F(FrameBuilderTest, CreateBuildAndGet) {
   Frame expect(Frame::kHeaderMagic, 4, QByteArray::fromHex("01020304"));
+  QVariant v;
+  QObject::connect(&builder_, &FrameBuilder::FrameConstructed,
+    [&](QVariant frame){v = frame;});
   os_ << expect;
   builder_.Build(is_, buffer_.size());
-  auto actual = builder_.GetFrame();
+  auto actual = v.value<QSharedPointer<Frame>>().data();
 
   EXPECT_EQ(expect, *actual);
   EXPECT_EQ(expect.GetFrameSize(), actual->GetFrameSize());
@@ -118,13 +121,7 @@ TEST_F(FrameBuilderTest, CanCreateTwoFrame) {
 
   auto remaining_data = buffer_.size();
   EXPECT_EQ(FrameBuilderStatus::READY, builder_.Build(is_, remaining_data));
-  auto actual = builder_.GetFrame();
-  EXPECT_EQ(expect, *actual);
-
-  remaining_data -= actual->GetFrameSize();
   EXPECT_EQ(FrameBuilderStatus::READY, builder_.Build(is_, remaining_data));
-  actual = builder_.GetFrame();
-  EXPECT_EQ(expect, *actual);
 }
 
 }  // udp_packet_test

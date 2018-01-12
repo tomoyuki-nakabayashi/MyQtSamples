@@ -33,6 +33,9 @@ class Sequencer : public QObject {
  private:
     void ChangeSequence(Sequence next);
     Sequence GetNextState();
+
+ private slots:
+    void onFrameConstructed(QVariant frame);
 };
 }  // namespace udp_receiver
 #endif  // UDP_RECEIVER_SEQUENCER_H_

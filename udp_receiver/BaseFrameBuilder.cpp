@@ -7,11 +7,12 @@
 
 namespace udp_receiver {
 FrameBuilderStatus BaseFrameBuilder::Build(QDataStream &ds, qint32 remaining_data) {
-  auto frame = CreateNewFrame();
+  QSharedPointer<Frame> frame = CreateNewFrame();
   
   auto status = BuildImpl(ds, frame);
   if (status != FrameBuilderStatus::NO_ERROR) return status;
 
+  emit FrameConstructed(QVariant::fromValue(frame));
   return FrameBuilderStatus::READY;
 }
 }  // namespace udp_receiver

@@ -43,9 +43,12 @@ TEST_F(SubFrameBuilderTest, FrameIsReady) {
 
 TEST_F(SubFrameBuilderTest, CreateBuildAndGet) {
   Frame expect(Frame::kHeaderMagic, 2, QByteArray::fromHex("0102"));
+  QVariant v;
+  QObject::connect(&builder_, &SubFrameBuilder::FrameConstructed,
+    [&](QVariant frame){v = frame;});
   os_ << expect;
   builder_.Build(is_, buffer_.size());
-  auto actual = builder_.GetFrame();
+  auto actual = v.value<QSharedPointer<Frame>>().data();
 
   EXPECT_EQ(expect.GetFrameSize(), actual->GetFrameSize());
   EXPECT_EQ(expect, *actual);
