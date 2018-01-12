@@ -6,7 +6,7 @@
 
 # Sequencer
 
-- [ ] Have builder finish condition
+- [ ] Reduce data copy
 
 # FrameBuilder
 
@@ -16,12 +16,20 @@
 # SubFrameBuilder
 
 - [x] SubFrameBuilder
+- [ ] Return result as QVariant
 
 # UDP Receiver
 
 - [ ] Handle error
 
+# main
+
+- [x] Command line option
+- [ ] Use CommandLineParser
+
 # TEST
 
 - [x] Refactoring Frame usage
-- [ ] Test QMap(int, QVariant)
+- [x] Test QMap(int, QVariant)
+- [ ] Refactoring template method
+- [ ] BuildHeader/Payload/Footer are integrated to BuildImpl

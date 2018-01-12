@@ -33,15 +33,16 @@ protected:
     QDataStream is_;
 };
 
-TEST_F(SubFrameBuilderTest, GetInstanceByQDataStream) {
-  os_ << 1 << 0x4 << 0x01020304;
+TEST_F(SubFrameBuilderTest, FrameIsReady) {
+  Frame expect(Frame::kHeaderMagic, 4, QByteArray::fromHex("01020304"));
+  os_ << expect;
   EXPECT_EQ(12, buffer_.size());
-  auto actual = builder_.Build(is_, 12);
+  auto actual = builder_.Build(is_, buffer_.size());
   EXPECT_EQ(FrameBuilderStatus::READY, actual);
 }
 
 TEST_F(SubFrameBuilderTest, CreateBuildAndGet) {
-  Frame expect(1, 2, QByteArray::fromHex("0102"));
+  Frame expect(Frame::kHeaderMagic, 2, QByteArray::fromHex("0102"));
   os_ << expect;
   builder_.Build(is_, buffer_.size());
   auto actual = builder_.GetFrame();

@@ -105,7 +105,7 @@ TEST_F(UdpReceiverTest, RecieveSubFrameAfterOneFrame) {
   QObject::connect(&udp_receiver_, &UdpReceiver::DataRecieved,
     [&](QSharedPointer<Frame> frame){pframe.append(frame);});
   ds_ << Frame::kHeaderMagic << 0x4 << 0x01020304
-      << 1 << 0x4 << 0x04030201;
+      << Frame::kHeaderMagic << 0x4 << 0x04030201;
   socket_.writeDatagram(datagram_.data(), datagram_.size(),
                         QHostAddress::LocalHost, 45454);
 
@@ -119,7 +119,7 @@ TEST_F(UdpReceiverTest, RecieveFrameAfterSubFrames) {
   QObject::connect(&udp_receiver_, &UdpReceiver::DataRecieved,
     [&](QSharedPointer<Frame> frame){pframe.append(frame);});
   Frame frame(Frame::kHeaderMagic, 4, QByteArray::fromHex("01020304"));
-  Frame subframe(1, 4, QByteArray::fromHex("01020304"));
+  Frame subframe(Frame::kHeaderMagic, 4, QByteArray::fromHex("01020304"));
   ds_ << frame << subframe << frame;
   socket_.writeDatagram(datagram_.data(), datagram_.size(),
                         QHostAddress::LocalHost, 45454);

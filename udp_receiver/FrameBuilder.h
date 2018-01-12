@@ -9,7 +9,6 @@
 #include <QObject>
 #include <QDataStream>
 #include <QSharedPointer>
-#include <QVector>
 #include "BaseFrameBuilder.h"
 #include "Frame.h"
 
@@ -21,7 +20,6 @@ class FrameBuilder : public BaseFrameBuilder {
       : BaseFrameBuilder(parent), frame_{Q_NULLPTR} {}
     ~FrameBuilder() {}
     QSharedPointer<Frame> GetFrame() override;
-    void EmitTestSignal();
 
  private:
     QSharedPointer<Frame> frame_;

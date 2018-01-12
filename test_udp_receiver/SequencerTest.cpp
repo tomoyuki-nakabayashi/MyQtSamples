@@ -22,7 +22,7 @@ protected:
   SequencerTest()
     : ds_(&buffer_, QIODevice::WriteOnly),
       kFrame(Frame::kHeaderMagic, 4, QByteArray::fromHex("01020304")),
-      kSubFrame(1, 4, QByteArray::fromHex("01020304")) {}
+      kSubFrame(Frame::kHeaderMagic, 4, QByteArray::fromHex("01020304")) {}
   virtual void SetUp()
   {
   }

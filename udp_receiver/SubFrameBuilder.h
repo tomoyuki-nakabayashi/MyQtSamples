@@ -13,12 +13,11 @@
 #include "Frame.h"
 
 namespace udp_receiver {
-class SubFrameBuilder : public BaseFrameBuilder
-{
+class SubFrameBuilder : public BaseFrameBuilder {
   Q_OBJECT
  public:
     explicit SubFrameBuilder(QObject *parent = Q_NULLPTR)
-      : BaseFrameBuilder(parent), frame_{nullptr} {}
+      : BaseFrameBuilder(parent), frame_{Q_NULLPTR} {}
     ~SubFrameBuilder() {}
     QSharedPointer<Frame> GetFrame() override;
 

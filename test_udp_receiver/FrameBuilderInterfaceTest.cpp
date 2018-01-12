@@ -46,7 +46,7 @@ TEST_F(FrameBuilderInterfaceTest, BuildFrameFromInterface) {
 }
 
 TEST_F(FrameBuilderInterfaceTest, BuildSubFrameFromInterface) {
-  os_ << 1 << 0x4 << 0x01020304;
+  os_ << 0x01234567 << 0x4 << 0x01020304;
   builder_ = &sub_frame_builder_;
   auto actual = builder_->Build(is_, 12);
   EXPECT_EQ(FrameBuilderStatus::READY, actual);
@@ -58,7 +58,7 @@ TEST_F(FrameBuilderInterfaceTest, SwitchBuilder) {
   auto actual1 = builder_->Build(is_, 12);
   EXPECT_EQ(FrameBuilderStatus::READY, actual1);
 
-  os_ << 1 << 0x4 << 0x01020304;
+  os_ << 0x01234567 << 0x4 << 0x01020304;
   builder_ = &sub_frame_builder_;
   auto actual2 = builder_->Build(is_, 12);
   EXPECT_EQ(FrameBuilderStatus::READY, actual2);
