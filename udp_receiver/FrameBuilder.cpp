@@ -6,21 +6,13 @@
 #include "FrameBuilder.h"
 
 namespace udp_receiver {
-void FrameBuilder::CreateNewFrame() {
-  frame_ = QSharedPointer<Frame>(new Frame());
+QSharedPointer<Frame> FrameBuilder::CreateNewFrame() {
+  return QSharedPointer<Frame>(new Frame());
 }
 
-FrameBuilderStatus FrameBuilder::BuildHeader(QDataStream &ds, qint32 &remaining_data) {
-  ds >> *frame_;
+FrameBuilderStatus FrameBuilder::BuildImpl(QDataStream &ds, QSharedPointer<Frame> frame) {
+  ds >> *(frame.data());
   return frame_->status;
-}
-
-FrameBuilderStatus FrameBuilder::BuildPayload(QDataStream &ds, qint32 &remaining_data) {
-  return FrameBuilderStatus::NO_ERROR;
-}
-
-FrameBuilderStatus FrameBuilder::BuildFooter(QDataStream &ds, qint32 &remaining_data) {
-  return FrameBuilderStatus::NO_ERROR;
 }
 
 QSharedPointer<Frame> FrameBuilder::GetFrame() {

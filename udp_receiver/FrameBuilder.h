@@ -25,10 +25,8 @@ class FrameBuilder : public BaseFrameBuilder {
     QSharedPointer<Frame> frame_;
   
  private:
-    void CreateNewFrame() override;
-    FrameBuilderStatus BuildHeader(QDataStream &ds, qint32 &remaining_data) override;
-    FrameBuilderStatus BuildPayload(QDataStream &ds, qint32 &remaining_data) override;
-    FrameBuilderStatus BuildFooter(QDataStream &ds, qint32 &remaining_data) override;
+    QSharedPointer<Frame> CreateNewFrame() override;
+    FrameBuilderStatus BuildImpl(QDataStream &ds, QSharedPointer<Frame> frame) override;
 };
 }  // namespace udp_receiver
 #endif  // UDP_RECEIVER_FRAMEBUILDER_H_

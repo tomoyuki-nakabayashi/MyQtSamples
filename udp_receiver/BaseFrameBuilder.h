@@ -7,6 +7,7 @@
 #define UDP_RECEIVER_BASEFRAMEBUILDER_H_
 
 #include <QObject>
+#include <QVariant>
 #include <QDataStream>
 #include <QSharedPointer>
 #include "Frame.h"
@@ -21,12 +22,13 @@ class BaseFrameBuilder: public QObject {
     virtual ~BaseFrameBuilder() {}
     FrameBuilderStatus Build(QDataStream &ds, qint32 remaining_data);
     virtual QSharedPointer<Frame> GetFrame() = 0;
-  
+
+ signals:
+    void NotifyFrameConstructed(QVariant frame);
+
  private:
-    virtual void CreateNewFrame() = 0;
-    virtual FrameBuilderStatus BuildHeader(QDataStream &ds, qint32 &remaining_data) = 0;
-    virtual FrameBuilderStatus BuildPayload(QDataStream &ds, qint32 &remaining_data) = 0;
-    virtual FrameBuilderStatus BuildFooter(QDataStream &ds, qint32 &remaining_data) = 0;
+    virtual QSharedPointer<Frame> CreateNewFrame() = 0;
+    virtual FrameBuilderStatus BuildImpl(QDataStream &ds, QSharedPointer<Frame>) = 0;
 };
 }  // namespace udp_receiver
 #endif  // UDP_RECEIVER_BASEFRAMEBUILDER_H_

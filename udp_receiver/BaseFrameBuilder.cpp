@@ -7,15 +7,9 @@
 
 namespace udp_receiver {
 FrameBuilderStatus BaseFrameBuilder::Build(QDataStream &ds, qint32 remaining_data) {
-  CreateNewFrame();
+  auto frame = CreateNewFrame();
   
-  auto status = BuildHeader(ds, remaining_data);
-  if (status != FrameBuilderStatus::NO_ERROR) return status;
-
-  status = BuildPayload(ds, remaining_data);
-  if (status != FrameBuilderStatus::NO_ERROR) return status;
-
-  BuildFooter(ds, remaining_data);
+  auto status = BuildImpl(ds, frame);
   if (status != FrameBuilderStatus::NO_ERROR) return status;
 
   return FrameBuilderStatus::READY;

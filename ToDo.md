@@ -10,7 +10,6 @@
 
 # FrameBuilder
 
-- [ ] Emit signal not Frame but QByteArray
 - [ ] Return result as QVariant
 
 # SubFrameBuilder
@@ -27,9 +26,10 @@
 - [x] Command line option
 - [ ] Use CommandLineParser
 
-# TEST
+# Refactoring
 
 - [x] Refactoring Frame usage
 - [x] Test QMap(int, QVariant)
-- [ ] Refactoring template method
-- [ ] BuildHeader/Payload/Footer are integrated to BuildImpl
+- [x] Refactoring template method
+- [x] BuildHeader/Payload/Footer are integrated to BuildImpl
+- [ ] Template method handle pointer handler
