@@ -55,11 +55,10 @@ TEST_F(RecoveryBuilderTest, ValidDataAfterInvalidData) {
   QVariant v;
   QObject::connect(&builder_, &RecoveryBuilder::FrameConstructed,
     [&](QVariant frame){v = frame;});
-  auto status = builder_.Build(buffer_);
-  auto result = builder_.LastResult();
+  auto result = builder_.Build(buffer_);
   auto frame = v.value<QSharedPointer<Frame>>().data();
 
-  EXPECT_EQ(FrameBuilderStatus::READY, status.status);
+  EXPECT_EQ(FrameBuilderStatus::READY, result.status);
   EXPECT_EQ(24, result.parsed_bytes);
   EXPECT_EQ(expect, *frame);
 }

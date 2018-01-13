@@ -19,8 +19,4 @@ BuilderResult BaseFrameBuilder::Build(QByteArray &ba) {
   last_result_.status = FrameBuilderStatus::READY;
   return last_result_;
 }
-
-BuilderResult BaseFrameBuilder::LastResult() {
-  return last_result_;
-}
 }  // namespace udp_receiver

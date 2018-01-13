@@ -29,7 +29,6 @@ class BaseFrameBuilder: public QObject {
       : QObject(parent), last_result_() {}
     virtual ~BaseFrameBuilder() {}
     BuilderResult Build(QByteArray &ba);
-    BuilderResult LastResult();
 
  signals:
     void FrameConstructed(QVariant frame_ptr);

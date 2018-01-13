@@ -119,8 +119,8 @@ TEST_F(FrameBuilderTest, CanCreateTwoFrame) {
   Frame expect(Frame::kHeaderMagic, 4, QByteArray::fromHex("01020304"));
   os_ << expect << expect;
 
-  EXPECT_EQ(FrameBuilderStatus::READY, builder_.Build(buffer_).status);
-  auto result = builder_.LastResult();
+  auto result = builder_.Build(buffer_);
+  EXPECT_EQ(FrameBuilderStatus::READY, result.status);
   buffer_.remove(0, result.parsed_bytes);
   EXPECT_EQ(FrameBuilderStatus::READY, builder_.Build(buffer_).status);
 }
