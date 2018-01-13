@@ -36,7 +36,7 @@ class BaseFrameBuilder: public QObject {
 
  private:
     virtual QSharedPointer<Frame> CreateNewFrame() = 0;
-    virtual FrameBuilderStatus BuildImpl(QDataStream &ds, Frame *frame) = 0;
+    virtual FrameBuilderStatus BuildImpl(QByteArray &ds, Frame *frame) = 0;
 
  private:
     BuilderResult last_result_;

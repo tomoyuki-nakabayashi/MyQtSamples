@@ -14,6 +14,7 @@
 # Biulders
 
 - [x] Change Build() parameter to QByteArray
+- [ ] Change BuildImpl to use QByteArray
 
 # FrameBuilder
 

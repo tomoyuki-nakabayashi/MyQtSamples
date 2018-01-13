@@ -3,14 +3,14 @@
  * This software is released under the MIT License, see LICENSE.
  */
 
-#include "FrameBuilder.h"
+#include "RecoveryBuilder.h"
 
 namespace udp_receiver {
-QSharedPointer<Frame> FrameBuilder::CreateNewFrame() {
+QSharedPointer<Frame> RecoveryBuilder::CreateNewFrame() {
   return QSharedPointer<Frame>(new Frame());
 }
 
-FrameBuilderStatus FrameBuilder::BuildImpl(QByteArray &ba, Frame *frame) {
+FrameBuilderStatus RecoveryBuilder::BuildImpl(QByteArray &ba, Frame *frame) {
   QDataStream ds(ba);
   ds >> *frame;
   return frame->status;

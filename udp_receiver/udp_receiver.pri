@@ -14,7 +14,8 @@ SOURCES += \
     $$SRC_DIR/Sequencer.cpp \
     $$SRC_DIR/BaseFrameBuilder.cpp \
     $$SRC_DIR/FrameBuilder.cpp \
-    $$SRC_DIR/SubFrameBuilder.cpp
+    $$SRC_DIR/SubFrameBuilder.cpp \
+    $$SRC_DIR/RecoveryBuilder.cpp
 
 HEADERS += \
     $$HEAD_DIR/UdpReceiver.h \
@@ -22,4 +23,5 @@ HEADERS += \
     $$HEAD_DIR/BaseFrameBuilder.h \
     $$HEAD_DIR/FrameBuilder.h \
     $$HEAD_DIR/SubFrameBuilder.h \
+    $$SRC_DIR/RecoveryBuilder.h \
     $$HEAD_DIR/Frame.h
