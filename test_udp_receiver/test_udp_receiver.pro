@@ -14,6 +14,7 @@ SOURCES +=     main.cpp \
    FrameBuilderInterfaceTest.cpp \
    FrameBuilderTest.cpp \
    SubFrameBuilderTest.cpp \
+   RecoveryBuilderTest.cpp \
    PlayGround.cpp
 
 DESTDIR = release

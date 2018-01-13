@@ -4,15 +4,15 @@
  */
 
 #include <gtest/gtest.h>
+#include "BaseFrameBuilder.h"
 
 namespace recovery_builder_test {
 using udp_receiver::Frame;
-using udp_receiver::FrameBuilderStatus;
 
 class RecoveryBuilderTest : public ::testing::Test {
 protected:
   RecoveryBuilderTest()
-    : os_(&buffer_, QIODevice::WriteOnly), is_(&buffer_, QIODevice::ReadOnly)
+    : os_(&buffer_, QIODevice::WriteOnly)
   {
   }
 
@@ -27,8 +27,20 @@ protected:
   protected:
     QByteArray buffer_;
     QDataStream os_;
-    QDataStream is_;
 };
 
-TEST_F(FrameBuilderTest, TestQByteArray) {
+TEST_F(RecoveryBuilderTest, TestContainsQByteArray) {
+  Frame expect(Frame::kHeaderMagic, 4, QByteArray::fromHex("01020304"));
+  os_ << "this is a test string" << expect;
+
+  EXPECT_TRUE(buffer_.contains(QByteArray::fromHex("01234567")));
 }
+
+TEST_F(RecoveryBuilderTest, TestIndexOfQByteArray) {
+  Frame invalid(0x76543210, 4, QByteArray::fromHex("01020304"));
+  Frame expect(Frame::kHeaderMagic, 4, QByteArray::fromHex("01020304"));
+  os_ << invalid << expect;
+
+  EXPECT_EQ(12, buffer_.indexOf(QByteArray::fromHex("01234567")));
+}
+}  // namespace recovery_builder_test

@@ -17,7 +17,7 @@ using udp_receiver::FrameBuilderStatus;
 class FrameBuilderInterfaceTest : public ::testing::Test {
 protected:
   FrameBuilderInterfaceTest()
-    : os_(&buffer_, QIODevice::WriteOnly), is_(&buffer_, QIODevice::ReadOnly)
+    : os_(&buffer_, QIODevice::WriteOnly)
   {
   }
 
@@ -35,7 +35,6 @@ protected:
     SubFrameBuilder sub_frame_builder_;
     QByteArray buffer_;
     QDataStream os_;
-    QDataStream is_;
 };
 
 TEST_F(FrameBuilderInterfaceTest, BuildFrameFromInterface) {

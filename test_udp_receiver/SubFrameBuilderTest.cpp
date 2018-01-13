@@ -14,7 +14,7 @@ using udp_receiver::FrameBuilderStatus;
 class SubFrameBuilderTest : public ::testing::Test {
 protected:
   SubFrameBuilderTest()
-    : os_(&buffer_, QIODevice::WriteOnly), is_(&buffer_, QIODevice::ReadOnly)
+    : os_(&buffer_, QIODevice::WriteOnly)
   {
   }
 
@@ -30,7 +30,6 @@ protected:
     SubFrameBuilder builder_;
     QByteArray buffer_;
     QDataStream os_;
-    QDataStream is_;
 };
 
 TEST_F(SubFrameBuilderTest, FrameIsReady) {
