@@ -16,10 +16,10 @@
 namespace udp_receiver {
 struct BuilderResult {
   FrameBuilderStatus status;
-  qint32 size;
+  qint32 parsed_bytes;
 
-  explicit BuilderResult(FrameBuilderStatus stat = FrameBuilderStatus::NO_ERROR, qint32 s = 0)
-    : status{stat}, size{s} {}
+  explicit BuilderResult(FrameBuilderStatus stat = FrameBuilderStatus::NO_ERROR, qint32 len = 0)
+    : status{stat}, parsed_bytes{len} {}
 };
 
 class BaseFrameBuilder: public QObject {
@@ -35,7 +35,7 @@ class BaseFrameBuilder: public QObject {
     void FrameConstructed(QVariant frame);
 
  private:
-    virtual QSharedPointer<Frame> CreateNewFrame() = 0;
+    virtual QVariant CreateNewFrame() = 0;
     virtual FrameBuilderStatus BuildImpl(QByteArray &ds, Frame *frame) = 0;
 
  private:

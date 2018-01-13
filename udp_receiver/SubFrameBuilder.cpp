@@ -6,8 +6,9 @@
 #include "SubFrameBuilder.h"
 
 namespace udp_receiver {
-QSharedPointer<Frame> SubFrameBuilder::CreateNewFrame() {
-  return QSharedPointer<Frame>(new Frame());
+QVariant SubFrameBuilder::CreateNewFrame() {
+  QVariant v = QVariant::fromValue(QSharedPointer<Frame>(new Frame()));
+  return v;
 }
 
 FrameBuilderStatus SubFrameBuilder::BuildImpl(QByteArray &ba, Frame *frame) {

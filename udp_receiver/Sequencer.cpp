@@ -28,7 +28,7 @@ bool Sequencer::ConstructFrame() {
   if (!ret) return false;
 
   auto result = builder_->LastResult();
-  pending_data_.remove(0, result.size);
+  pending_data_.remove(0, result.parsed_bytes);
 
   change_state_(*this);
   return true;

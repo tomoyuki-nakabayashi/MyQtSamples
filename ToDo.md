@@ -5,7 +5,6 @@
 - [ ] Refactor >> operator
 - [ ] Throw exception in >> operator
 - [ ] Rename frame_size to parsed_size or something
-- [ ] Extract base type
 
 # Sequencer
 
@@ -17,6 +16,8 @@
 
 - [x] Change Build() parameter to QByteArray
 - [x] Change BuildImpl to use QByteArray
+- [ ] Use QVariant to pass frame data
+- [ ] Build returns BuilderResult
 
 # FrameBuilder
 

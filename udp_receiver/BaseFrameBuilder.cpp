@@ -8,14 +8,15 @@
 namespace udp_receiver {
 FrameBuilderStatus BaseFrameBuilder::Build(QByteArray &ba) {
   last_result_ = BuilderResult();
-  QSharedPointer<Frame> frame = CreateNewFrame();
+  QVariant frame_ptr = CreateNewFrame();
+  auto frame = frame_ptr.value<QSharedPointer<Frame>>();
   
   last_result_.status = BuildImpl(ba, frame.data());
   if (last_result_.status != FrameBuilderStatus::NO_ERROR) {
     return last_result_.status;
   }
 
-  last_result_.size = frame->GetFrameSize();
+  last_result_.parsed_bytes = frame->GetFrameSize();
   emit FrameConstructed(QVariant::fromValue(frame));
   return FrameBuilderStatus::READY;
 }

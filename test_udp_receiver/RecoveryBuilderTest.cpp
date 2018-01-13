@@ -60,7 +60,7 @@ TEST_F(RecoveryBuilderTest, ValidDataAfterInvalidData) {
   auto frame = v.value<QSharedPointer<Frame>>().data();
 
   EXPECT_EQ(FrameBuilderStatus::READY, status);
-  EXPECT_EQ(24, result.size);
+  EXPECT_EQ(24, result.parsed_bytes);
   EXPECT_EQ(expect, *frame);
 }
 }  // namespace recovery_builder_test

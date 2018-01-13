@@ -121,7 +121,7 @@ TEST_F(FrameBuilderTest, CanCreateTwoFrame) {
 
   EXPECT_EQ(FrameBuilderStatus::READY, builder_.Build(buffer_));
   auto result = builder_.LastResult();
-  buffer_.remove(0, result.size);
+  buffer_.remove(0, result.parsed_bytes);
   EXPECT_EQ(FrameBuilderStatus::READY, builder_.Build(buffer_));
 }
 

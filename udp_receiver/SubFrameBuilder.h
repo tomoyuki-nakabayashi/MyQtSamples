@@ -21,7 +21,7 @@ class SubFrameBuilder : public BaseFrameBuilder {
     ~SubFrameBuilder() {}
 
  private:
-    QSharedPointer<Frame> CreateNewFrame() override;
+    QVariant CreateNewFrame() override;
     FrameBuilderStatus BuildImpl(QByteArray &ba, Frame *frame) override;
 };
 }  // udp_receiver
