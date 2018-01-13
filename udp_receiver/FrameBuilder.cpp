@@ -11,7 +11,8 @@ QVariant FrameBuilder::CreateNewFrame() {
   return v;
 }
 
-BuilderResult FrameBuilder::BuildImpl(QByteArray &ba, Frame *frame) {
+BuilderResult FrameBuilder::BuildImpl(QByteArray &ba, QVariant frame_ptr) {
+  auto frame = frame_ptr.value<QSharedPointer<Frame>>();
   BuilderResult result;
   QDataStream ds(ba);
   ds >> *frame;

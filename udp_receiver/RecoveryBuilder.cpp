@@ -11,7 +11,8 @@ QVariant RecoveryBuilder::CreateNewFrame() {
   return v;
 }
 
-BuilderResult RecoveryBuilder::BuildImpl(QByteArray &ba, Frame *frame) {
+BuilderResult RecoveryBuilder::BuildImpl(QByteArray &ba, QVariant frame_ptr) {
+  auto frame = frame_ptr.value<QSharedPointer<Frame>>();
   BuilderResult result;
   qint32 restart_point = ba.indexOf(QByteArray::fromHex("01234567"));
   if (restart_point == -1) {

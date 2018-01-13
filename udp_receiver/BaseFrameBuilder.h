@@ -32,11 +32,11 @@ class BaseFrameBuilder: public QObject {
     BuilderResult LastResult();
 
  signals:
-    void FrameConstructed(QVariant frame);
+    void FrameConstructed(QVariant frame_ptr);
 
  private:
     virtual QVariant CreateNewFrame() = 0;
-    virtual BuilderResult BuildImpl(QByteArray &ds, Frame *frame) = 0;
+    virtual BuilderResult BuildImpl(QByteArray &ds, QVariant frame_ptr) = 0;
 
  private:
     BuilderResult last_result_;

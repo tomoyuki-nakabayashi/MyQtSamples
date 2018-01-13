@@ -1,10 +1,9 @@
 # UDP Frame
 
-- [ ] Translate to QByteArray
 - [ ] Move HeaderMagic to FrameBuilder
 - [ ] Refactor >> operator
 - [ ] Throw exception in >> operator
-- [ ] Rename frame_size to parsed_size or something
+- [x] Rename frame_size to parsed_size or something
 
 # Sequencer
 
@@ -16,8 +15,8 @@
 
 - [x] Change Build() parameter to QByteArray
 - [x] Change BuildImpl to use QByteArray
-- [ ] Use QVariant to pass frame data
-- [ ] Build returns BuilderResult
+- [x] Use QVariant to pass frame data
+- [x] Build returns BuilderResult
 
 # FrameBuilder
 

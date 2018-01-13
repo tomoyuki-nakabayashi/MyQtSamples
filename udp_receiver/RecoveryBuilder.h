@@ -22,7 +22,7 @@ class RecoveryBuilder : public BaseFrameBuilder {
   
  private:
     QVariant CreateNewFrame() override;
-    BuilderResult BuildImpl(QByteArray &ba, Frame *frame) override;
+    BuilderResult BuildImpl(QByteArray &ba, QVariant frame_ptr) override;
 };
 }  // namespace udp_receiver
 #endif  // UDP_RECEIVER_RECOVERYBUILDER_H_
