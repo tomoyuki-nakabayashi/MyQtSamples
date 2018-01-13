@@ -10,6 +10,7 @@
 #include <QMetaObject>
 #include <QByteArray>
 #include <QSharedPointer>
+#include <QScopedPointer>
 #include "BaseFrameBuilder.h"
 #include "Frame.h"
 
@@ -29,7 +30,7 @@ class Sequencer : public QObject {
     enum class Sequence {RECOVERING = -1, FRAME = 0, SUB_FRAME = 1, UNCHANGED};
     Sequence state_;
     QByteArray pending_data_;
-    QSharedPointer<BaseFrameBuilder> builder_;
+    QScopedPointer<BaseFrameBuilder> builder_;
     QMetaObject::Connection builder_connection_;
 
  private:

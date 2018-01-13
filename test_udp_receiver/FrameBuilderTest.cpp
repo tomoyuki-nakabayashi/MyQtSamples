@@ -74,7 +74,7 @@ TEST_F(FrameBuilderTest, TestOperatorRead) {
 TEST_F(FrameBuilderTest, FrameIsReady) {
   Frame expect(Frame::kHeaderMagic, 4, QByteArray::fromHex("01020304"));
   os_ << expect;
-  auto actual = builder_.Build(is_, buffer_.size());
+  auto actual = builder_.Build(is_);
   EXPECT_EQ(FrameBuilderStatus::READY, actual);
 }
 
@@ -84,7 +84,7 @@ TEST_F(FrameBuilderTest, CreateBuildAndGet) {
   QObject::connect(&builder_, &FrameBuilder::FrameConstructed,
     [&](QVariant frame){v = frame;});
   os_ << expect;
-  builder_.Build(is_, buffer_.size());
+  builder_.Build(is_);
   auto actual = v.value<QSharedPointer<Frame>>().data();
 
   EXPECT_EQ(expect, *actual);
@@ -93,25 +93,25 @@ TEST_F(FrameBuilderTest, CreateBuildAndGet) {
 
 TEST_F(FrameBuilderTest, HeaderIsStillImcomplete) {
   os_ << (quint16)0x0123; // imcomplete header
-  auto result = builder_.Build(is_, buffer_.size());
+  auto result = builder_.Build(is_);
   EXPECT_EQ(FrameBuilderStatus::RETRY, result);
 }
 
 TEST_F(FrameBuilderTest, PayloadSizeIsStillImcomplete) {
   os_ << Frame::kHeaderMagic << (qint16)0; // imcomplete payloadSize
-  auto result = builder_.Build(is_, buffer_.size());
+  auto result = builder_.Build(is_);
   EXPECT_EQ(FrameBuilderStatus::RETRY, result);
 }
 
 TEST_F(FrameBuilderTest, PayloadIsStillImcomplete) {
   os_ << Frame::kHeaderMagic << (qint32)4 << (quint16)0x0102; // imcomplete payload
-  auto result = builder_.Build(is_, buffer_.size());
+  auto result = builder_.Build(is_);
   EXPECT_EQ(FrameBuilderStatus::RETRY, result);
 }
 
 TEST_F(FrameBuilderTest, InvalidHeader) {
   os_ << (quint32)0x76543210 << (qint32)4 << (quint32)0x01020304;
-  auto result = builder_.Build(is_, buffer_.size());
+  auto result = builder_.Build(is_);
   EXPECT_EQ(FrameBuilderStatus::INVALID, result);
 }
 
@@ -119,9 +119,8 @@ TEST_F(FrameBuilderTest, CanCreateTwoFrame) {
   Frame expect(Frame::kHeaderMagic, 4, QByteArray::fromHex("01020304"));
   os_ << expect << expect;
 
-  auto remaining_data = buffer_.size();
-  EXPECT_EQ(FrameBuilderStatus::READY, builder_.Build(is_, remaining_data));
-  EXPECT_EQ(FrameBuilderStatus::READY, builder_.Build(is_, remaining_data));
+  EXPECT_EQ(FrameBuilderStatus::READY, builder_.Build(is_));
+  EXPECT_EQ(FrameBuilderStatus::READY, builder_.Build(is_));
 }
 
 }  // udp_packet_test

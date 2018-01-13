@@ -10,12 +10,8 @@ QSharedPointer<Frame> FrameBuilder::CreateNewFrame() {
   return QSharedPointer<Frame>(new Frame());
 }
 
-FrameBuilderStatus FrameBuilder::BuildImpl(QDataStream &ds, QSharedPointer<Frame> frame) {
-  ds >> *(frame.data());
+FrameBuilderStatus FrameBuilder::BuildImpl(QDataStream &ds, Frame *frame) {
+  ds >> *frame;
   return frame->status;
-}
-
-QSharedPointer<Frame> FrameBuilder::GetFrame() {
-  return frame_;
 }
 }  // namespace udp_receiver

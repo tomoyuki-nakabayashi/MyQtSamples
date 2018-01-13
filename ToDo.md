@@ -9,16 +9,20 @@
 - [ ] Reduce data copy
 - [x] NEXT!!! remove pending data
 - [ ] Use functor to change state
+- [x] Use QScopedPointer instead QSharedPointer
+
+# Biulders
+
+- [x] Remove GetFrame
+- [x] Remove parameter remaining_data
 
 # FrameBuilder
 
 - [x] Return LastResult
-- [ ] Manage pointer as QScopedPointer
 
 # SubFrameBuilder
 
 - [x] Return LastResult
-- [ ] Manage pointer as QScopedPointer
 
 # UDP Receiver
 

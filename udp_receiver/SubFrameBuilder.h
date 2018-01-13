@@ -17,16 +17,12 @@ class SubFrameBuilder : public BaseFrameBuilder {
   Q_OBJECT
  public:
     explicit SubFrameBuilder(QObject *parent = Q_NULLPTR)
-      : BaseFrameBuilder(parent), frame_{Q_NULLPTR} {}
+      : BaseFrameBuilder(parent) {}
     ~SubFrameBuilder() {}
-    QSharedPointer<Frame> GetFrame() override;
-
- private:
-    QSharedPointer<Frame> frame_;
 
  private:
     QSharedPointer<Frame> CreateNewFrame() override;
-    FrameBuilderStatus BuildImpl(QDataStream &ds, QSharedPointer<Frame> frame) override;
+    FrameBuilderStatus BuildImpl(QDataStream &ds, Frame *frame) override;
 };
 }  // udp_receiver
 #endif  // UDP_RECEIVER_SUBFRAMEBUILDER_H_

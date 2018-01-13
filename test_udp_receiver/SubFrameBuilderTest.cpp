@@ -36,8 +36,7 @@ protected:
 TEST_F(SubFrameBuilderTest, FrameIsReady) {
   Frame expect(Frame::kHeaderMagic, 4, QByteArray::fromHex("01020304"));
   os_ << expect;
-  EXPECT_EQ(12, buffer_.size());
-  auto actual = builder_.Build(is_, buffer_.size());
+  auto actual = builder_.Build(is_);
   EXPECT_EQ(FrameBuilderStatus::READY, actual);
 }
 
@@ -47,7 +46,7 @@ TEST_F(SubFrameBuilderTest, CreateBuildAndGet) {
   QObject::connect(&builder_, &SubFrameBuilder::FrameConstructed,
     [&](QVariant frame){v = frame;});
   os_ << expect;
-  builder_.Build(is_, buffer_.size());
+  builder_.Build(is_);
   auto actual = v.value<QSharedPointer<Frame>>().data();
 
   EXPECT_EQ(expect.GetFrameSize(), actual->GetFrameSize());

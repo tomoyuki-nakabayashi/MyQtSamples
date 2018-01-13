@@ -6,11 +6,11 @@
 #include "BaseFrameBuilder.h"
 
 namespace udp_receiver {
-FrameBuilderStatus BaseFrameBuilder::Build(QDataStream &ds, qint32 remaining_data) {
+FrameBuilderStatus BaseFrameBuilder::Build(QDataStream &ds) {
   last_result_ = BuilderResult();
   QSharedPointer<Frame> frame = CreateNewFrame();
   
-  last_result_.status = BuildImpl(ds, frame);
+  last_result_.status = BuildImpl(ds, frame.data());
   if (last_result_.status != FrameBuilderStatus::NO_ERROR) {
     return last_result_.status;
   }

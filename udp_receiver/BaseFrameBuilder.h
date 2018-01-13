@@ -10,7 +10,6 @@
 #include <QVariant>
 #include <QDataStream>
 #include <QSharedPointer>
-#include <QScopedPointer>
 #include "Frame.h"
 
 namespace udp_receiver {
@@ -29,8 +28,7 @@ class BaseFrameBuilder: public QObject {
     explicit BaseFrameBuilder(QObject *parent = Q_NULLPTR)
       : QObject(parent), last_result_() {}
     virtual ~BaseFrameBuilder() {}
-    FrameBuilderStatus Build(QDataStream &ds, qint32 remaining_data);
-    virtual QSharedPointer<Frame> GetFrame() = 0;
+    FrameBuilderStatus Build(QDataStream &ds);
     BuilderResult LastResult();
 
  signals:
@@ -38,7 +36,7 @@ class BaseFrameBuilder: public QObject {
 
  private:
     virtual QSharedPointer<Frame> CreateNewFrame() = 0;
-    virtual FrameBuilderStatus BuildImpl(QDataStream &ds, QSharedPointer<Frame>) = 0;
+    virtual FrameBuilderStatus BuildImpl(QDataStream &ds, Frame *frame) = 0;
 
  private:
     BuilderResult last_result_;
