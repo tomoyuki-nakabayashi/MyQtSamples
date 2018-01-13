@@ -8,8 +8,8 @@
 # Sequencer
 
 - [ ] Reduce data copy
-- [ ] Use functor to change state
-- [ ] ConstructFrame() return bool
+- [x] Use functor to change state
+- [x] ConstructFrame() return bool
 
 # Biulders
 
@@ -26,7 +26,7 @@
 # UDP Receiver
 
 - [ ] Handle error
-- [ ] Has FrameConstruct loop
+- [x] Has FrameConstruct loop
 
 # main
 

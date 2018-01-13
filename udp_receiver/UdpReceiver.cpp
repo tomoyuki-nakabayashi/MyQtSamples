@@ -29,6 +29,7 @@ void UdpReceiver::ProcessPendingDatagrams() {
     auto datagram = udp_socket_.receiveDatagram(
                                     udp_socket_.pendingDatagramSize());
     sequencer_.AppendPendingData(datagram.data());
+
     while (sequencer_.ConstructFrame()) {}
   }
 }

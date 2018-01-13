@@ -28,17 +28,13 @@ class Sequencer : public QObject {
     void FrameConstructed(QSharedPointer<Frame> frame);
 
  private:
-    enum class Sequence {RECOVERING = -1, FRAME = 0, SUB_FRAME = 1, UNCHANGED};
     std::function<void(Sequencer&)> change_state_;
     QByteArray pending_data_;
     QScopedPointer<BaseFrameBuilder> builder_;
     QMetaObject::Connection builder_connection_;
 
  private:
-    void ChangeSequence(Sequence next);
-    Sequence GetNextState();
     void ConnectToBuilder();
-
     static void ChangeStateOnFrame(Sequencer& self);
     static void ChangeStateOnSubFrame(Sequencer& self);
 
