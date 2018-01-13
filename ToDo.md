@@ -4,6 +4,8 @@
 - [ ] Move HeaderMagic to FrameBuilder
 - [ ] Refactor >> operator
 - [ ] Throw exception in >> operator
+- [ ] Rename frame_size to parsed_size or something
+- [ ] Extract base type
 
 # Sequencer
 
@@ -14,7 +16,7 @@
 # Biulders
 
 - [x] Change Build() parameter to QByteArray
-- [ ] Change BuildImpl to use QByteArray
+- [x] Change BuildImpl to use QByteArray
 
 # FrameBuilder
 
@@ -24,6 +26,7 @@
 
 # ErrorRecoveryBuilder
 
+- [x] Build a valid frame if byte array has a valid data
 
 # UDP Receiver
 

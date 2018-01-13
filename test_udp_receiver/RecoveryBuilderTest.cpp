@@ -47,7 +47,7 @@ TEST_F(RecoveryBuilderTest, TestIndexOfQByteArray) {
   EXPECT_EQ(12, buffer_.indexOf(QByteArray::fromHex("01234567")));
 }
 
-TEST_F(RecoveryBuilderTest, ABSTRACT_USE) {
+TEST_F(RecoveryBuilderTest, ValidDataAfterInvalidData) {
   Frame invalid(0x76543210, 4, QByteArray::fromHex("01020304"));
   Frame expect(Frame::kHeaderMagic, 4, QByteArray::fromHex("01020304"));
   os_ << invalid << expect;
@@ -55,12 +55,12 @@ TEST_F(RecoveryBuilderTest, ABSTRACT_USE) {
   QVariant v;
   QObject::connect(&builder_, &RecoveryBuilder::FrameConstructed,
     [&](QVariant frame){v = frame;});
-//  auto frame = v.value<QSharedPointer<Frame>>().data();
   auto status = builder_.Build(buffer_);
   auto result = builder_.LastResult();
+  auto frame = v.value<QSharedPointer<Frame>>().data();
 
-//  EXPECT_EQ(expect, *frame);
   EXPECT_EQ(FrameBuilderStatus::READY, status);
   EXPECT_EQ(24, result.size);
+  EXPECT_EQ(expect, *frame);
 }
 }  // namespace recovery_builder_test

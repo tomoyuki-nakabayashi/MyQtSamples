@@ -24,14 +24,14 @@ struct Frame {
     QByteArray payload;
     FrameBuilderStatus status;
     qint32 frame_size;
+    qint32 skipped;
 
  public:
     static const quint32 kHeaderMagic = 0x01234567;
 
  public:
-    Frame(): header(), payload_size(), payload() {}
-    Frame(quint32 h, qint32 s, QByteArray p)
-      : header{h}, payload_size{s}, payload(p) {}
+    explicit Frame(quint32 h = 0, qint32 s = 0, QByteArray p = {})
+      : header{h}, payload_size{s}, payload(p), frame_size{}, skipped{} {}
     Frame(const Frame &other)
       : header{other.header},
         payload_size{other.payload_size},
@@ -41,7 +41,7 @@ struct Frame {
     }
     bool operator!=(const Frame &rhs) const { return !(*this == rhs); }
 
-    qint32 GetFrameSize() const {return sizeof(header) + sizeof(payload_size) + payload_size;}
+    qint32 GetFrameSize() const {return sizeof(header) + sizeof(payload_size) + payload_size + skipped;}
 };
 
 inline QDataStream& operator <<(QDataStream& os, const Frame& f) {
