@@ -3,30 +3,30 @@
 - [ ] Translate to QByteArray
 - [ ] Move HeaderMagic to FrameBuilder
 - [ ] Refactor >> operator
+- [ ] Throw exception in >> operator
 
 # Sequencer
 
 - [ ] Reduce data copy
-- [x] NEXT!!! remove pending data
 - [ ] Use functor to change state
-- [x] Use QScopedPointer instead QSharedPointer
+- [ ] ConstructFrame() return bool
 
 # Biulders
 
-- [x] Remove GetFrame
-- [x] Remove parameter remaining_data
 
 # FrameBuilder
 
-- [x] Return LastResult
 
 # SubFrameBuilder
 
-- [x] Return LastResult
+
+# ErrorRecoveryBuilder
+
 
 # UDP Receiver
 
 - [ ] Handle error
+- [ ] Has FrameConstruct loop
 
 # main
 
@@ -34,4 +34,3 @@
 
 # Refactoring
 
-- [x] Template method handle pointer handler

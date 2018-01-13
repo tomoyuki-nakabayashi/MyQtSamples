@@ -6,6 +6,7 @@
 #ifndef UDP_RECEIVER_SEQUENCER_H_
 #define UDP_RECEIVER_SEQUENCER_H_
 
+#include <functional>
 #include <QObject>
 #include <QMetaObject>
 #include <QByteArray>
@@ -28,6 +29,7 @@ class Sequencer : public QObject {
 
  private:
     enum class Sequence {RECOVERING = -1, FRAME = 0, SUB_FRAME = 1, UNCHANGED};
+    std::function<Sequence(void)> get_next_state_;
     Sequence state_;
     QByteArray pending_data_;
     QScopedPointer<BaseFrameBuilder> builder_;

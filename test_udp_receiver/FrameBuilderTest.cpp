@@ -46,9 +46,9 @@ TEST_F(FrameBuilderTest, TestQByteStream) {
   QScopedPointer<char> buff(new char[actual_payload_size]);
   is_.readRawData(buff.data(), actual_payload_size);
 
-  EXPECT_EQ(expect.GetHeader(), actual_header);
-  EXPECT_EQ(expect.GetPayloadSize(), actual_payload_size);
-  EXPECT_STREQ(expect.GetPayload().data(), buff.data());
+  EXPECT_EQ(expect.header, actual_header);
+  EXPECT_EQ(expect.payload_size, actual_payload_size);
+  EXPECT_STREQ(expect.payload.data(), buff.data());
 }
 
 

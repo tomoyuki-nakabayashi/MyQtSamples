@@ -41,18 +41,12 @@ struct Frame {
     }
     bool operator!=(const Frame &rhs) const { return !(*this == rhs); }
 
-    quint32 GetHeader() const {return header;}
-    qint32 GetPayloadSize() const {return payload_size;}
-    QByteArray GetPayload() const {return payload;}
-    void SetHeader(quint32 h) {header = h;}
-    void SetPayloadSize(quint32 s) {payload_size = s;}
-    void SetPayload(const QByteArray& p) {payload = p;}
     qint32 GetFrameSize() const {return sizeof(header) + sizeof(payload_size) + payload_size;}
 };
 
 inline QDataStream& operator <<(QDataStream& os, const Frame& f) {
-  os << f.GetHeader() << f.GetPayloadSize();
-  for (auto b : f.GetPayload())
+  os << f.header << f.payload_size;
+  for (auto b : f.payload)
     os << static_cast<quint8>(b);
   return os;
 }
