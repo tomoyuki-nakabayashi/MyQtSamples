@@ -11,9 +11,10 @@
 #include <QByteArray>
 #include <QDataStream>
 #include <QSharedPointer>
-#include "Frame.h"
 
 namespace udp_receiver {
+enum class FrameBuilderStatus {NO_ERROR = 0, READY = 1, INVALID = -1, RETRY = -2};
+
 struct BuilderResult {
   FrameBuilderStatus status;
   qint32 parsed_bytes;

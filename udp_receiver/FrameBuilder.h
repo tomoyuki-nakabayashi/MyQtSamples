@@ -10,7 +10,6 @@
 #include <QDataStream>
 #include <QSharedPointer>
 #include "BaseFrameBuilder.h"
-#include "Frame.h"
 
 namespace udp_receiver {
 class FrameBuilder : public BaseFrameBuilder {

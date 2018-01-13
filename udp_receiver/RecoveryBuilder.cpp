@@ -4,6 +4,7 @@
  */
 
 #include "RecoveryBuilder.h"
+#include "Frame.h"
 
 namespace udp_receiver {
 QVariant RecoveryBuilder::CreateNewFrame() {

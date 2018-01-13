@@ -4,6 +4,7 @@
  */
 
 #include <gtest/gtest.h>
+#include "Frame.h"
 #include "SubFrameBuilder.h"
 
 namespace sub_data_builder_test {

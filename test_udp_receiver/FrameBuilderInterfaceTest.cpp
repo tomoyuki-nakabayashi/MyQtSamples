@@ -4,6 +4,7 @@
  */
 
 #include <gtest/gtest.h>
+#include "Frame.h"
 #include "FrameBuilder.h"
 #include "SubFrameBuilder.h"
 

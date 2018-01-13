@@ -3,6 +3,7 @@
 - [ ] Move HeaderMagic to FrameBuilder
 - [ ] Refactor >> operator
 - [ ] Throw exception in >> operator
+- [ ] Move defenition to cpp file
 
 # Sequencer
 
@@ -21,6 +22,9 @@
 
 
 # ErrorRecoveryBuilder
+
+
+# BuilderFactory?
 
 
 # UDP Receiver

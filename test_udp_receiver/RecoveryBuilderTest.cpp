@@ -4,6 +4,7 @@
  */
 
 #include <gtest/gtest.h>
+#include "Frame.h"
 #include "RecoveryBuilder.h"
 
 namespace recovery_builder_test {

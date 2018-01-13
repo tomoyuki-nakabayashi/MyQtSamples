@@ -4,6 +4,7 @@
  */
 
 #include "SubFrameBuilder.h"
+#include "Frame.h"
 
 namespace udp_receiver {
 QVariant SubFrameBuilder::CreateNewFrame() {
@@ -17,7 +18,7 @@ BuilderResult SubFrameBuilder::BuildImpl(QByteArray &ba, QVariant frame_ptr) {
   QDataStream ds(ba);
   ds >> *frame;
 
-  result.status = frame->status;
+  result.status = static_cast<FrameBuilderStatus>(frame->status);
   result.parsed_bytes = frame->GetFrameSize();
   return result;
 }

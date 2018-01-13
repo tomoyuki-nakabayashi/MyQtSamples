@@ -15,7 +15,8 @@ SOURCES += \
     $$SRC_DIR/BaseFrameBuilder.cpp \
     $$SRC_DIR/FrameBuilder.cpp \
     $$SRC_DIR/SubFrameBuilder.cpp \
-    $$SRC_DIR/RecoveryBuilder.cpp
+    $$SRC_DIR/RecoveryBuilder.cpp \
+    $$SRC_DIR/Frame.cpp
 
 HEADERS += \
     $$HEAD_DIR/UdpReceiver.h \

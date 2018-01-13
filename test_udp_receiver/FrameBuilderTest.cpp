@@ -5,6 +5,7 @@
 
 #include <gtest/gtest.h>
 #include <QVector>
+#include "Frame.h"
 #include "FrameBuilder.h"
 
 namespace udp_packet_test {
