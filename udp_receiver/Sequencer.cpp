@@ -24,8 +24,7 @@ const QByteArray& Sequencer::AppendPendingData(const QByteArray &ba) {
 }
 
 bool Sequencer::ConstructFrame() {
-  QDataStream build_stream(pending_data_);
-  bool ret = (builder_->Build(build_stream) == FrameBuilderStatus::READY);
+  bool ret = (builder_->Build(pending_data_) == FrameBuilderStatus::READY);
   if (!ret) return false;
 
   auto result = builder_->LastResult();

@@ -8,12 +8,12 @@
 
 #include <QObject>
 #include <QVariant>
+#include <QByteArray>
 #include <QDataStream>
 #include <QSharedPointer>
 #include "Frame.h"
 
 namespace udp_receiver {
-//enum class FrameBuilderStatus {NO_ERROR = 0, READY = 1, INVALID = -1, RETRY = -2};
 struct BuilderResult {
   FrameBuilderStatus status;
   qint32 size;
@@ -28,7 +28,7 @@ class BaseFrameBuilder: public QObject {
     explicit BaseFrameBuilder(QObject *parent = Q_NULLPTR)
       : QObject(parent), last_result_() {}
     virtual ~BaseFrameBuilder() {}
-    FrameBuilderStatus Build(QDataStream &ds);
+    FrameBuilderStatus Build(QByteArray &ba);
     BuilderResult LastResult();
 
  signals:

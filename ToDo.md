@@ -13,6 +13,7 @@
 
 # Biulders
 
+- [x] Change Build() parameter to QByteArray
 
 # FrameBuilder
 

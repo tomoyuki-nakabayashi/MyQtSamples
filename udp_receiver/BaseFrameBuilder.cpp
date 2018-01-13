@@ -6,7 +6,8 @@
 #include "BaseFrameBuilder.h"
 
 namespace udp_receiver {
-FrameBuilderStatus BaseFrameBuilder::Build(QDataStream &ds) {
+FrameBuilderStatus BaseFrameBuilder::Build(QByteArray &ba) {
+  QDataStream ds(ba);
   last_result_ = BuilderResult();
   QSharedPointer<Frame> frame = CreateNewFrame();
   
