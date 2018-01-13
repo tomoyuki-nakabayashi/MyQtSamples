@@ -7,6 +7,7 @@
 #define UDP_RECEIVER_SEQUENCER_H_
 
 #include <QObject>
+#include <QMetaObject>
 #include <QByteArray>
 #include <QSharedPointer>
 #include "BaseFrameBuilder.h"
@@ -29,10 +30,12 @@ class Sequencer : public QObject {
     Sequence state_;
     QByteArray pending_data_;
     QSharedPointer<BaseFrameBuilder> builder_;
+    QMetaObject::Connection builder_connection_;
 
  private:
     void ChangeSequence(Sequence next);
     Sequence GetNextState();
+    void ConnectToBuilder();
 
  private slots:
     void onFrameConstructed(QVariant frame);

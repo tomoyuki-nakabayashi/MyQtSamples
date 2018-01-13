@@ -7,20 +7,18 @@
 # Sequencer
 
 - [ ] Reduce data copy
-- [x] Receive frame by signal
-- [x] Connect FrameBuilder signal
-- [ ] NEXT!!! remove pending data
+- [x] NEXT!!! remove pending data
+- [ ] Use functor to change state
 
 # FrameBuilder
 
-- [x] Return result as QVariant
-- [ ] Return LastResult
+- [x] Return LastResult
+- [ ] Manage pointer as QScopedPointer
 
 # SubFrameBuilder
 
-- [x] SubFrameBuilder
-- [x] Return result as QVariant
-- [ ] Return LastResult
+- [x] Return LastResult
+- [ ] Manage pointer as QScopedPointer
 
 # UDP Receiver
 
@@ -28,13 +26,8 @@
 
 # main
 
-- [x] Command line option
 - [ ] Use CommandLineParser
 
 # Refactoring
 
-- [x] Refactoring Frame usage
-- [x] Test QMap(int, QVariant)
-- [x] Refactoring template method
-- [x] BuildHeader/Payload/Footer are integrated to BuildImpl
-- [ ] Template method handle pointer handler
+- [x] Template method handle pointer handler

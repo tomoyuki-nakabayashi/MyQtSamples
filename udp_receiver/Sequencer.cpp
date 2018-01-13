@@ -9,10 +9,13 @@
 
 namespace udp_receiver {
 Sequencer::Sequencer(QObject *parent)
-  :QObject(parent), state_(Sequence::FRAME), pending_data_(),
-   builder_(QSharedPointer<BaseFrameBuilder> (new FrameBuilder())) {
-     connect(builder_.data(), &FrameBuilder::FrameConstructed, this, &Sequencer::onFrameConstructed);
-   }
+  :QObject(parent), state_(Sequence::FRAME)
+  , pending_data_()
+  , builder_(QSharedPointer<BaseFrameBuilder> (new FrameBuilder()))
+  , builder_connection_() {
+  builder_connection_ = connect(builder_.data(), &FrameBuilder::FrameConstructed, 
+                                this, &Sequencer::onFrameConstructed);
+}
 
 const QByteArray& Sequencer::AppendPendingData(const QByteArray &ba) {
   return pending_data_.append(ba);
@@ -21,13 +24,18 @@ const QByteArray& Sequencer::AppendPendingData(const QByteArray &ba) {
 void Sequencer::ConstructFrame() {
   QDataStream build_stream(pending_data_);
   while (builder_->Build(build_stream, pending_data_.size()) == FrameBuilderStatus::READY) {
-/* 
-    auto frame = builder_->GetFrame();
-    pending_data_.remove(0, frame->GetFrameSize());
- */
+    auto result = builder_->LastResult();
+    pending_data_.remove(0, result.size);
+
     auto state = GetNextState();
     ChangeSequence(state);
   }
+}
+
+void Sequencer::ConnectToBuilder() {
+  disconnect(builder_connection_);
+  builder_connection_ = connect(builder_.data(), &FrameBuilder::FrameConstructed, 
+                                this, &Sequencer::onFrameConstructed);
 }
 
 Sequencer::Sequence Sequencer::GetNextState() {
@@ -53,10 +61,12 @@ void Sequencer::ChangeSequence(Sequencer::Sequence next) {
     case Sequence::FRAME:
       state_ = Sequence::FRAME;
       builder_.reset(new FrameBuilder());
+      ConnectToBuilder();
       break;
     case Sequence::SUB_FRAME:
       state_ = Sequence::SUB_FRAME;
       builder_.reset(new SubFrameBuilder());
+      ConnectToBuilder();
       break;
     case Sequence::RECOVERING:
       // TODO
