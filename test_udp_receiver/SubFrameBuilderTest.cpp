@@ -36,7 +36,7 @@ TEST_F(SubFrameBuilderTest, FrameIsReady) {
   Frame expect(Frame::kHeaderMagic, 4, QByteArray::fromHex("01020304"));
   os_ << expect;
   auto actual = builder_.Build(buffer_);
-  EXPECT_EQ(FrameBuilderStatus::READY, actual);
+  EXPECT_EQ(FrameBuilderStatus::READY, actual.status);
 }
 
 TEST_F(SubFrameBuilderTest, CreateBuildAndGet) {

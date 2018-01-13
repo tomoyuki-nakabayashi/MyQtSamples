@@ -22,7 +22,7 @@ class FrameBuilder : public BaseFrameBuilder {
   
  private:
     QVariant CreateNewFrame() override;
-    FrameBuilderStatus BuildImpl(QByteArray &ba, Frame *frame) override;
+    BuilderResult BuildImpl(QByteArray &ba, Frame *frame) override;
 };
 }  // namespace udp_receiver
 #endif  // UDP_RECEIVER_FRAMEBUILDER_H_

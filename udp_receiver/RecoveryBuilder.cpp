@@ -11,19 +11,18 @@ QVariant RecoveryBuilder::CreateNewFrame() {
   return v;
 }
 
-FrameBuilderStatus RecoveryBuilder::BuildImpl(QByteArray &ba, Frame *frame) {
+BuilderResult RecoveryBuilder::BuildImpl(QByteArray &ba, Frame *frame) {
   BuilderResult result;
-  qint32 begin = ba.indexOf(QByteArray::fromHex("01234567"));
-  if (begin == -1) {
+  qint32 restart_point = ba.indexOf(QByteArray::fromHex("01234567"));
+  if (restart_point == -1) {
     result.status = FrameBuilderStatus::RETRY;
-    return FrameBuilderStatus::RETRY;
+    return result;
   }
-  auto buff = ba.mid(begin);
+  auto buff = ba.mid(restart_point);
 
   QDataStream ds(buff);
   ds >> *frame;
-  result.parsed_bytes = frame->GetFrameSize() + begin;
-  frame->skipped = begin;
-  return frame->status;
+  result.parsed_bytes = restart_point + frame->GetFrameSize();
+  return result;
 }
 }  // namespace udp_receiver

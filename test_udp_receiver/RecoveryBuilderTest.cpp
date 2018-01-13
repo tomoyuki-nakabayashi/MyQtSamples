@@ -59,7 +59,7 @@ TEST_F(RecoveryBuilderTest, ValidDataAfterInvalidData) {
   auto result = builder_.LastResult();
   auto frame = v.value<QSharedPointer<Frame>>().data();
 
-  EXPECT_EQ(FrameBuilderStatus::READY, status);
+  EXPECT_EQ(FrameBuilderStatus::READY, status.status);
   EXPECT_EQ(24, result.parsed_bytes);
   EXPECT_EQ(expect, *frame);
 }

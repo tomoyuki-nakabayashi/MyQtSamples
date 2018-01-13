@@ -28,7 +28,7 @@ class BaseFrameBuilder: public QObject {
     explicit BaseFrameBuilder(QObject *parent = Q_NULLPTR)
       : QObject(parent), last_result_() {}
     virtual ~BaseFrameBuilder() {}
-    FrameBuilderStatus Build(QByteArray &ba);
+    BuilderResult Build(QByteArray &ba);
     BuilderResult LastResult();
 
  signals:
@@ -36,7 +36,7 @@ class BaseFrameBuilder: public QObject {
 
  private:
     virtual QVariant CreateNewFrame() = 0;
-    virtual FrameBuilderStatus BuildImpl(QByteArray &ds, Frame *frame) = 0;
+    virtual BuilderResult BuildImpl(QByteArray &ds, Frame *frame) = 0;
 
  private:
     BuilderResult last_result_;

@@ -11,9 +11,13 @@ QVariant SubFrameBuilder::CreateNewFrame() {
   return v;
 }
 
-FrameBuilderStatus SubFrameBuilder::BuildImpl(QByteArray &ba, Frame *frame) {
+BuilderResult SubFrameBuilder::BuildImpl(QByteArray &ba, Frame *frame) {
+  BuilderResult result;
   QDataStream ds(ba);
   ds >> *frame;
-  return frame->status;
+
+  result.status = frame->status;
+  result.parsed_bytes = frame->GetFrameSize();
+  return result;
 }
 }  // namespace udp_receiver

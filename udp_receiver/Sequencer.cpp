@@ -24,12 +24,10 @@ const QByteArray& Sequencer::AppendPendingData(const QByteArray &ba) {
 }
 
 bool Sequencer::ConstructFrame() {
-  bool ret = (builder_->Build(pending_data_) == FrameBuilderStatus::READY);
-  if (!ret) return false;
+  auto result = builder_->Build(pending_data_);
+  if (result.status != FrameBuilderStatus::READY) return false;
 
-  auto result = builder_->LastResult();
   pending_data_.remove(0, result.parsed_bytes);
-
   change_state_(*this);
   return true;
 }

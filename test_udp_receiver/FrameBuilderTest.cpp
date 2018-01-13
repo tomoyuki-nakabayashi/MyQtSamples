@@ -75,7 +75,7 @@ TEST_F(FrameBuilderTest, FrameIsReady) {
   Frame expect(Frame::kHeaderMagic, 4, QByteArray::fromHex("01020304"));
   os_ << expect;
   auto actual = builder_.Build(buffer_);
-  EXPECT_EQ(FrameBuilderStatus::READY, actual);
+  EXPECT_EQ(FrameBuilderStatus::READY, actual.status);
 }
 
 TEST_F(FrameBuilderTest, CreateBuildAndGet) {
@@ -94,35 +94,35 @@ TEST_F(FrameBuilderTest, CreateBuildAndGet) {
 TEST_F(FrameBuilderTest, HeaderIsStillImcomplete) {
   os_ << (quint16)0x0123; // imcomplete header
   auto result = builder_.Build(buffer_);
-  EXPECT_EQ(FrameBuilderStatus::RETRY, result);
+  EXPECT_EQ(FrameBuilderStatus::RETRY, result.status);
 }
 
 TEST_F(FrameBuilderTest, PayloadSizeIsStillImcomplete) {
   os_ << Frame::kHeaderMagic << (qint16)0; // imcomplete payloadSize
   auto result = builder_.Build(buffer_);
-  EXPECT_EQ(FrameBuilderStatus::RETRY, result);
+  EXPECT_EQ(FrameBuilderStatus::RETRY, result.status);
 }
 
 TEST_F(FrameBuilderTest, PayloadIsStillImcomplete) {
   os_ << Frame::kHeaderMagic << (qint32)4 << (quint16)0x0102; // imcomplete payload
   auto result = builder_.Build(buffer_);
-  EXPECT_EQ(FrameBuilderStatus::RETRY, result);
+  EXPECT_EQ(FrameBuilderStatus::RETRY, result.status);
 }
 
 TEST_F(FrameBuilderTest, InvalidHeader) {
   os_ << (quint32)0x76543210 << (qint32)4 << (quint32)0x01020304;
   auto result = builder_.Build(buffer_);
-  EXPECT_EQ(FrameBuilderStatus::INVALID, result);
+  EXPECT_EQ(FrameBuilderStatus::INVALID, result.status);
 }
 
 TEST_F(FrameBuilderTest, CanCreateTwoFrame) {
   Frame expect(Frame::kHeaderMagic, 4, QByteArray::fromHex("01020304"));
   os_ << expect << expect;
 
-  EXPECT_EQ(FrameBuilderStatus::READY, builder_.Build(buffer_));
+  EXPECT_EQ(FrameBuilderStatus::READY, builder_.Build(buffer_).status);
   auto result = builder_.LastResult();
   buffer_.remove(0, result.parsed_bytes);
-  EXPECT_EQ(FrameBuilderStatus::READY, builder_.Build(buffer_));
+  EXPECT_EQ(FrameBuilderStatus::READY, builder_.Build(buffer_).status);
 }
 
 }  // udp_packet_test
