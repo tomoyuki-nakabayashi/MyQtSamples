@@ -70,7 +70,7 @@ TEST_F(SequencerTest, RecieveFrameAfterSubFrames) {
   ds_ << kFrame << kSubFrame << kFrame;
 
   seq_.AppendPendingData(buffer_);
-  seq_.ConstructFrame();
+  while (seq_.ConstructFrame()) {}
 
   EXPECT_EQ(3, pframe.size());
 }

@@ -9,10 +9,11 @@
 
 namespace udp_receiver {
 Sequencer::Sequencer(QObject *parent)
-  :QObject(parent), state_(Sequence::FRAME)
+  :QObject(parent)
   , pending_data_()
   , builder_()
   , builder_connection_() {
+  change_state_ = Sequencer::ChangeStateOnFrame;
   builder_.reset(new FrameBuilder());
   builder_connection_ = connect(builder_.data(), &FrameBuilder::FrameConstructed, 
                                 this, &Sequencer::onFrameConstructed);
@@ -22,60 +23,34 @@ const QByteArray& Sequencer::AppendPendingData(const QByteArray &ba) {
   return pending_data_.append(ba);
 }
 
-void Sequencer::ConstructFrame() {
+bool Sequencer::ConstructFrame() {
   QDataStream build_stream(pending_data_);
-  while (builder_->Build(build_stream) == FrameBuilderStatus::READY) {
-    auto result = builder_->LastResult();
-    pending_data_.remove(0, result.size);
+  bool ret = (builder_->Build(build_stream) == FrameBuilderStatus::READY);
+  if (!ret) return false;
 
-    auto state = GetNextState();
-    ChangeSequence(state);
-  }
+  auto result = builder_->LastResult();
+  pending_data_.remove(0, result.size);
+
+  change_state_(*this);
+  return true;
 }
 
 void Sequencer::ConnectToBuilder() {
   disconnect(builder_connection_);
-  builder_connection_ = connect(builder_.data(), &FrameBuilder::FrameConstructed, 
+  builder_connection_ = connect(builder_.data(), &FrameBuilder::FrameConstructed,
                                 this, &Sequencer::onFrameConstructed);
 }
 
-Sequencer::Sequence Sequencer::GetNextState() {
-  switch (state_) {
-    case Sequence::FRAME:
-      return Sequence::SUB_FRAME;
-      break;
-    case Sequence::SUB_FRAME:
-      return Sequence::FRAME;
-      break;
-    case Sequence::RECOVERING:
-      // TODO
-      break;
-    case Sequence::UNCHANGED:
-      // Anything wrong. state_ never fall in this state.
-      break;
-  }
-  return Sequence::UNCHANGED;
+void Sequencer::ChangeStateOnFrame(Sequencer& self) {
+  self.change_state_ = &Sequencer::ChangeStateOnSubFrame;
+  self.builder_.reset(new SubFrameBuilder());
+  self.ConnectToBuilder();
 }
 
-void Sequencer::ChangeSequence(Sequencer::Sequence next) {
-  switch (next) {
-    case Sequence::FRAME:
-      state_ = Sequence::FRAME;
-      builder_.reset(new FrameBuilder());
-      ConnectToBuilder();
-      break;
-    case Sequence::SUB_FRAME:
-      state_ = Sequence::SUB_FRAME;
-      builder_.reset(new SubFrameBuilder());
-      ConnectToBuilder();
-      break;
-    case Sequence::RECOVERING:
-      // TODO
-      break;
-    case Sequence::UNCHANGED:
-      // Nothing to do
-      break;
-  }
+void Sequencer::ChangeStateOnSubFrame(Sequencer& self) {
+  self.change_state_ = &Sequencer::ChangeStateOnFrame;
+  self.builder_.reset(new FrameBuilder());
+  self.ConnectToBuilder();
 }
 
 void Sequencer::onFrameConstructed(QVariant frame) {

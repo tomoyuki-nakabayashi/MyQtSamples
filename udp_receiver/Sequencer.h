@@ -22,15 +22,14 @@ class Sequencer : public QObject {
  public:
     explicit Sequencer(QObject *parent = Q_NULLPTR);
     const QByteArray& AppendPendingData(const QByteArray &ba);
-    void ConstructFrame();
+    bool ConstructFrame();
 
  signals:
     void FrameConstructed(QSharedPointer<Frame> frame);
 
  private:
     enum class Sequence {RECOVERING = -1, FRAME = 0, SUB_FRAME = 1, UNCHANGED};
-    std::function<Sequence(void)> get_next_state_;
-    Sequence state_;
+    std::function<void(Sequencer&)> change_state_;
     QByteArray pending_data_;
     QScopedPointer<BaseFrameBuilder> builder_;
     QMetaObject::Connection builder_connection_;
@@ -39,6 +38,9 @@ class Sequencer : public QObject {
     void ChangeSequence(Sequence next);
     Sequence GetNextState();
     void ConnectToBuilder();
+
+    static void ChangeStateOnFrame(Sequencer& self);
+    static void ChangeStateOnSubFrame(Sequencer& self);
 
  private slots:
     void onFrameConstructed(QVariant frame);
