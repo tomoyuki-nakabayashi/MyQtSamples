@@ -2,18 +2,17 @@
 
 - [ ] Move HeaderMagic to FrameBuilder
 - [ ] Refactor >> operator
-- [ ] Throw exception in >> operator
-- [ ] Move defenition to cpp file
+- [x] Move defenition to cpp file
 
 # Sequencer
 
 - [ ] Reduce data copy
-- [ ] Simple error case: receive valid frame after invalid one
+- [x] Simple error case: receive valid frame after invalid one
 
 # Biulders
 
 - [x] Delete LastResult()
-- [ ] Add RECOVERED status
+- [x] Add RECOVERED status
 
 # FrameBuilder
 
@@ -34,7 +33,7 @@
 
 # main
 
-- [ ] Use CommandLineParser
+- [x] Use CommandLineParser
 
 # Refactoring
 
