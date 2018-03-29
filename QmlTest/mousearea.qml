@@ -45,7 +45,7 @@ Rectangle {
     width: 320; height: 480
 
     Rectangle {
-        id: redSquare
+        id: redSquare; objectName: redSquare
         width: 120; height: 120
         anchors.top: parent.top; anchors.left: parent.left; anchors.margins: 10
         color: "red"

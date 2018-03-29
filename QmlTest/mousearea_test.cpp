@@ -5,19 +5,14 @@
 #include <QtTest/QSignalSpy>
 #include <QtQml/qqmlengine.h>
 #include <QtQml/qqmlcomponent.h>
-#include <QtQml/qqmlcontext.h>
 #include <QtQuick/qquickview.h>
-#include <QtQuick/private/qquickitem_p.h>
-#include <QtQuickTemplates2/private/qquickcontrol_p.h>
-#include <QtGui/private/qguiapplication_p.h>
-#include <QtGui/qstylehints.h>
-#include <QtGui/qtouchdevice.h>
+#include <QtQuick/private/qquickrectangle_p.h>
 #include "shared/util.h"
 #include "shared/visualtestutil.h"
 
 using namespace QQuickVisualTestUtil;
 
-class mousearea_test: public QObject {
+class mousearea_test: public QQmlDataTest {
   Q_OBJECT
 
  private slots:
@@ -25,7 +20,11 @@ class mousearea_test: public QObject {
 };
 
 void mousearea_test::FirstTest() {
-  QVerify(true);
+  QQuickView *view = new QQuickView;
+  view->setSource(testFileUrl("mousearea.qml"));
+
+  QQuickRectangle *item1 = findItem<QQuickRectangle>(view->rootObject(), QLatin1String("redSquare"));
+  QVERIFY(item1 != 0);
 }
 
 QTEST_MAIN(mousearea_test)
