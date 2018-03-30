@@ -45,7 +45,7 @@ Rectangle {
     width: 320; height: 480
 
     Rectangle {
-        id: redSquare; objectName: redSquare
+        id: redSquare; objectName: "redSquare"
         width: 120; height: 120
         anchors.top: parent.top; anchors.left: parent.left; anchors.margins: 10
         color: "red"
@@ -54,7 +54,7 @@ Rectangle {
         Text { text: "Click"; font.pixelSize: 16; anchors.centerIn: parent }
 
         MouseArea {
-            id: redSquareMouseArea
+            id: redSquareMouseArea; objectName: "redSquareMouseArea"
             anchors.fill: parent
             hoverEnabled: true
             property string buttonID
@@ -171,7 +171,7 @@ Rectangle {
     }
 
     Text {
-        id: btn
+        id: btn; objectName: "buttonText"
         anchors.bottom: posInfo.top; anchors.horizontalCenter: parent.horizontalCenter; anchors.margins: 20
     }
 
