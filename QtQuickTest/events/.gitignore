@@ -1,0 +1,4 @@
+*.o
+target_wrapper.sh
+tst_events
+*.qmlc
