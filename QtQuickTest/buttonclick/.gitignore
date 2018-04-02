@@ -1,0 +1,4 @@
+*.qmlc
+*.o
+target_wrapper.sh
+tst_qmltest
