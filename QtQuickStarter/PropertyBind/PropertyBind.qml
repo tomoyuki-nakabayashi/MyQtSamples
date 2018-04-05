@@ -5,6 +5,9 @@ Rectangle {
     width: 360
     height: 160
 
+    property alias contentWidth: rect.width
+    property alias contentHeight: rect.height
+
     Rectangle {
         id: rect
         anchors.centerIn: parent

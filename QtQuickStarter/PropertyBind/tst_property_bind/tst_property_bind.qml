@@ -7,8 +7,8 @@ PropertyBind {
 
     TestCase {
         name: "PropertyBind"
-        function test_property_bind_width() {
-            compare(propertybind.width, 360)
+        function test_default_size() {
+            compare(propertybind.contentHeight, 160*0.3*1.1)
         }
     }
 }
