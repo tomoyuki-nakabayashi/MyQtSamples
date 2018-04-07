@@ -11,12 +11,30 @@ Rectangle {
 
     Audio {
         id: playAudio
-        source: "file:///home/tomoyuki/Data/music/01_Pierrot_Dancin.mp3"
+        source: "file:///home/tomoyuki/Data/music/01 Glorious days.mp3"
         volume: 0.5
     }
 
+    Information {
+        id: information
+        anchors.top: parent.top
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.margins: 10
+
+        title: toStr(playAudio.metaData.title)
+        artist: toStr(playAudio.metaData.author)
+        album: toStr(playAudio.metaData.albumTitle)
+
+        position: playAudio.position
+        duration: playAudio.duration
+    }
+
     Controller {
-        anchors.centerIn: parent
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.top: information.bottom
+        anchors.margins: 10
+
         playing: playAudio.playbackState === Audio.PlayingState
 
         onPlayClicked: playAudio.play()
