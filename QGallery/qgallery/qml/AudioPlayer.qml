@@ -4,8 +4,8 @@ import "components"
 
 Rectangle {
     id: root
-    width: 200
     anchors.centerIn: parent
+    width: 200
     height: 200
     color: "#222222"
 

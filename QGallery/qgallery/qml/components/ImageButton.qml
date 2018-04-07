@@ -9,6 +9,7 @@ MouseArea {
     property alias caption: caption.text
     property alias captionColor: caption.color
     property alias captionFontSize: caption.font.pointSize
+    property alias filterColor: filter.color
 
     property color pressedColor: "#ff0000"
     property color hoverColor: "#0000ff"

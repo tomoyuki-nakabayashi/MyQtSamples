@@ -20,10 +20,10 @@ Rectangle {
         }
 
         function test_state_changes_by_click() {
-            mouseClick(audioPlayer)
+            mouseClick(audioPlayer, 50)
             compare(audioPlayer.state, "playing")
 
-            mouseClick(audioPlayer)
+            mouseClick(audioPlayer, 50)
             compare(audioPlayer.state, "")
         }
     }
