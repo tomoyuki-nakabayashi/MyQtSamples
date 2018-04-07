@@ -8,6 +8,7 @@ QUICK_TEST_SOURCE_DIR = ../qgallery/qml
 DISTFILES += \
     qml/tst_ImageButton.qml \
     qml/tst_AudioPlayer.qml \
-    qml/tst_Controller.qml
+    qml/tst_Controller.qml \
+    qml/tst_Information.qml
 
 RESOURCES += ../qgallery/qml.qrc

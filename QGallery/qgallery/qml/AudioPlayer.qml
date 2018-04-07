@@ -11,7 +11,7 @@ Rectangle {
 
     Audio {
         id: playAudio
-        source: "file:///home/tomoyuki/Data/music/01 Glorious days.mp3"
+        source: "file:///home/tomoyuki/Data/music/nokia-tune.mp3"
         volume: 0.5
     }
 
