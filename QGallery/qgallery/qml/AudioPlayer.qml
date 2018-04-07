@@ -1,5 +1,6 @@
 import QtQuick 2.9
 import QtMultimedia 5.9
+import "components"
 
 Rectangle {
     id: root
@@ -14,21 +15,36 @@ Rectangle {
         volume: 0.5
     }
 
-    Text {
-        id: text
+    Row {
         anchors.centerIn: parent
-        text: qsTr("Play")
-        color: "#dddddd"
-    }
+        spacing: 5
 
-    MouseArea {
-        anchors.fill: parent
-        onClicked: {
-            if(root.state == "playing") {
-                playAudio.pause()
-            } else {
-                playAudio.play()
+        ImageButton {
+            id: buttonPlay
+            width: 70
+            height: 50
+
+            backImage: "resources/button_border.png"
+            foreImage: "resources/button_play.png"
+
+            onClicked: {
+                if(root.state === "playing") {
+                    playAudio.pause()
+                } else {
+                    playAudio.play()
+                }
             }
+        }
+
+        ImageButton {
+            id: buttonStop
+            width: 70
+            height: 50
+
+            backImage: "resources/button_border.png"
+            foreImage: "resources/button_stop.png"
+
+            onClicked: playAudio.stop()
         }
     }
 
@@ -37,8 +53,8 @@ Rectangle {
             name: "playing"
             when: playAudio.playbackState === Audio.PlayingState
             PropertyChanges {
-                target: text
-                text: qsTr("Pause")
+                target: buttonPlay
+                foreImage: "resources/button_pause.png"
 
             }
         }
