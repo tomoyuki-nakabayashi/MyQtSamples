@@ -6,4 +6,4 @@ SOURCES += tst_qgallery.cpp
 QUICK_TEST_SOURCE_DIR = ../qgallery/qml
 
 DISTFILES += \
-    tst_qgallery.qml
+    qml/tst_qgallery.qml

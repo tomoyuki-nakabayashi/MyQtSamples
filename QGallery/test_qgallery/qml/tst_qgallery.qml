@@ -1,6 +1,6 @@
 import QtQuick 2.0
 import QtTest 1.1
-import "../qgallery/qml"
+import "../../qgallery/qml"
 
 Rectangle {
     width: 640
