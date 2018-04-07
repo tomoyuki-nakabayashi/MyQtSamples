@@ -20,5 +20,6 @@
         <file>qml/resources/icon_music_l.png</file>
         <file>qml/resources/spin.png</file>
         <file>qml/resources/star.png</file>
+        <file>qml/Controller.qml</file>
     </qresource>
 </RCC>
