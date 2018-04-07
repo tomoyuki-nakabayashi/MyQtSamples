@@ -6,7 +6,8 @@ SOURCES += tst_qgallery.cpp
 QUICK_TEST_SOURCE_DIR = ../qgallery/qml
 
 DISTFILES += \
-    qml/tst_qgallery.qml \
-    qml/tst_imagebutton.qml
+    qml/tst_ImageButton.qml \
+    qml/tst_AudioPlayer.qml \
+    qml/tst_Controller.qml
 
 RESOURCES += ../qgallery/qml.qrc
