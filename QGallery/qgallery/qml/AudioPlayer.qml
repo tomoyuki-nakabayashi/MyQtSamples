@@ -11,7 +11,7 @@ Rectangle {
 
     Audio {
         id: playAudio
-        source: "file:///home/tomoyuki/Data/music/nokia-tune.mp3"
+        source: "file:///home/tomoyuki/Data/music/01_Glorious_days.mp3"
         volume: 0.5
     }
 
@@ -28,6 +28,12 @@ Rectangle {
 
         position: playAudio.position
         duration: playAudio.duration
+
+        onPositionRequested: {
+            if(playAudio.playbackState === Audio.PlayingState) {
+                playAudio.seek(position)
+            }
+        }
     }
 
     Controller {

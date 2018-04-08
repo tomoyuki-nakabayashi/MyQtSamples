@@ -1,4 +1,5 @@
 import QtQuick 2.9
+import "components"
 
 Column {
     id: root
@@ -9,6 +10,8 @@ Column {
 
     property int position: 0
     property int duration: 0
+
+    signal positionRequested(int position)
 
     Text {
         id: title
@@ -35,6 +38,36 @@ Column {
         anchors.horizontalCenter: parent.horizontalCenter
         text: formatSeconds(position) + " / " + formatSeconds(duration)
         color: "#deffff"
+    }
+
+    Row {
+        anchors.horizontalCenter: parent.horizontalCenter
+        spacing: 2
+
+        Text {
+            anchors.verticalCenter: parent.verticalCenter
+            text: formatSeconds(position)
+            color: "#deffff"
+        }
+
+        Slider {
+            width: 150
+            height: 16
+            guideColor: "#deffff"
+            handleColor: "#deffff"
+            guideBkColor: "#00000000"
+            handleBkColor: "#4e6f6f"
+            min: 0
+            max: duration
+            position: root.position
+            onHandleMoved: root.positionRequested(position)
+        }
+
+        Text {
+            anchors.verticalCenter: parent.verticalCenter
+            text: formatSeconds(duration)
+            color: "#deffff"
+        }
     }
 
     function formatSeconds(pos) {

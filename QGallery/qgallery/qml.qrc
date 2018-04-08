@@ -22,5 +22,6 @@
         <file>qml/resources/star.png</file>
         <file>qml/Controller.qml</file>
         <file>qml/Information.qml</file>
+        <file>qml/components/Slider.qml</file>
     </qresource>
 </RCC>
