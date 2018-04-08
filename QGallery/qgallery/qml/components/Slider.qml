@@ -67,7 +67,7 @@ Item {
         width: height
         height: parent.height * 0.8
         color: root.handleBkColor
-        border.color: root.HandleColor
+        border.color: root.handleColor
         border.width: 1
         radius: height * 0.5
     }
