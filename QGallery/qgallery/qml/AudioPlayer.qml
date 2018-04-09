@@ -6,13 +6,13 @@ Rectangle {
     id: root
     anchors.centerIn: parent
     width: 360
-    height: 150
+    height: 400
     color: "#222222"
 
     Audio {
         id: playAudio
-        source: "file:///home/tomoyuki/Data/music/01_Glorious_days.mp3"
         volume: 0.5
+        autoPlay: true
     }
 
     Information {
@@ -37,6 +37,7 @@ Rectangle {
     }
 
     Controller {
+        id: controller
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.top: information.bottom
         anchors.margins: 10
@@ -46,5 +47,24 @@ Rectangle {
         onPlayClicked: playAudio.play()
         onPauseClicked: playAudio.pause()
         onStopClicked: playAudio.stop()
+        onPreviousClicked: playAudio.source = contentsList.getPrevious()
+        onNextClicked: playAudio.source = contentsList.getNext()
+    }
+
+    ContentsList {
+        id: contentsList
+        anchors.top: controller.bottom
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.bottom: parent.bottom
+        anchors.margins: 10
+
+        onSelected: {
+            playAudio.source = filePath
+        }
+
+        Component.onCompleted: {
+            folder = "file:///home/tomoyuki/Data/music/"
+        }
     }
 }
