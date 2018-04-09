@@ -26,10 +26,14 @@ Item {
     }
 
     function setHandlePosition() {
+        handle.x = calcHandlePosition()
+    }
+
+    function calcHandlePosition() {
         if (root.max != 0) {
-            handle.x = (guide.width * (root.position / root.max)) - (handle.width * 0.5) + guide.x
+            return ((guide.width * (root.position / root.max)) - (handle.width * 0.5) + guide.x)
         } else {
-            handle.x = -handle.width * 0.5 + guide.x
+            return (-handle.width * 0.5 + guide.x)
         }
     }
 
