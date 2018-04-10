@@ -10,6 +10,7 @@ DISTFILES += \
     qml/tst_AudioPlayer.qml \
     qml/tst_Controller.qml \
     qml/tst_Information.qml \
-    qml/tst_Slider.qml
+    qml/tst_Slider.qml \
+    qml/tst_ContentsList.qml
 
 RESOURCES += ../qgallery/qml.qrc

@@ -6,7 +6,7 @@ ListView {
     id: root
     clip: true
 
-    property string  pathPrefix: "file:///"
+    property string  pathPrefix: "file://"
     property alias folder: folderlist.folder
 
     signal selected(string filePath, int type)
@@ -84,51 +84,51 @@ ListView {
                 }
             }
         }
+    }
 
-        function getNext() {
-            var path = ""
-            var path_old = currentItem.filePath
-            var type_old = currentItem.type
-            var index_old = currentIndex
+    function getNext() {
+        var path = ""
+        var path_old = currentItem.filePath
+        var type_old = currentItem.type
+        var index_old = currentIndex
 
-            incrementCurrentIndex()
-            for (var i = currentIndex; i < count; i++) {
+        incrementCurrentIndex()
+        for (var i = currentIndex; i < count; i++) {
+            currentIndex = i
+            if (currentItem.type === type_old) {
+                path = currentItem.filePath
+                break
+            }
+        }
+
+        if (path.length < 1) {
+            path = path_old
+            currentIndex = index_old
+        }
+
+        return path
+    }
+
+    function getPrevious() {
+        var path = ""
+        var path_old = currentItem.filePath
+        var type_old = currentItem.type
+        var index_old = currentIndex
+
+        decrementCurrentIndex()
+        for (var i = currentIndex; i >= 0; i--) {
+            if (currentItem.type === type_old) {
                 currentIndex = i
-                if (currentItem.type === type_old) {
-                    path = currentItem.filePath
-                    break
-                }
+                path = currentItem.filePath
+                break
             }
-
-            if (path.length < 1) {
-                path = path_old
-                currentIndex = index_old
-            }
-
-            return path
         }
 
-        function getPrevious() {
-            var path = ""
-            var path_old = currentItem.filePath
-            var type_old = currentItem.type
-            var index_old = currentIndex
-
-            decrementCurrentIndex()
-            for (var i = currentIndex; i >= 0; i--) {
-                if (currentItem.type === type_old) {
-                    currentIndex = i
-                    path = currentItem.filePath
-                    break
-                }
-            }
-
-            if (path.length < 1) {
-                path = path_old
-                currentIndex = index_old
-            }
-
-            return path
+        if (path.length < 1) {
+            path = path_old
+            currentIndex = index_old
         }
+
+        return path
     }
 }

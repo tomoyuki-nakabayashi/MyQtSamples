@@ -12,7 +12,7 @@ Rectangle {
     }
 
     TestCase {
-        name: "AudioPlaer"
+        name: "AudioPlayer"
         when: windowShown
 
         function test_dummy() {
