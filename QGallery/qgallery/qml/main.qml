@@ -8,7 +8,7 @@ ApplicationWindow {
     width: 640
     height: 480
 
-    AudioPlayer {
-        id: audioPlayer
+    MediaPlayer {
+        id: mediaPlayer
     }
 }

@@ -1,7 +1,7 @@
 <RCC>
     <qresource prefix="/">
         <file>qml/main.qml</file>
-        <file>qml/AudioPlayer.qml</file>
+        <file>qml/MediaPlayer.qml</file>
         <file>qml/components/ImageButton.qml</file>
         <file>main.cpp</file>
         <file>qml/resources/button_border.png</file>
@@ -24,5 +24,6 @@
         <file>qml/Information.qml</file>
         <file>qml/components/Slider.qml</file>
         <file>qml/ContentsList.qml</file>
+        <file>qml/VideoView.qml</file>
     </qresource>
 </RCC>

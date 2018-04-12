@@ -12,7 +12,8 @@ ListView {
     signal selected(string filePath, int type)
 
     property var suffix2Type: {
-        "mp3" : 1, "m4a" : 1, "wma" : 1
+        "mp3" : 1, "m4a" : 1, "wma" : 1,
+        "mpg" : 2, "mp4" : 2, "wmv" : 2
     }
 
     model: FolderListModel {
@@ -72,7 +73,15 @@ ListView {
                             target: icon
                             source: "resources/icon_music.png"
                         }
+                    },
+                    State {
+                        when: type === 2
+                        PropertyChanges {
+                            target: icon
+                            source: "resources/icon_move.png"
+                        }
                     }
+
                 ]
             }
 
