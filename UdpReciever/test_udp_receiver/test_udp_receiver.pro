@@ -24,5 +24,5 @@ SOURCES +=     main.cpp \
    PlayGround.cpp
 
 DESTDIR = release
-OBJECTS_DIR = ../../tmp/test/.obj
-MOC_DIR = ../../tmp/test/.moc
+OBJECTS_DIR = tmp
+MOC_DIR = moc

@@ -1,0 +1,3 @@
+# Generate coverage report
+lcov -c -b . -d . -o cov_test.info
+genhtml --demangle-cpp -o html cov_test.info
