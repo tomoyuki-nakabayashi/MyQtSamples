@@ -6,6 +6,12 @@ QT += testlib
 CONFIG -= app_bundle
 CONFIG += thread
 
+QMAKE_CXXFLAGS += -g -Wall -fprofile-arcs -ftest-coverage -O0
+QMAKE_LFLAGS += -g -Wall -fprofile-arcs -ftest-coverage  -O0
+
+LIBS += \
+    -lgcov
+
 HEADERS +=    
 
 SOURCES +=     main.cpp \
